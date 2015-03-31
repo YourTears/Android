@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context="com.example.googlebottomfragment.MainActivity" >
+
+    <FrameLayout
+        android:id="@+id/main_content"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <RadioGroup
+        android:id="@+id/main_radio_group"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radio_up_border"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/id_radio_love"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/love"
+            android:gravity="center_horizontal|bottom"
+            android:paddingTop="2dp"
+            android:text="Love" />
+
+        <RadioButton
+            android:id="@+id/id_radio_chat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/chat"
+            android:gravity="center_horizontal|bottom"
+            android:paddingTop="2dp"
+            android:text="聊天" />
+
+        <RadioButton
+            android:id="@+id/id_radio_contact"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/contact"
+            android:gravity="center_horizontal|bottom"
+            android:paddingTop="2dp"
+            android:text="通讯" />
+
+        <RadioButton
+            android:id="@+id/id_radio_me"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/me"
+            android:gravity="center_horizontal|bottom"
+            android:paddingTop="2dp"
+            android:text="我" />
+    </RadioGroup>
+
+</LinearLayout>

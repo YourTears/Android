@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WeLove</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <color name="color_light_line">#d3d3d3</color>
+</resources>
