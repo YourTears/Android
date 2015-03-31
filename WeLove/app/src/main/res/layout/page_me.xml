@@ -3,4 +3,47 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="@dimen/me_interval_height"
+            android:background="@color/color_info_background">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:textColor="#000000"
+                android:text="相亲"/>
+            </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/me_content_height"
+            android:layout_marginTop="@dimen/me_interval_height"
+            android:background="@color/color_info_background">
+            <ImageView
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:background="@drawable/love"
+                />
+            </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/me_content_height"
+            android:layout_marginTop="@dimen/me_interval_height"
+            android:background="@color/color_info_background">
+            <ImageView
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:background="@drawable/love"
+                />
+        </FrameLayout>
+
+    </LinearLayout>
 </LinearLayout>
