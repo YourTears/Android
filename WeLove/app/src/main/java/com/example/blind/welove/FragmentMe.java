@@ -19,6 +19,6 @@ public class FragmentMe extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // TODO Auto-generated method stub
-        return inflater.inflate(R.layout.frame_me, container, false);
+        return inflater.inflate(R.layout.page_me, container, false);
     }
 }
