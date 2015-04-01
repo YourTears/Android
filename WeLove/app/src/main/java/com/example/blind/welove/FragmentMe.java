@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import common.AsyncImageLoader;
 
 /**
  * Created by tiazh on 3/28/2015.
  */
 public class FragmentMe extends Fragment {
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -18,7 +22,13 @@ public class FragmentMe extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        return inflater.inflate(R.layout.page_me, container, false);
+
+        View view = inflater.inflate(R.layout.page_me, container, false);
+
+        ImageView imageView = (ImageView)view.findViewById(R.id.id_me_image);
+        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView);
+        imageLoader.execute(Constant.ImageFolder,"https://www.baidu.com/img/bd_logo1.png");
+
+        return view;
     }
 }

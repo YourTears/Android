@@ -22,6 +22,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Constant.ImageFolder = this.getFilesDir();
+
         setContentView(R.layout.activity_main);
 
         setFragment(R.id.id_radio_love);
