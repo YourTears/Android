@@ -28,7 +28,7 @@ public class FragmentMe extends Fragment {
 
         ImageView imageView = (ImageView)view.findViewById(R.id.id_me_image);
         AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, Constant.ImageFolder);
-        imageLoader.execute("http://www.baidu.com/img/bd_logo1.png");
+        imageLoader.execute("https://www.baidu.com/img/bd_logo1.png");
 
         return view;
     }

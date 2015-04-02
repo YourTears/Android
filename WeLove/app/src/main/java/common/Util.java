@@ -16,7 +16,7 @@ public class Util {
     {
         String imageName = MD5.getMD5(imagePath) + imagePath.substring(imagePath.lastIndexOf('.'));
 
-        File file = new File(imageFolder, imagePath);
+        File file = new File(imageFolder, imageName);
 
         if(file.exists())
             return Uri.fromFile(file);
@@ -27,28 +27,23 @@ public class Util {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setConnectTimeout(5000);
                 conn.setRequestMethod("GET");
-                conn.setDoInput(true);
-                if (conn.getResponseCode() == 200) {
 
-                    InputStream is = conn.getInputStream();
-                    FileOutputStream fos = new FileOutputStream(file);
-                    byte[] buffer = new byte[1024];
-                    int len = 0;
-                    while ((len = is.read(buffer)) != -1) {
-                        fos.write(buffer, 0, len);
-                    }
-                    is.close();
-                    fos.close();
-                    // 返回一个URI对象
-                    return Uri.fromFile(file);
+                InputStream is = conn.getInputStream();
+                FileOutputStream fos = new FileOutputStream(file);
+                byte[] buffer = new byte[1024];
+                int len = 0;
+                while ((len = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
                 }
+                is.close();
+                fos.close();
+
+                return Uri.fromFile(file);
             }
             catch (Exception e)
             {
                 return null;
             }
         }
-
-        return null;
     }
 }
