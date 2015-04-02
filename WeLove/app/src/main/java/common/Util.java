@@ -12,7 +12,7 @@ import java.net.URL;
  * Created by tiazh on 4/1/2015.
  */
 public class Util {
-    public static Uri getImageUri(String imageFolder, String imagePath)
+    public static Uri getImageUri(File imageFolder, String imagePath)
     {
         String imageName = MD5.getMD5(imagePath) + imagePath.substring(imagePath.lastIndexOf('.'));
 
