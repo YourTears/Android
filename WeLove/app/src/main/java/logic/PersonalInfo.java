@@ -9,6 +9,8 @@ import org.xmlpull.v1.XmlPullParser;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import common.Gender;
+
 /**
  * Created by tiazh on 4/5/2015.
  */
@@ -17,6 +19,7 @@ public class PersonalInfo {
     public String name;
     public String nickName;
     public String imageUrl;
+    public Gender gender;
 
     public PersonalInfo() {
         id = null;
@@ -74,6 +77,8 @@ public class PersonalInfo {
                         info.name = parser.nextText();
                     else if (parser.getName().equals("imageUrl"))
                         info.imageUrl = parser.nextText();
+                    else if(parser.getName().equals("gender"))
+                        info.gender = Gender.valueOf(parser.nextText());
                 }
             }
         } catch (Exception e) {

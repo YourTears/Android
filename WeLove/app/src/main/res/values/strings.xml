@@ -7,4 +7,6 @@
     <color name="color_light_line">#d3d3d3</color>
     <color name="color_info_background">#ffffff</color>
 
+    <color name="color_main_text">#000000</color>
+    <color name="color_light_text">#c4c4c4</color>
 </resources>

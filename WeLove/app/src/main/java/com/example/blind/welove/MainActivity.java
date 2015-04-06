@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import java.io.File;
 import java.io.IOException;
 
+import common.Gender;
 import common.Util;
 import logic.PersonalInfo;
 
@@ -56,6 +57,9 @@ public class MainActivity extends ActionBarActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if(Constant.meInfo != null && Constant.meInfo.gender == Gender.female)
+            Constant.it = "他";
     }
 
     private void initialization() {

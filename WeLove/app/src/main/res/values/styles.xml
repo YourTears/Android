@@ -5,6 +5,12 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <dimen name="me_interval_height">20dp</dimen>
-    <dimen name="me_content_height">50dp</dimen>
+    <dimen name="me_interval_height">60px</dimen>
+    <dimen name="me_content_height">140px</dimen>
+    <dimen name="me_content_icon_size">60px</dimen>
+    <dimen name="me_content_margin_top">40px</dimen>
+    <dimen name="me_content_margin_left">80px</dimen>
+    <dimen name="me_content_icon_text_interval">50px</dimen>
+
+    <dimen name="me_content_text_size">16sp</dimen>
 </resources>

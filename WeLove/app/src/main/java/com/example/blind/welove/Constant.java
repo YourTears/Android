@@ -14,6 +14,8 @@ public class Constant {
     public static String imageFolder = null;
     public static String infoFolder = null;
 
+    public static String it = "她";
+
     public static String imageFolderName = "image";
     public static String infoFolderName = "info";
     public static String meInfoFileName = "me.xml";
