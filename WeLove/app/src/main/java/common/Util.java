@@ -12,11 +12,11 @@ import java.net.URL;
  * Created by tiazh on 4/1/2015.
  */
 public class Util {
-    public static Uri getImageUri(String imageUrl, String imageLocalPath)
+    public static Uri getImageUri(String imageUrl, String imageLocalPath, boolean forceRefresh)
     {
         File file = new File(imageLocalPath);
 
-        if(file.exists())
+        if(!forceRefresh && file.exists())
             return Uri.fromFile(file);
         else
         {
