@@ -11,18 +11,16 @@ import java.io.File;
  */
 public class AsyncImageLoader extends AsyncTask<String, Integer, Uri> {
     private ImageView m_imageView;
-    private File m_imageFolder;
 
-    public AsyncImageLoader(ImageView imageView, File imageFolder)
+    public AsyncImageLoader(ImageView imageView)
     {
         m_imageView = imageView;
-        m_imageFolder = imageFolder;
     }
 
     @Override
     protected Uri doInBackground(String... params) {
         try {
-            return Util.getImageUri(m_imageFolder, params[0]);
+            return Util.getImageUri(params[0], params[1]);
         } catch (Exception e) {
             return null;
         }

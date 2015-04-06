@@ -12,18 +12,16 @@ import java.net.URL;
  * Created by tiazh on 4/1/2015.
  */
 public class Util {
-    public static Uri getImageUri(File imageFolder, String imagePath)
+    public static Uri getImageUri(String imageUrl, String imageLocalPath)
     {
-        String imageName = MD5.getMD5(imagePath) + imagePath.substring(imagePath.lastIndexOf('.'));
-
-        File file = new File(imageFolder, imageName);
+        File file = new File(imageLocalPath);
 
         if(file.exists())
             return Uri.fromFile(file);
         else
         {
             try {
-                URL url = new URL(imagePath);
+                URL url = new URL(imageUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setConnectTimeout(5000);
                 conn.setRequestMethod("GET");
@@ -42,8 +40,16 @@ public class Util {
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 return null;
             }
         }
+    }
+
+    public static void createFolder(String folderPath)
+    {
+        File file = new File(folderPath);
+        if(!file.exists())
+            file.mkdir();
     }
 }

@@ -7,6 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
 
+import java.io.File;
+import java.io.IOException;
+
+import common.Util;
+import logic.PersonalInfo;
+
 
 public class MainActivity extends ActionBarActivity {
     private FragmentLove fragmentLove = null;
@@ -23,7 +29,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Constant.ImageFolder = this.getFilesDir();
+        initConstant();
+
+        initMeInfo();
 
         setContentView(R.layout.activity_main);
 
@@ -32,10 +40,27 @@ public class MainActivity extends ActionBarActivity {
         initialization();
     }
 
-    private void initialization()
-    {
+    private void initConstant() {
+        Constant.dataRootPath = this.getFilesDir().getPath() + "/cache/";
+        Constant.imageFolder = Constant.dataRootPath + Constant.imageFolderName + "/";
+        Constant.infoFolder = Constant.dataRootPath + Constant.infoFolderName + "/";
+
+        Util.createFolder(Constant.dataRootPath);
+        Util.createFolder(Constant.imageFolder);
+        Util.createFolder(Constant.infoFolder);
+    }
+
+    private void initMeInfo() {
+        try {
+            Constant.meInfo = PersonalInfo.getPersonalInfo(this.getResources().getAssets().open("info/me.xml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initialization() {
         mainRadioGroup = (RadioGroup) findViewById(R.id.main_radio_group);
-        mainRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+        mainRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 setFragment(checkedId);
@@ -43,38 +68,35 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    private void setFragment(int radioId)
-    {
+    private void setFragment(int radioId) {
         fragmentTransaction = getFragmentManager().beginTransaction();
 
-        switch (radioId)
-        {
+        switch (radioId) {
             case R.id.id_radio_love:
-                if(fragmentLove == null)
+                if (fragmentLove == null)
                     fragmentLove = new FragmentLove();
-                if(isMainFrameAdded)
+                if (isMainFrameAdded)
                     fragmentTransaction.replace(R.id.main_content, fragmentLove);
-                else
-                {
+                else {
                     fragmentTransaction.add(R.id.main_content, fragmentLove);
                     isMainFrameAdded = true;
                 }
                 break;
 
             case R.id.id_radio_chat:
-                if(fragmentChat == null)
+                if (fragmentChat == null)
                     fragmentChat = new FragmentChat();
                 fragmentTransaction.replace(R.id.main_content, fragmentChat);
                 break;
 
             case R.id.id_radio_contact:
-                if(fragmentContact == null)
+                if (fragmentContact == null)
                     fragmentContact = new FragmentContact();
                 fragmentTransaction.replace(R.id.main_content, fragmentContact);
                 break;
 
             case R.id.id_radio_me:
-                if(fragmentMe == null)
+                if (fragmentMe == null)
                     fragmentMe = new FragmentMe();
                 fragmentTransaction.replace(R.id.main_content, fragmentMe);
                 break;

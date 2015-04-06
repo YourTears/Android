@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import common.AsyncImageLoader;
-import common.MD5;
 
 /**
  * Created by tiazh on 3/28/2015.
@@ -27,8 +26,8 @@ public class FragmentMe extends Fragment {
         View view = inflater.inflate(R.layout.page_me, container, false);
 
         ImageView imageView = (ImageView)view.findViewById(R.id.id_me_image);
-        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, Constant.ImageFolder);
-        imageLoader.execute("https://www.baidu.com/img/bd_logo1.png");
+        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView);
+        imageLoader.execute(Constant.meInfo.imageUrl, Constant.meInfo.getImageLocalPath());
 
         return view;
     }
