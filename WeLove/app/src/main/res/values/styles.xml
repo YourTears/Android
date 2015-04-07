@@ -5,6 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <dimen name="contact_content_margin_left">40px</dimen>
+
     <dimen name="me_interval_height">60px</dimen>
     <dimen name="me_content_height">140px</dimen>
     <dimen name="me_content_icon_size">60px</dimen>
