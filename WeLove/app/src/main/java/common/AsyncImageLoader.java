@@ -36,7 +36,9 @@ public class AsyncImageLoader extends AsyncTask<String, Integer, Uri> {
     @Override
     protected void onPostExecute(Uri result)
     {
-        if(m_imageView != null && result != null)
+        if(m_imageView != null && result != null) {
+            m_imageView.setImageURI(null);
             m_imageView.setImageURI(result);
+        }
     }
 }

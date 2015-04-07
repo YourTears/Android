@@ -50,6 +50,14 @@ public class FragmentMe extends Fragment {
         AsyncImageLoader imageLoader = new AsyncImageLoader(imageView);
         imageLoader.execute(Constant.meInfo.imageUrl, Constant.meInfo.getImageLocalPath());
 
+        imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                AsyncImageLoader imageLoader = new AsyncImageLoader((ImageView)view, true);
+                imageLoader.execute(Constant.meInfo.imageUrl, Constant.meInfo.getImageLocalPath());
+            }
+        });
+
         TextView textView = (TextView)view.findViewById(R.id.id_textview_me_name);
         if(textView != null)
             textView.setText(Constant.meInfo.name);
