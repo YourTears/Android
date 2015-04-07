@@ -28,22 +28,26 @@ public class Util {
                 conn.setConnectTimeout(5000);
                 conn.setRequestMethod("GET");
 
-                InputStream is = conn.getInputStream();
-                FileOutputStream fos = new FileOutputStream(file);
-                byte[] buffer = new byte[1024];
-                int len = 0;
-                while ((len = is.read(buffer)) != -1) {
-                    fos.write(buffer, 0, len);
-                }
-                is.close();
-                fos.close();
+                if(conn.getResponseCode() == 200) {
+                    InputStream is = conn.getInputStream();
+                    FileOutputStream fos = new FileOutputStream(file);
+                    byte[] buffer = new byte[1024];
+                    int len = 0;
+                    while ((len = is.read(buffer)) != -1) {
+                        fos.write(buffer, 0, len);
+                    }
+                    is.close();
+                    fos.close();
 
-                return Uri.fromFile(file);
+                    return Uri.fromFile(file);
+                }
             }
             catch (Exception e)
             {
                 return null;
             }
         }
+
+        return null;
     }
 }

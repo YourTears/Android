@@ -10,14 +10,22 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="76dp"
             android:layout_marginTop="@dimen/me_interval_height"
             android:background="@color/color_info_background">
 
-            <ImageView
-                android:id="@+id/id_me_image"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/id_me_image"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp" />
+
+            </LinearLayout>
 
             </FrameLayout>
 
