@@ -1,9 +1,11 @@
 package common;
 
+import android.content.res.AssetManager;
 import android.net.Uri;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -51,5 +53,16 @@ public class Util {
         File file = new File(folderPath);
         if(!file.exists())
             file.mkdir();
+    }
+
+    public static InputStream getAssertInputStream(AssetManager assertManager, String relativeFilePath)
+    {
+        try {
+            return assertManager.open(relativeFilePath);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

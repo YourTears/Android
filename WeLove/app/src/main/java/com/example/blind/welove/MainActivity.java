@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,11 +53,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void initMeInfo() {
-        try {
-            Constant.meInfo = PersonalInfo.getPersonalInfo(this.getResources().getAssets().open("info/me.xml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            Constant.meInfo = PersonalInfo.getPersonalInfo(Util.getAssertInputStream(this.getResources().getAssets(), "info/me.xml"));
 
         if(Constant.meInfo != null && Constant.meInfo.gender == Gender.female)
             Constant.it = "他";
