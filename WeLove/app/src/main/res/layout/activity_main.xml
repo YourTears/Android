@@ -29,6 +29,7 @@
             android:drawableTop="@drawable/love"
             android:gravity="center_horizontal|bottom"
             android:paddingTop="2dp"
+            android:textColor="@color/color_light_text"
             android:text="Love" />
 
         <RadioButton
@@ -41,6 +42,7 @@
             android:drawableTop="@drawable/chat"
             android:gravity="center_horizontal|bottom"
             android:paddingTop="2dp"
+            android:textColor="@color/color_light_text"
             android:text="聊天" />
 
         <RadioButton
@@ -53,6 +55,7 @@
             android:drawableTop="@drawable/contact"
             android:gravity="center_horizontal|bottom"
             android:paddingTop="2dp"
+            android:textColor="@color/color_light_text"
             android:text="通讯" />
 
         <RadioButton
@@ -65,6 +68,7 @@
             android:drawableTop="@drawable/me"
             android:gravity="center_horizontal|bottom"
             android:paddingTop="2dp"
+            android:textColor="@color/color_light_text"
             android:text="我" />
     </RadioGroup>
 

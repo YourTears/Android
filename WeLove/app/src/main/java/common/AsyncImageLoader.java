@@ -11,18 +11,23 @@ import java.io.File;
  */
 public class AsyncImageLoader extends AsyncTask<String, Integer, Uri> {
     private ImageView m_imageView;
-    private File m_imageFolder;
+    private boolean m_forceRefresh = false;
 
-    public AsyncImageLoader(ImageView imageView, File imageFolder)
+    public AsyncImageLoader(ImageView imageView)
     {
         m_imageView = imageView;
-        m_imageFolder = imageFolder;
+    }
+
+    public AsyncImageLoader(ImageView imageView,boolean forceRefresh)
+    {
+        m_imageView = imageView;
+        m_forceRefresh = forceRefresh;
     }
 
     @Override
     protected Uri doInBackground(String... params) {
         try {
-            return Util.getImageUri(m_imageFolder, params[0]);
+            return Util.getImageUri(params[0], params[1], m_forceRefresh);
         } catch (Exception e) {
             return null;
         }
@@ -31,7 +36,9 @@ public class AsyncImageLoader extends AsyncTask<String, Integer, Uri> {
     @Override
     protected void onPostExecute(Uri result)
     {
-        if(m_imageView != null && result != null)
+        if(m_imageView != null && result != null) {
+            m_imageView.setImageURI(null);
             m_imageView.setImageURI(result);
+        }
     }
 }
