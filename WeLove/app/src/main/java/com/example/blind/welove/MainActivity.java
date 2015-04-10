@@ -50,6 +50,8 @@ public class MainActivity extends ActionBarActivity {
         Util.createFolder(Constant.dataRootPath);
         Util.createFolder(Constant.imageFolder);
         Util.createFolder(Constant.infoFolder);
+
+        Constant.defaultImageDrawable = getResources().getDrawable(R.drawable.defaultimage);
     }
 
     private void initMeInfo() {

@@ -1,5 +1,7 @@
 package com.example.blind.welove;
 
+import android.graphics.drawable.Drawable;
+
 import java.io.File;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class Constant {
     public static String infoFolder = null;
 
     public static String it = "她";
+    public static Drawable defaultImageDrawable = null;
 
     public static String imageFolderName = "image";
     public static String infoFolderName = "info";
