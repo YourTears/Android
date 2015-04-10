@@ -95,6 +95,6 @@ public class ContactListAdapter extends BaseAdapter {
         if(position <= m_favorite.size())
             return m_favorite.get(position - 1);
 
-        return m_recent.get(position - m_favorite.size() + 2);
+        return m_recent.get(position - m_favorite.size() - 2);
     }
 }

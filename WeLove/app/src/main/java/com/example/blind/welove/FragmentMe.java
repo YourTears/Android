@@ -47,6 +47,7 @@ public class FragmentMe extends Fragment {
             }
 
             ImageView imageView = (ImageView) view.findViewById(R.id.id_me_image);
+            imageView.setImageDrawable(Constant.defaultImageDrawable);
             AsyncImageLoader imageLoader = new AsyncImageLoader(imageView);
             imageLoader.execute(Constant.meInfo.imageUrl, Constant.meInfo.getImageLocalPath());
 
