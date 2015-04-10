@@ -22,12 +22,33 @@ import logic.PersonalInfo;
 public class FragmentContact extends Fragment {
     private ListView m_favoriteListView = null;
     private ListView m_recentListView = null;
-    List<HashMap<String, Object>> m_favoriteListItem = new ArrayList<HashMap<String, Object>>();
-    List<HashMap<String, Object>> m_recentListItem = new ArrayList<HashMap<String, Object>>();
+    private List<HashMap<String, Object>> m_favoriteListItem = new ArrayList<HashMap<String, Object>>();
+    private List<HashMap<String, Object>> m_recentListItem = new ArrayList<HashMap<String, Object>>();
+    private SimpleAdapter m_favoriteListAdapter = null;
+
+    private boolean m_dataInitialized = false;
 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        if(m_dataInitialized == false) {
+            Constant.friends = PersonalInfo.getPersonalInfos(Util.getAssertInputStream(this.getResources().getAssets(), "info/contacts.xml"));
+
+            for (int idx = 0; idx < Constant.friends.size(); idx++) {
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("id_contact_view_image", R.drawable.defaultimage);
+                map.put("id_contact_view_text", Constant.friends.get(idx).name);
+
+                m_favoriteListItem.add(map);
+            }
+
+            m_favoriteListAdapter = new SimpleAdapter(this.getActivity(), m_favoriteListItem, R.layout.contact_view,
+                    new String[]{"id_contact_view_image", "id_contact_view_text"},
+                    new int[]{R.id.id_contact_view_image, R.id.id_contact_view_text});
+
+            m_dataInitialized = true;
+        }
     }
 
     @Override
@@ -39,22 +60,7 @@ public class FragmentContact extends Fragment {
         m_favoriteListView = (ListView)view.findViewById(R.id.id_listview_favorite_contacts);
         m_recentListView = (ListView)view.findViewById(R.id.id_listview_recent_contacts);
 
-        List<PersonalInfo> persons = PersonalInfo.getPersonalInfos(Util.getAssertInputStream(this.getResources().getAssets(), "info/contacts.xml"));
-
-        for (int idx = 0; idx < persons.size(); idx ++)
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("id_contact_view_image", R.drawable.defaultimage);
-            map.put("id_contact_view_text", persons.get(idx).name);
-
-            m_favoriteListItem.add(map);
-        }
-
-        SimpleAdapter favoriteListAdapter = new SimpleAdapter(this.getActivity(), m_favoriteListItem, R.layout.contact_view,
-                new String[] {"id_contact_view_image", "id_contact_view_text"},
-                new int[] {R.id.id_contact_view_image, R.id.id_contact_view_text});
-
-        m_favoriteListView.setAdapter(favoriteListAdapter);
+        m_favoriteListView.setAdapter(m_favoriteListAdapter);
 
         return view;
     }

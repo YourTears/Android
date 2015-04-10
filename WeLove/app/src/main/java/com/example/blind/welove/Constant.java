@@ -1,6 +1,7 @@
 package com.example.blind.welove;
 
 import java.io.File;
+import java.util.List;
 
 import logic.PersonalInfo;
 
@@ -9,6 +10,7 @@ import logic.PersonalInfo;
  */
 public class Constant {
     public static PersonalInfo meInfo = null;
+    public static List<PersonalInfo> friends = null;
 
     public static String dataRootPath = null;
     public static String imageFolder = null;
