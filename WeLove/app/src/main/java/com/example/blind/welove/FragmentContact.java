@@ -21,12 +21,11 @@ import logic.PersonalInfo;
  */
 public class FragmentContact extends Fragment {
     private View view = null;
-    private ListView m_favoriteListView = null;
-    private ListView m_recentListView = null;
+    private ListView m_contactListView = null;
     private List<PersonalInfo> m_favoriteListItem = new ArrayList<PersonalInfo>();
     private List<PersonalInfo> m_recentListItem = new ArrayList<PersonalInfo>();
 
-    private ContactListAdapter m_favoriteListAdapter = null;
+    private ContactListAdapter m_contactListAdapter = null;
 
     private boolean m_dataInitialized = false;
 
@@ -38,7 +37,7 @@ public class FragmentContact extends Fragment {
             List<PersonalInfo> persons = PersonalInfo.getPersonalInfos(Util.getAssertInputStream(this.getResources().getAssets(), "info/contacts.xml"));
 
             m_favoriteListItem = persons;
-            m_favoriteListAdapter = new ContactListAdapter(this.getActivity(), m_favoriteListItem, R.layout.contact_view);
+            m_contactListAdapter = new ContactListAdapter(this.getActivity(), m_favoriteListItem, R.layout.contact_view, R.layout.contact_view_title);
 
             m_dataInitialized = true;
         }
@@ -51,10 +50,9 @@ public class FragmentContact extends Fragment {
         if(view == null) {
             view = inflater.inflate(R.layout.frame_contact, container, false);
 
-            m_favoriteListView = (ListView) view.findViewById(R.id.id_listview_favorite_contacts);
-            m_recentListView = (ListView) view.findViewById(R.id.id_listview_recent_contacts);
+            m_contactListView = (ListView) view.findViewById(R.id.id_listview_contacts);
 
-            m_favoriteListView.setAdapter(m_favoriteListAdapter);
+            m_contactListView.setAdapter(m_contactListAdapter);
         }
 
         return view;
