@@ -1,10 +1,12 @@
 package com.example.blind.welove;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -36,8 +38,8 @@ public class FragmentContact extends Fragment {
         if(m_dataInitialized == false) {
             List<PersonalInfo> persons = PersonalInfo.getPersonalInfos(Util.getAssertInputStream(this.getResources().getAssets(), "info/contacts.xml"));
 
-            m_favoriteListItem = persons;
-            m_contactListAdapter = new ContactListAdapter(this.getActivity(), m_favoriteListItem, R.layout.contact_view, R.layout.contact_view_title);
+            m_recentListItem = persons;
+            m_contactListAdapter = new ContactListAdapter(this.getActivity(), m_favoriteListItem, m_recentListItem, R.layout.contact_view, R.layout.contact_view_title);
 
             m_dataInitialized = true;
         }
@@ -53,6 +55,21 @@ public class FragmentContact extends Fragment {
             m_contactListView = (ListView) view.findViewById(R.id.id_listview_contacts);
 
             m_contactListView.setAdapter(m_contactListAdapter);
+            m_contactListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    ListView listView = (ListView)parent;
+                    ContactListAdapter adapter = (ContactListAdapter)listView.getAdapter();
+
+                    Object object = adapter.getItem(position);
+                    if(object == null)
+                        return true;
+
+                    PersonalInfo info = (PersonalInfo) object;
+                    AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle(info.name).setMessage("Move to Favorite").show();
+                    return true;
+                }
+            });
         }
 
         return view;

@@ -25,15 +25,16 @@ import logic.PersonalInfo;
 public class ContactListAdapter extends BaseAdapter {
 
     private LayoutInflater m_Inflater;
-    private List<PersonalInfo> m_data;
+    private List<PersonalInfo> m_favorite, m_recent;
     private List<View> m_view;
     private int m_resource;
     private int m_tilteResource;
 
-    public ContactListAdapter(Context context, List<PersonalInfo> data, int resource, int titleResource)
+    public ContactListAdapter(Context context, List<PersonalInfo> favorite, List<PersonalInfo> recent,int resource, int titleResource)
     {
         m_Inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        m_data = data;
+        m_favorite = favorite;
+        m_recent = recent;
         m_resource = resource;
         m_tilteResource = titleResource;
         m_view = new ArrayList<View>();
@@ -41,7 +42,7 @@ public class ContactListAdapter extends BaseAdapter {
 
     public int getCount()
     {
-        return m_data.size() + 2;
+        return m_favorite.size() + m_recent.size() + 2;
     }
 
     public View getView(int position, View convertView, ViewGroup parent)
@@ -50,7 +51,7 @@ public class ContactListAdapter extends BaseAdapter {
             return m_view.get(position);
 
         View view = null;
-        if(position == 0 || position == m_data.size() + 1) {
+        if(position == 0 || position == m_favorite.size() + 1) {
             view = m_Inflater.inflate(m_tilteResource, parent, false);
 
             TextView textView = (TextView) view.findViewById(R.id.id_contact_view_title);
@@ -63,7 +64,7 @@ public class ContactListAdapter extends BaseAdapter {
         else {
             view = m_Inflater.inflate(m_resource, parent, false);
 
-            PersonalInfo info = m_data.get(position - 1);
+            PersonalInfo info = (PersonalInfo)getItem(position);
             view.setTag(info);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.id_contact_view_image);
@@ -88,6 +89,12 @@ public class ContactListAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return position;
+        if(position == 0 || position == m_favorite.size() + 1)
+            return null;
+
+        if(position <= m_favorite.size())
+            return m_favorite.get(position - 1);
+
+        return m_recent.get(position - m_favorite.size() + 2);
     }
 }
