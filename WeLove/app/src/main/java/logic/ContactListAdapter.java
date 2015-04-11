@@ -14,6 +14,7 @@ import com.example.blind.welove.Constant;
 import com.example.blind.welove.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import common.AsyncImageLoader;
@@ -26,18 +27,30 @@ public class ContactListAdapter extends BaseAdapter {
 
     private LayoutInflater m_Inflater;
     private List<PersonalInfo> m_favorite, m_recent;
-    private List<View> m_view;
+    private FavoriteInfo m_favoriteInfo;
+    private HashMap<String, View> m_view;
     private int m_resource;
     private int m_tilteResource;
 
-    public ContactListAdapter(Context context, List<PersonalInfo> favorite, List<PersonalInfo> recent,int resource, int titleResource)
+    public ContactListAdapter(Context context, List<PersonalInfo> data, FavoriteInfo favoriteInfo,int resource, int titleResource)
     {
         m_Inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        m_favorite = favorite;
-        m_recent = recent;
+        m_favoriteInfo = favoriteInfo;
         m_resource = resource;
         m_tilteResource = titleResource;
-        m_view = new ArrayList<View>();
+        m_view = new HashMap<String, View>();
+
+        m_favorite = new ArrayList<PersonalInfo>();
+        m_recent = new ArrayList<PersonalInfo>();
+
+        for(int i = 0; i < data.size(); i ++)
+        {
+            PersonalInfo info = data.get(i);
+            if(favoriteInfo.isFavorite(info.id))
+                m_favorite.add(info);
+            else
+                m_recent.add(info);
+        }
     }
 
     public int getCount()
@@ -47,8 +60,10 @@ public class ContactListAdapter extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        if(m_view.size() > position)
-            return m_view.get(position);
+        String hashKey = getItemKey(position);
+
+        if(m_view.containsKey(hashKey))
+            return m_view.get(hashKey);
 
         View view = null;
         if(position == 0 || position == m_favorite.size() + 1) {
@@ -64,11 +79,10 @@ public class ContactListAdapter extends BaseAdapter {
         else {
             view = m_Inflater.inflate(m_resource, parent, false);
 
-            PersonalInfo info = (PersonalInfo)getItem(position);
-            view.setTag(info);
-
             ImageView imageView = (ImageView) view.findViewById(R.id.id_contact_view_image);
             TextView textView = (TextView) view.findViewById(R.id.id_contact_view_text);
+
+            PersonalInfo info = (PersonalInfo)getItem(position);
 
             textView.setText(info.name);
             imageView.setImageDrawable(Constant.defaultImageDrawable);
@@ -77,8 +91,7 @@ public class ContactListAdapter extends BaseAdapter {
             imageLoader.execute(info.imageUrl, info.getImageLocalPath());
         }
 
-        if(m_view.size() == position)
-            m_view.add(view);
+        m_view.put(hashKey, view);
 
         return view;
     }
@@ -96,5 +109,54 @@ public class ContactListAdapter extends BaseAdapter {
             return m_favorite.get(position - 1);
 
         return m_recent.get(position - m_favorite.size() - 2);
+    }
+
+    public boolean isInFavorite(int position)
+    {
+        if(position > 0 && position <= m_favorite.size())
+            return true;
+        return false;
+    }
+
+    public void changeFavoriteSetting(int position)
+    {
+        if(isInFavorite(position))
+            moveAwayFromFavorite(position);
+        else
+            moveToFavorite(position);
+    }
+
+    private String getItemKey(int position) {
+        if(position == 0)
+            return "Favorite";
+
+        if(position == m_favorite.size() + 1)
+            return "Recent";
+
+        return ((PersonalInfo)getItem(position)).id;
+    }
+
+    private void moveToFavorite(int position)
+    {
+        int index = position - m_favorite.size() - 2;
+        if(index >= 0 && index < m_recent.size())
+        {
+            m_favoriteInfo.addToFavorite(m_recent.get(index).id);
+
+            m_favorite.add(m_recent.get(index));
+            m_recent.remove(index);
+        }
+    }
+
+    private void moveAwayFromFavorite(int position)
+    {
+        int index = position - 1;
+        if(index >= 0 && index < m_favorite.size())
+        {
+            m_favoriteInfo.removeFromFavorite(m_favorite.get(index).id);
+
+            m_recent.add(m_favorite.get(index));
+            m_favorite.remove(index);
+        }
     }
 }

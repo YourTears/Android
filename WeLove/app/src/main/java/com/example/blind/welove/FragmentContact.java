@@ -2,6 +2,7 @@ package com.example.blind.welove;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,20 +17,24 @@ import java.util.List;
 
 import common.Util;
 import logic.ContactListAdapter;
+import logic.FavoriteInfo;
 import logic.PersonalInfo;
 
 /**
  * Created by tiazh on 3/28/2015.
  */
 public class FragmentContact extends Fragment {
+    private static String[] contactListClickItem = {""};
+
     private View view = null;
     private ListView m_contactListView = null;
-    private List<PersonalInfo> m_favoriteListItem = new ArrayList<PersonalInfo>();
-    private List<PersonalInfo> m_recentListItem = new ArrayList<PersonalInfo>();
 
     private ContactListAdapter m_contactListAdapter = null;
 
     private boolean m_dataInitialized = false;
+
+    private static final String moveToFavoriteMessage = "Move To Favorite";
+    private static final String moveAwayFromFavoriteMessage = "Move Away From Favorite";
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -37,9 +42,9 @@ public class FragmentContact extends Fragment {
 
         if(m_dataInitialized == false) {
             List<PersonalInfo> persons = PersonalInfo.getPersonalInfos(Util.getAssertInputStream(this.getResources().getAssets(), "info/contacts.xml"));
+            FavoriteInfo favoriteInfo = FavoriteInfo.getFavoriteInfo(Util.getAssertInputStream(this.getResources().getAssets(), "info/favorite.xml"));
 
-            m_recentListItem = persons;
-            m_contactListAdapter = new ContactListAdapter(this.getActivity(), m_favoriteListItem, m_recentListItem, R.layout.contact_view, R.layout.contact_view_title);
+            m_contactListAdapter = new ContactListAdapter(this.getActivity(), persons,favoriteInfo, R.layout.contact_view, R.layout.contact_view_title);
 
             m_dataInitialized = true;
         }
@@ -56,7 +61,7 @@ public class FragmentContact extends Fragment {
 
             m_contactListView.setAdapter(m_contactListAdapter);
             m_contactListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
                     ListView listView = (ListView)parent;
                     ContactListAdapter adapter = (ContactListAdapter)listView.getAdapter();
@@ -66,7 +71,23 @@ public class FragmentContact extends Fragment {
                         return true;
 
                     PersonalInfo info = (PersonalInfo) object;
-                    AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle(info.name).setMessage("Move to Favorite").show();
+
+                    if(adapter.isInFavorite(position))
+                        contactListClickItem[0] = moveAwayFromFavoriteMessage;
+                    else
+                        contactListClickItem[0] = moveToFavoriteMessage;
+
+                    AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                            .setTitle(info.name)
+                            .setItems(contactListClickItem, new DialogInterface.OnClickListener(){
+
+                                public void onClick(DialogInterface dialog, int item) {
+
+                                    m_contactListAdapter.changeFavoriteSetting(position);
+                                    m_contactListAdapter.notifyDataSetChanged();
+                                }
+                            })
+                            .show();
                     return true;
                 }
             });
