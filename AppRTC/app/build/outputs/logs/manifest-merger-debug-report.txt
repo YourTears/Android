@@ -1,0 +1,121 @@
+-- Merging decision tree log ---
+manifest
+ADDED from AndroidManifest.xml:2:1
+	package
+		ADDED from AndroidManifest.xml:3:11
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	android:versionName
+		ADDED from AndroidManifest.xml:5:11
+	android:versionCode
+		ADDED from AndroidManifest.xml:4:11
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
+uses-feature#android.hardware.camera
+ADDED from AndroidManifest.xml:7:5
+	android:name
+		ADDED from AndroidManifest.xml:7:19
+uses-feature#android.hardware.camera.autofocus
+ADDED from AndroidManifest.xml:8:5
+	android:name
+		ADDED from AndroidManifest.xml:8:19
+uses-feature#0x00020000
+ADDED from AndroidManifest.xml:9:5
+	android:glEsVersion
+		ADDED from AndroidManifest.xml:9:19
+	android:required
+		ADDED from AndroidManifest.xml:9:52
+uses-sdk
+ADDED from AndroidManifest.xml:10:5
+	android:targetSdkVersion
+		ADDED from AndroidManifest.xml:10:42
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	android:minSdkVersion
+		ADDED from AndroidManifest.xml:10:15
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+uses-permission#android.permission.CAMERA
+ADDED from AndroidManifest.xml:12:5
+	android:name
+		ADDED from AndroidManifest.xml:12:22
+uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
+ADDED from AndroidManifest.xml:13:5
+	android:name
+		ADDED from AndroidManifest.xml:13:22
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from AndroidManifest.xml:14:5
+	android:name
+		ADDED from AndroidManifest.xml:14:22
+uses-permission#android.permission.INTERNET
+ADDED from AndroidManifest.xml:15:5
+	android:name
+		ADDED from AndroidManifest.xml:15:22
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from AndroidManifest.xml:16:5
+	android:name
+		ADDED from AndroidManifest.xml:16:22
+application
+ADDED from AndroidManifest.xml:18:5
+	android:label
+		ADDED from AndroidManifest.xml:18:18
+	android:allowBackup
+		ADDED from AndroidManifest.xml:20:18
+	android:icon
+		ADDED from AndroidManifest.xml:19:18
+activity#org.appspot.apprtc.ConnectActivity
+ADDED from AndroidManifest.xml:22:9
+	android:label
+		ADDED from AndroidManifest.xml:23:19
+	android:name
+		ADDED from AndroidManifest.xml:22:19
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:24:13
+action#android.intent.action.MAIN
+ADDED from AndroidManifest.xml:25:17
+	android:name
+		ADDED from AndroidManifest.xml:25:25
+category#android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:26:17
+	android:name
+		ADDED from AndroidManifest.xml:26:27
+intent-filter#android.intent.action.VIEW+android.intent.category.BROWSABLE+android.intent.category.DEFAULT
+ADDED from AndroidManifest.xml:29:13
+action#android.intent.action.VIEW
+ADDED from AndroidManifest.xml:30:17
+	android:name
+		ADDED from AndroidManifest.xml:30:25
+category#android.intent.category.DEFAULT
+ADDED from AndroidManifest.xml:31:17
+	android:name
+		ADDED from AndroidManifest.xml:31:27
+category#android.intent.category.BROWSABLE
+ADDED from AndroidManifest.xml:32:17
+	android:name
+		ADDED from AndroidManifest.xml:32:27
+data
+ADDED from AndroidManifest.xml:33:17
+	android:host
+		ADDED from AndroidManifest.xml:33:46
+	android:scheme
+		ADDED from AndroidManifest.xml:33:23
+activity#org.appspot.apprtc.SettingsActivity
+ADDED from AndroidManifest.xml:38:9
+	android:label
+		ADDED from AndroidManifest.xml:39:19
+	android:name
+		ADDED from AndroidManifest.xml:38:19
+activity#org.appspot.apprtc.CallActivity
+ADDED from AndroidManifest.xml:42:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:44:19
+	android:label
+		ADDED from AndroidManifest.xml:43:19
+	android:configChanges
+		ADDED from AndroidManifest.xml:45:19
+	android:theme
+		ADDED from AndroidManifest.xml:46:19
+	android:name
+		ADDED from AndroidManifest.xml:42:19
