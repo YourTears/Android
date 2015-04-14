@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.blind.welove.R;
 import org.webrtc.StatsReport;
 import org.webrtc.VideoRendererGui.ScalingType;
 

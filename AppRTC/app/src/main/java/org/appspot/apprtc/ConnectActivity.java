@@ -50,6 +50,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.blind.welove.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 

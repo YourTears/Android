@@ -30,6 +30,8 @@ package org.appspot.apprtc;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
+import com.blind.welove.R;
+
 /**
  * Settings fragment for AppRTC.
  */

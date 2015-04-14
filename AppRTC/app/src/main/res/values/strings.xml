@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="no">AppRTC</string>
+    <string name="app_name" translatable="no">WeLove</string>
     <string name="settings_name" translatable="no">AppRTC Settings</string>
     <string name="disconnect_call">Disconnect Call</string>
     <string name="room_names">Room names:</string>
@@ -104,5 +104,14 @@
     <string name="pref_displayhud_title">Display call statistics.</string>
     <string name="pref_displayhud_dlg">Display call statistics.</string>
     <string name="pref_displayhud_default" translatable="false">false</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+
+    <color name="color_light_line">#d3d3d3</color>
+    <color name="color_info_background">#ffffff</color>
+
+    <color name="color_main_text">#000000</color>
+    <color name="color_light_text">#c4c4c4</color>
 
 </resources>

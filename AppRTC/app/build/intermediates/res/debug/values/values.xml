@@ -34,15 +34,36 @@
     </string-array>
     <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <color name="color_info_background">#ffffff</color>
+    <color name="color_light_line">#d3d3d3</color>
+    <color name="color_light_text">#c4c4c4</color>
+    <color name="color_main_text">#000000</color>
+    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <dimen name="contact_content_margin_left">40px</dimen>
+    <dimen name="me_content_height">140px</dimen>
+    <dimen name="me_content_icon_size">60px</dimen>
+    <dimen name="me_content_icon_text_interval">50px</dimen>
+    <dimen name="me_content_margin_left">80px</dimen>
+    <dimen name="me_content_margin_top">40px</dimen>
+    <dimen name="me_content_text_size">16sp</dimen>
+    <dimen name="me_interval_height">60px</dimen>
+    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
     <string name="action_settings">Settings</string>
     <string name="add_room_description">Add new room to the list</string>
-    <string name="app_name" translatable="no">AppRTC</string>
+    <string name="app_name" translatable="no">WeLove</string>
     <string name="channel_error_title">Connection error</string>
     <string name="connect_description">Connect to the room</string>
     <string name="connect_loopback_description">Loopback connection</string>
     <string name="connect_text">Connect</string>
     <string name="connecting_to">Connecting to: %1$s</string>
     <string name="disconnect_call">Disconnect Call</string>
+    <string name="hello_world">Hello world!</string>
     <string name="invalid_url_text">The URL or room name you entered resulted in an invalid URL: %1$s
     </string>
     <string name="invalid_url_title">Invalid URL</string>
@@ -118,12 +139,11 @@
     <string name="room_names">Room names:</string>
     <string name="settings_name" translatable="no">AppRTC Settings</string>
     <string name="switch_camera">Switch front/back camera</string>
+    <string name="title_activity_main">MainActivity</string>
     <string name="toggle_debug">Toggle debug view</string>
     <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/styles.xml -->
     <eat-comment/>
-    <style name="CallActivityTheme" parent="android:Theme.Black">
-    <item name="android:windowActionBar">false</item>
-    <item name="android:windowFullscreen">true</item>
-    <item name="android:windowNoTitle">true</item>
-  </style>
+    <style name="AppTheme" parent="android:Theme.Light.Panel">
+        <!-- Customize your theme here. -->
+    </style>
 </resources>
