@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="150px"
+    android:background="@color/color_info_background">
+
+    <ImageView
+        android:id="@+id/id_contact_view_image"
+        android:layout_marginLeft="@dimen/contact_content_margin_left"
+        android:layout_marginTop="20px"
+        android:layout_width="110px"
+        android:layout_height="110px" />
+
+    <TextView
+        android:id="@+id/id_contact_view_text"
+        android:layout_marginLeft="@dimen/contact_content_margin_left"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="left|center_vertical"
+        android:textSize="@dimen/me_content_text_size"
+        android:textColor="@color/color_main_text"/>
+
+</LinearLayout><!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/layout/contact_view.xml -->

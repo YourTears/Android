@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/arrays.xml -->
+    <!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/values/arrays.xml -->
     <eat-comment/>
     <string-array name="audioCodecs">
         <item>OPUS</item>
@@ -32,17 +32,17 @@
         <item>640 x 480</item>
         <item>320 x 240</item>
     </string-array>
-    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <color name="color_info_background">#ffffff</color>
     <color name="color_light_line">#d3d3d3</color>
     <color name="color_light_text">#c4c4c4</color>
     <color name="color_main_text">#000000</color>
-    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <dimen name="contact_content_margin_left">40px</dimen>
     <dimen name="me_content_height">140px</dimen>
@@ -52,7 +52,7 @@
     <dimen name="me_content_margin_top">40px</dimen>
     <dimen name="me_content_text_size">16sp</dimen>
     <dimen name="me_interval_height">60px</dimen>
-    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_settings">Settings</string>
     <string name="add_room_description">Add new room to the list</string>
@@ -141,9 +141,9 @@
     <string name="switch_camera">Switch front/back camera</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="toggle_debug">Toggle debug view</string>
-    <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/values/styles.xml -->
     <eat-comment/>
-    <style name="AppTheme" parent="android:Theme.Light.Panel">
+    <style name="AppTheme" parent="android:Theme.Light">
         <!-- Customize your theme here. -->
     </style>
 </resources>

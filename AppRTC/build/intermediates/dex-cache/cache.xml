@@ -2,18 +2,18 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\tiazh\AndroidStudioProjects\AppRTC\app\libs\autobanh.jar"
+        jar="D:\Project\Android\AppRTC\app\libs\autobanh.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="9b51fb848b29a3e41b8474ce2d4360f4d7d144c5">
-        <dex dex="C:\Users\tiazh\AndroidStudioProjects\AppRTC\app\build\intermediates\pre-dexed\debug\autobanh-6dacb66fa2009311265a90d41cdded640b01460f.jar" />
+        <dex dex="D:\Project\Android\AppRTC\app\build\intermediates\pre-dexed\debug\autobanh-9036d19ea0b426a0a677024d9d98e090444b6c6f.jar" />
     </item>
     <item
-        jar="C:\Users\tiazh\AndroidStudioProjects\AppRTC\app\libs\libjingle_peerconnection.jar"
+        jar="D:\Project\Android\AppRTC\app\libs\libjingle_peerconnection.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="921ac750da621ae057bf3fc59f499a3b871700ba">
-        <dex dex="C:\Users\tiazh\AndroidStudioProjects\AppRTC\app\build\intermediates\pre-dexed\debug\libjingle_peerconnection-65327e5b565ebec9a04597753b410424eff2ac2b.jar" />
+        <dex dex="D:\Project\Android\AppRTC\app\build\intermediates\pre-dexed\debug\libjingle_peerconnection-8430fb4de963da399a4bdbc2b99287695aa26a96.jar" />
     </item>
 
 </items>

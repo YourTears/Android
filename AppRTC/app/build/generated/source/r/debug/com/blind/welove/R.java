@@ -62,24 +62,34 @@ public final class R {
         public static final int settingicon=0x7f020016;
     }
     public static final class id {
-        public static final int action_settings=0x7f0b0018;
+        public static final int action_settings=0x7f0b0022;
         public static final int add_room_button=0x7f0b0002;
-        public static final int button_call_disconnect=0x7f0b0015;
-        public static final int button_call_scaling_mode=0x7f0b0017;
-        public static final int button_call_switch_camera=0x7f0b0016;
-        public static final int button_toggle_debug=0x7f0b0014;
-        public static final int buttons_call_container=0x7f0b0012;
+        public static final int button_call_disconnect=0x7f0b0018;
+        public static final int button_call_scaling_mode=0x7f0b001a;
+        public static final int button_call_switch_camera=0x7f0b0019;
+        public static final int button_toggle_debug=0x7f0b0017;
+        public static final int buttons_call_container=0x7f0b0015;
         public static final int call_fragment_container=0x7f0b0001;
         public static final int connect_button=0x7f0b0004;
         public static final int connect_loopback_button=0x7f0b0005;
-        public static final int contact_name_call=0x7f0b0011;
-        public static final int encoder_stat_call=0x7f0b0010;
+        public static final int contact_name_call=0x7f0b0014;
+        public static final int encoder_stat_call=0x7f0b0013;
         public static final int glview_call=0x7f0b0000;
-        public static final int hud_stat_call=0x7f0b0013;
+        public static final int hud_stat_call=0x7f0b0016;
+        public static final int id_contact_view_image=0x7f0b0010;
+        public static final int id_contact_view_text=0x7f0b0011;
+        public static final int id_contact_view_title=0x7f0b0012;
+        public static final int id_listview_contacts=0x7f0b001b;
+        public static final int id_me_image=0x7f0b001c;
         public static final int id_radio_chat=0x7f0b000d;
         public static final int id_radio_contact=0x7f0b000e;
         public static final int id_radio_love=0x7f0b000c;
         public static final int id_radio_me=0x7f0b000f;
+        public static final int id_textview_it_message=0x7f0b0021;
+        public static final int id_textview_me_id=0x7f0b001e;
+        public static final int id_textview_me_name=0x7f0b001d;
+        public static final int id_view_it_icon=0x7f0b0020;
+        public static final int id_view_me_icon=0x7f0b001f;
         public static final int main_content=0x7f0b000a;
         public static final int main_radio_group=0x7f0b000b;
         public static final int remove_room_button=0x7f0b0003;
@@ -92,7 +102,13 @@ public final class R {
         public static final int activity_call=0x7f030000;
         public static final int activity_connect=0x7f030001;
         public static final int activity_main=0x7f030002;
-        public static final int fragment_call=0x7f030003;
+        public static final int contact_view=0x7f030003;
+        public static final int contact_view_title=0x7f030004;
+        public static final int fragment_call=0x7f030005;
+        public static final int frame_chat=0x7f030006;
+        public static final int frame_contact=0x7f030007;
+        public static final int frame_love=0x7f030008;
+        public static final int page_me=0x7f030009;
     }
     public static final class menu {
         public static final int connect_menu=0x7f0a0000;
@@ -184,6 +200,7 @@ public final class R {
         public static final int toggle_debug=0x7f080052;
     }
     public static final class style {
+        public static final int AppRTCDemoActivityTheme=0x7f090001;
         /**  Customize your theme here. 
          */
         public static final int AppTheme=0x7f090000;
