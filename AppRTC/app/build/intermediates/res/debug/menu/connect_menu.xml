@@ -6,4 +6,4 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
 </menu>
-<!-- From: file:/C:/Users/davizen/AndroidstudioProjects/android/app/src/main/res/menu/connect_menu.xml -->
+<!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/menu/connect_menu.xml -->

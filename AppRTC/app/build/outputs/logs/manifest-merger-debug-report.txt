@@ -1,6 +1,8 @@
 -- Merging decision tree log ---
 manifest
 ADDED from AndroidManifest.xml:2:1
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
 	package
 		ADDED from AndroidManifest.xml:3:11
 		INJECTED from AndroidManifest.xml:0:0
@@ -11,8 +13,6 @@ ADDED from AndroidManifest.xml:2:1
 		ADDED from AndroidManifest.xml:4:11
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
-	xmlns:android
-		ADDED from AndroidManifest.xml:2:11
 uses-feature#android.hardware.camera
 ADDED from AndroidManifest.xml:7:5
 	android:name
@@ -23,10 +23,10 @@ ADDED from AndroidManifest.xml:8:5
 		ADDED from AndroidManifest.xml:8:19
 uses-feature#0x00020000
 ADDED from AndroidManifest.xml:9:5
-	android:glEsVersion
-		ADDED from AndroidManifest.xml:9:19
 	android:required
 		ADDED from AndroidManifest.xml:9:52
+	android:glEsVersion
+		ADDED from AndroidManifest.xml:9:19
 uses-sdk
 ADDED from AndroidManifest.xml:10:5
 	android:targetSdkVersion
