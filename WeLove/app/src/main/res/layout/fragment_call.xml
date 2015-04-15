@@ -7,33 +7,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/encoder_stat_call"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textStyle="bold"
-        android:textColor="#C000FF00"
-        android:textSize="12dp"
-        android:layout_margin="8dp"/>
-
-    <TextView
-        android:id="@+id/contact_name_call"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/buttons_call_container"
-        android:textSize="24sp"
-        android:layout_margin="8dp"/>
-
-    <TextView
-        android:id="@+id/hud_stat_call"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0.4"
-        android:background="@android:color/white"
-        android:textColor="@android:color/black" />
-
     <LinearLayout
            android:id="@+id/buttons_call_container"
            android:orientation="horizontal"

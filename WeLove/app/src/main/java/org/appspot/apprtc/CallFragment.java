@@ -54,7 +54,6 @@ public class CallFragment extends Fragment {
   private OnCallEvents callEvents;
   private boolean displayHud;
   private volatile boolean isRunning;
-  private TextView hudView;
   private final CpuMonitor cpuMonitor = new CpuMonitor();
 
   /**
@@ -72,8 +71,6 @@ public class CallFragment extends Fragment {
         inflater.inflate(R.layout.fragment_call, container, false);
 
     // Create UI controls.
-    hudView =
-        (TextView) controlView.findViewById(R.id.hud_stat_call);
     disconnectButton =
         (ImageButton) controlView.findViewById(R.id.button_call_disconnect);
     cameraSwitchButton =
@@ -105,9 +102,6 @@ public class CallFragment extends Fragment {
     if (args != null) {
       displayHud = args.getBoolean(CallActivity.EXTRA_DISPLAY_HUD, false);
     }
-    int visibility = displayHud ? View.VISIBLE : View.INVISIBLE;
-    hudView.setVisibility(View.INVISIBLE);
-    hudView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
     isRunning = true;
   }
 
@@ -189,7 +183,5 @@ public class CallFragment extends Fragment {
           .append("/")
           .append(cpuMonitor.getCpuAvgAll());
     }
-
-    hudView.setText(bweBuilder.toString() + hudView.getText());
   }
 }
