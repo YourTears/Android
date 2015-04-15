@@ -10,7 +10,7 @@
         android:layout_marginTop="20px"
         android:layout_width="110px"
         android:layout_height="110px" />
-    
+
     <TextView
         android:id="@+id/id_contact_view_text"
         android:layout_marginLeft="@dimen/contact_content_margin_left"
@@ -19,5 +19,5 @@
         android:gravity="left|center_vertical"
         android:textSize="@dimen/me_content_text_size"
         android:textColor="@color/color_main_text"/>
-    
+
 </LinearLayout>

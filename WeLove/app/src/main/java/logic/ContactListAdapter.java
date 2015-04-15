@@ -10,8 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.blind.welove.Constant;
-import com.example.blind.welove.R;
+import com.blind.welove.Constant;
+import com.blind.welove.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

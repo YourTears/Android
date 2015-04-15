@@ -2,7 +2,7 @@ package logic;
 
 import android.util.Xml;
 
-import com.example.blind.welove.Constant;
+import com.blind.welove.Constant;
 
 import org.xmlpull.v1.XmlPullParser;
 

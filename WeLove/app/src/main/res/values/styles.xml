@@ -1,7 +1,5 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="android:Theme.Light">
         <!-- Customize your theme here. -->
     </style>
 
@@ -15,4 +13,5 @@
     <dimen name="me_content_icon_text_interval">50px</dimen>
 
     <dimen name="me_content_text_size">16sp</dimen>
+
 </resources>

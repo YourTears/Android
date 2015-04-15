@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\tiazh\AndroidStudioProjects\WeLove\app\libs\autobanh.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9b51fb848b29a3e41b8474ce2d4360f4d7d144c5">
+        <dex dex="C:\Users\tiazh\AndroidStudioProjects\WeLove\app\build\intermediates\pre-dexed\debug\autobanh-4478a7def9686e181988cfd25b0de52ccaaa363f.jar" />
+    </item>
+    <item
+        jar="C:\Users\tiazh\AndroidStudioProjects\WeLove\app\libs\libjingle_peerconnection.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="921ac750da621ae057bf3fc59f499a3b871700ba">
+        <dex dex="C:\Users\tiazh\AndroidStudioProjects\WeLove\app\build\intermediates\pre-dexed\debug\libjingle_peerconnection-9a84c1424a6c31c16efb93f0956c3acc940f11ac.jar" />
+    </item>
+
+</items>
