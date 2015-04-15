@@ -186,7 +186,7 @@ public class CallActivity extends Activity
     final Intent intent = getIntent();
     Uri roomUri = intent.getData();
     if (roomUri == null) {
-      logAndToast(getString(R.string.missing_url));
+      Log.e(TAG,getString(R.string.missing_url));
       Log.e(TAG, "Didn't get any URL in intent!");
       setResult(RESULT_CANCELED);
       finish();
@@ -194,7 +194,7 @@ public class CallActivity extends Activity
     }
     String roomId = intent.getStringExtra(EXTRA_ROOMID);
     if (roomId == null || roomId.length() == 0) {
-      logAndToast(getString(R.string.missing_url));
+      Log.e(TAG, getString(R.string.missing_url));
       Log.e(TAG, "Incorrect room ID in intent!");
       setResult(RESULT_CANCELED);
       finish();
@@ -282,12 +282,6 @@ public class CallActivity extends Activity
     }
   }
 
-  @Override
-  public void onVideoScalingSwitch(ScalingType scalingType) {
-    this.scalingType = scalingType;
-    updateVideoView();
-  }
-
   // Helper functions.
   private void toggleCallControlFragmentVisibility() {
     if (!iceConnected || !callFragment.isAdded()) {
@@ -329,8 +323,7 @@ public class CallActivity extends Activity
     callStartedTimeMs = System.currentTimeMillis();
 
     // Start room connection.
-    logAndToast(getString(R.string.connecting_to,
-        roomConnectionParameters.roomUrl));
+    logAndToast(getString(R.string.connecting_to));
     appRtcClient.connectToRoom(roomConnectionParameters);
 
     // Create and audio manager that will take care of audio routing,
@@ -449,19 +442,19 @@ public class CallActivity extends Activity
       Log.w(TAG, "Room is connected, but EGL context is not ready yet.");
       return;
     }
-    logAndToast("Creating peer connection, delay=" + delta + "ms");
+    Log.w(TAG, "Creating peer connection, delay=" + delta + "ms");
     peerConnectionClient.createPeerConnection(
         localRender, remoteRender, signalingParameters);
 
     if (signalingParameters.initiator) {
-      logAndToast("Creating OFFER...");
+        Log.w(TAG, "Creating OFFER...");
       // Create offer. Offer SDP will be sent to answering client in
       // PeerConnectionEvents.onLocalDescription event.
       peerConnectionClient.createOffer();
     } else {
       if (params.offerSdp != null) {
         peerConnectionClient.setRemoteDescription(params.offerSdp);
-        logAndToast("Creating ANSWER...");
+          Log.w(TAG, "Creating ANSWER...");
         // Create answer. Answer SDP will be sent to offering client in
         // PeerConnectionEvents.onLocalDescription event.
         peerConnectionClient.createAnswer();
@@ -495,10 +488,10 @@ public class CallActivity extends Activity
           Log.e(TAG, "Received remote SDP for non-initilized peer connection.");
           return;
         }
-        logAndToast("Received remote " + sdp.type + ", delay=" + delta + "ms");
+        Log.e(TAG, "Received remote " + sdp.type + ", delay=" + delta + "ms");
         peerConnectionClient.setRemoteDescription(sdp);
         if (!signalingParameters.initiator) {
-          logAndToast("Creating ANSWER...");
+            Log.w(TAG, "Creating ANSWER...");
           // Create answer. Answer SDP will be sent to offering client in
           // PeerConnectionEvents.onLocalDescription event.
           peerConnectionClient.createAnswer();
@@ -527,7 +520,7 @@ public class CallActivity extends Activity
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        logAndToast("Remote end hung up; dropping PeerConnection");
+          Log.w(TAG, "Remote end hung up; dropping PeerConnection");
         disconnect();
       }
     });
@@ -557,7 +550,7 @@ public class CallActivity extends Activity
       @Override
       public void run() {
         if (appRtcClient != null) {
-          logAndToast("Sending " + sdp.type + ", delay=" + delta + "ms");
+            Log.w(TAG, "Sending " + sdp.type + ", delay=" + delta + "ms");
           if (signalingParameters.initiator) {
             appRtcClient.sendOfferSdp(sdp);
           } else {
@@ -586,7 +579,7 @@ public class CallActivity extends Activity
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        logAndToast("ICE connected, delay=" + delta + "ms");
+        Log.w(TAG, "ICE connected, delay=" + delta + "ms");
         iceConnected = true;
         callConnected();
       }
@@ -598,7 +591,7 @@ public class CallActivity extends Activity
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        logAndToast("ICE disconnected");
+        Log.w(TAG, "ICE disconnected");
         iceConnected = false;
         disconnect();
       }

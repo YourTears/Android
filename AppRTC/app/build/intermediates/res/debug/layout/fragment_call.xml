@@ -68,13 +68,7 @@
            android:layout_width="48dp"
            android:layout_height="48dp"/>
 
-        <ImageButton
-           android:id="@+id/button_call_scaling_mode"
-           android:background="@drawable/ic_action_return_from_full_screen"
-           android:contentDescription="@string/disconnect_call"
-           android:layout_width="48dp"
-           android:layout_height="48dp"/>
     </LinearLayout>
 
 </RelativeLayout>
-<!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/layout/fragment_call.xml -->
+<!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/layout/fragment_call.xml -->

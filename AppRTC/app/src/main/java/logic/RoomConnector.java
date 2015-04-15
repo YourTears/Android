@@ -1,7 +1,11 @@
 package logic;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.blind.welove.R;
@@ -14,10 +18,48 @@ import java.util.Random;
  * Created by tiazh on 4/14/2015.
  */
 public class RoomConnector {
-    public static void connectToRoom(String roomId, int runTimeMs) {
-        String roomUrl = sharedPref.getString(
-                keyprefRoomServerUrl,
-                getString(R.string.pref_room_server_url_default));
+    private SharedPreferences sharedPref;
+    private String keyprefVideoCallEnabled;
+    private String keyprefResolution;
+    private String keyprefFps;
+    private String keyprefVideoBitrateType;
+    private String keyprefVideoBitrateValue;
+    private String keyprefVideoCodec;
+    private String keyprefAudioBitrateType;
+    private String keyprefAudioBitrateValue;
+    private String keyprefAudioCodec;
+    private String keyprefHwCodecAcceleration;
+    private String keyprefCpuUsageDetection;
+    private String keyprefDisplayHud;
+    private String keyprefRoomServerUrl;
+
+    private Activity m_activity = null;
+    private Context m_context = null;
+
+    public RoomConnector(Activity activity, Context context)
+    {
+        m_activity = activity;
+        m_context =context;
+
+        PreferenceManager.setDefaultValues(context, R.xml.preferences, false);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        keyprefVideoCallEnabled = getString(R.string.pref_videocall_key);
+        keyprefResolution = getString(R.string.pref_resolution_key);
+        keyprefFps = getString(R.string.pref_fps_key);
+        keyprefVideoBitrateType = getString(R.string.pref_startvideobitrate_key);
+        keyprefVideoBitrateValue = getString(R.string.pref_startvideobitratevalue_key);
+        keyprefVideoCodec = getString(R.string.pref_videocodec_key);
+        keyprefHwCodecAcceleration = getString(R.string.pref_hwcodec_key);
+        keyprefAudioBitrateType = getString(R.string.pref_startaudiobitrate_key);
+        keyprefAudioBitrateValue = getString(R.string.pref_startaudiobitratevalue_key);
+        keyprefAudioCodec = getString(R.string.pref_audiocodec_key);
+        keyprefCpuUsageDetection = getString(R.string.pref_cpu_usage_detection_key);
+        keyprefDisplayHud = getString(R.string.pref_displayhud_key);
+        keyprefRoomServerUrl = getString(R.string.pref_room_server_url_key);
+    }
+
+    public void connectToRoom(String roomId, int runTimeMs) {
+        String roomUrl = getString(R.string.pref_room_server_url_default);
 
         // Video call enabled flag.
         boolean videoCallEnabled = sharedPref.getBoolean(keyprefVideoCallEnabled,
@@ -46,7 +88,6 @@ public class RoomConnector {
             } catch (NumberFormatException e) {
                 videoWidth = 0;
                 videoHeight = 0;
-                Log.e(TAG, "Wrong video resolution setting: " + resolution);
             }
         }
 
@@ -59,7 +100,6 @@ public class RoomConnector {
             try {
                 cameraFps = Integer.parseInt(fpsValues[0]);
             } catch (NumberFormatException e) {
-                Log.e(TAG, "Wrong camera fps setting: " + fps);
             }
         }
 
@@ -94,30 +134,31 @@ public class RoomConnector {
         boolean displayHud = sharedPref.getBoolean(keyprefDisplayHud,
                 Boolean.valueOf(getString(R.string.pref_displayhud_default)));
 
-        // Start AppRTCDemo activity.
-        Log.d(TAG, "Connecting to room " + roomId + " at URL " + roomUrl);
-        if (validateUrl(roomUrl)) {
-            Uri uri = Uri.parse(roomUrl);
-            Intent intent = new Intent(this, CallActivity.class);
-            intent.setData(uri);
-            intent.putExtra(CallActivity.EXTRA_ROOMID, roomId);
-            intent.putExtra(CallActivity.EXTRA_LOOPBACK, loopback);
-            intent.putExtra(CallActivity.EXTRA_VIDEO_CALL, videoCallEnabled);
-            intent.putExtra(CallActivity.EXTRA_VIDEO_WIDTH, videoWidth);
-            intent.putExtra(CallActivity.EXTRA_VIDEO_HEIGHT, videoHeight);
-            intent.putExtra(CallActivity.EXTRA_VIDEO_FPS, cameraFps);
-            intent.putExtra(CallActivity.EXTRA_VIDEO_BITRATE, videoStartBitrate);
-            intent.putExtra(CallActivity.EXTRA_VIDEOCODEC, videoCodec);
-            intent.putExtra(CallActivity.EXTRA_HWCODEC_ENABLED, hwCodec);
-            intent.putExtra(CallActivity.EXTRA_AUDIO_BITRATE, audioStartBitrate);
-            intent.putExtra(CallActivity.EXTRA_AUDIOCODEC, audioCodec);
-            intent.putExtra(CallActivity.EXTRA_CPUOVERUSE_DETECTION,
-                    cpuOveruseDetection);
-            intent.putExtra(CallActivity.EXTRA_DISPLAY_HUD, displayHud);
-            intent.putExtra(CallActivity.EXTRA_CMDLINE, commandLineRun);
-            intent.putExtra(CallActivity.EXTRA_RUNTIME, runTimeMs);
+        Uri uri = Uri.parse(roomUrl);
+        Intent intent = new Intent(m_context, CallActivity.class);
+        intent.setData(uri);
+        intent.putExtra(CallActivity.EXTRA_ROOMID, roomId);
+        intent.putExtra(CallActivity.EXTRA_LOOPBACK, false);
+        intent.putExtra(CallActivity.EXTRA_VIDEO_CALL, videoCallEnabled);
+        intent.putExtra(CallActivity.EXTRA_VIDEO_WIDTH, videoWidth);
+        intent.putExtra(CallActivity.EXTRA_VIDEO_HEIGHT, videoHeight);
+        intent.putExtra(CallActivity.EXTRA_VIDEO_FPS, cameraFps);
+        intent.putExtra(CallActivity.EXTRA_VIDEO_BITRATE, videoStartBitrate);
+        intent.putExtra(CallActivity.EXTRA_VIDEOCODEC, videoCodec);
+        intent.putExtra(CallActivity.EXTRA_HWCODEC_ENABLED, hwCodec);
+        intent.putExtra(CallActivity.EXTRA_AUDIO_BITRATE, audioStartBitrate);
+        intent.putExtra(CallActivity.EXTRA_AUDIOCODEC, audioCodec);
+        intent.putExtra(CallActivity.EXTRA_CPUOVERUSE_DETECTION,
+                cpuOveruseDetection);
+        intent.putExtra(CallActivity.EXTRA_DISPLAY_HUD, displayHud);
+        intent.putExtra(CallActivity.EXTRA_CMDLINE, false);
+        intent.putExtra(CallActivity.EXTRA_RUNTIME, runTimeMs);
 
-            startActivityForResult(intent, CONNECTION_REQUEST);
-        }
+        m_activity.startActivityForResult(intent, 1);
+    }
+
+    private String getString(int id)
+    {
+        return m_context.getString(id);
     }
 }

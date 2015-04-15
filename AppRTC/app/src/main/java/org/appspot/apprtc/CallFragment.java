@@ -49,14 +49,10 @@ import java.util.Map;
  */
 public class CallFragment extends Fragment {
   private View controlView;
-  private TextView encoderStatView;
-  private TextView roomIdView;
   private ImageButton disconnectButton;
   private ImageButton cameraSwitchButton;
-  private ImageButton videoScalingButton;
   private ImageButton toggleDebugButton;
   private OnCallEvents callEvents;
-  private ScalingType scalingType;
   private boolean displayHud;
   private volatile boolean isRunning;
   private TextView hudView;
@@ -68,7 +64,6 @@ public class CallFragment extends Fragment {
   public interface OnCallEvents {
     public void onCallHangUp();
     public void onCameraSwitch();
-    public void onVideoScalingSwitch(ScalingType scalingType);
   }
 
   @Override
@@ -78,18 +73,12 @@ public class CallFragment extends Fragment {
         inflater.inflate(R.layout.fragment_call, container, false);
 
     // Create UI controls.
-    encoderStatView =
-        (TextView) controlView.findViewById(R.id.encoder_stat_call);
-    roomIdView =
-        (TextView) controlView.findViewById(R.id.contact_name_call);
     hudView =
         (TextView) controlView.findViewById(R.id.hud_stat_call);
     disconnectButton =
         (ImageButton) controlView.findViewById(R.id.button_call_disconnect);
     cameraSwitchButton =
         (ImageButton) controlView.findViewById(R.id.button_call_switch_camera);
-    videoScalingButton =
-        (ImageButton) controlView.findViewById(R.id.button_call_scaling_mode);
     toggleDebugButton =
         (ImageButton) controlView.findViewById(R.id.button_toggle_debug);
 
@@ -107,23 +96,6 @@ public class CallFragment extends Fragment {
         callEvents.onCameraSwitch();
       }
     });
-
-    videoScalingButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (scalingType == ScalingType.SCALE_ASPECT_FILL) {
-          videoScalingButton.setBackgroundResource(
-              R.drawable.ic_action_full_screen);
-          scalingType = ScalingType.SCALE_ASPECT_FIT;
-        } else {
-          videoScalingButton.setBackgroundResource(
-              R.drawable.ic_action_return_from_full_screen);
-          scalingType = ScalingType.SCALE_ASPECT_FILL;
-        }
-        callEvents.onVideoScalingSwitch(scalingType);
-      }
-    });
-    scalingType = ScalingType.SCALE_ASPECT_FILL;
 
     toggleDebugButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -145,12 +117,9 @@ public class CallFragment extends Fragment {
 
     Bundle args = getArguments();
     if (args != null) {
-      String roomId = args.getString(CallActivity.EXTRA_ROOMID);
-      roomIdView.setText(roomId);
       displayHud = args.getBoolean(CallActivity.EXTRA_DISPLAY_HUD, false);
     }
     int visibility = displayHud ? View.VISIBLE : View.INVISIBLE;
-    encoderStatView.setVisibility(visibility);
     toggleDebugButton.setVisibility(visibility);
     hudView.setVisibility(View.INVISIBLE);
     hudView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
@@ -235,7 +204,7 @@ public class CallFragment extends Fragment {
           .append("/")
           .append(cpuMonitor.getCpuAvgAll());
     }
-    encoderStatView.setText(stat.toString());
+
     hudView.setText(bweBuilder.toString() + hudView.getText());
   }
 }

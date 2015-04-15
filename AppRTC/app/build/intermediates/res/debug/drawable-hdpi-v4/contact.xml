@@ -2,4 +2,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="false" android:drawable="@drawable/contact_normal"></item>
     <item android:state_checked="true" android:drawable="@drawable/contact_pressed"></item>
-</selector><!-- From: file:/D:/Project/Android/AppRTC/app/src/main/res/drawable-hdpi/contact.xml -->
+</selector><!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/AppRTC/app/src/main/res/drawable-hdpi/contact.xml -->
