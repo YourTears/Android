@@ -38,10 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="org.appspot.apprtc.SettingsActivity"
-            android:label="@string/settings_name" >
-        </activity>
+
         <activity
             android:name="org.appspot.apprtc.CallActivity"
             android:configChanges="orientation|screenSize"

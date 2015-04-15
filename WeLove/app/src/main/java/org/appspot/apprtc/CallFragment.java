@@ -51,7 +51,6 @@ public class CallFragment extends Fragment {
   private View controlView;
   private ImageButton disconnectButton;
   private ImageButton cameraSwitchButton;
-  private ImageButton toggleDebugButton;
   private OnCallEvents callEvents;
   private boolean displayHud;
   private volatile boolean isRunning;
@@ -79,8 +78,6 @@ public class CallFragment extends Fragment {
         (ImageButton) controlView.findViewById(R.id.button_call_disconnect);
     cameraSwitchButton =
         (ImageButton) controlView.findViewById(R.id.button_call_switch_camera);
-    toggleDebugButton =
-        (ImageButton) controlView.findViewById(R.id.button_toggle_debug);
 
     // Add buttons click events.
     disconnectButton.setOnClickListener(new View.OnClickListener() {
@@ -97,17 +94,6 @@ public class CallFragment extends Fragment {
       }
     });
 
-    toggleDebugButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (displayHud) {
-          int visibility = (hudView.getVisibility() == View.VISIBLE)
-              ? View.INVISIBLE : View.VISIBLE;
-          hudView.setVisibility(visibility);
-        }
-      }
-    });
-
     return controlView;
   }
 
@@ -120,7 +106,6 @@ public class CallFragment extends Fragment {
       displayHud = args.getBoolean(CallActivity.EXTRA_DISPLAY_HUD, false);
     }
     int visibility = displayHud ? View.VISIBLE : View.INVISIBLE;
-    toggleDebugButton.setVisibility(visibility);
     hudView.setVisibility(View.INVISIBLE);
     hudView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
     isRunning = true;

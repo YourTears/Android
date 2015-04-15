@@ -186,7 +186,6 @@ public class CallActivity extends Activity
     final Intent intent = getIntent();
     Uri roomUri = intent.getData();
     if (roomUri == null) {
-      Log.e(TAG,getString(R.string.missing_url));
       Log.e(TAG, "Didn't get any URL in intent!");
       setResult(RESULT_CANCELED);
       finish();
@@ -194,7 +193,6 @@ public class CallActivity extends Activity
     }
     String roomId = intent.getStringExtra(EXTRA_ROOMID);
     if (roomId == null || roomId.length() == 0) {
-      Log.e(TAG, getString(R.string.missing_url));
       Log.e(TAG, "Incorrect room ID in intent!");
       setResult(RESULT_CANCELED);
       finish();
@@ -408,10 +406,10 @@ public class CallActivity extends Activity
       disconnect();
     } else {
       new AlertDialog.Builder(this)
-          .setTitle(getText(R.string.channel_error_title))
+          .setTitle("Connection error")
           .setMessage(errorMessage)
           .setCancelable(false)
-          .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+          .setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
               dialog.cancel();
