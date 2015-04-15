@@ -321,7 +321,7 @@ public class CallActivity extends Activity
     callStartedTimeMs = System.currentTimeMillis();
 
     // Start room connection.
-    logAndToast(getString(R.string.connecting_to));
+    logAndToast(getString(R.string.connecting_server));
     appRtcClient.connectToRoom(roomConnectionParameters);
 
     // Create and audio manager that will take care of audio routing,
