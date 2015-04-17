@@ -282,6 +282,11 @@ public class CallActivity extends Activity
     }
   }
 
+  public void onVideoScalingSwitch(ScalingType scalingType) {
+      this.scalingType = scalingType;
+      updateVideoView();
+    }
+
   // Helper functions.
   private void toggleCallControlFragmentVisibility() {
     if (!iceConnected || !callFragment.isAdded()) {

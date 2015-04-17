@@ -99,7 +99,7 @@
     <string name="pref_resolution_title">Video resolution.</string>
     <string name="pref_room_key">room_preference</string>
     <string name="pref_room_list_key">room_list_preference</string>
-    <string name="pref_room_server_url_default" translatable="false">http://0dian.cn:8080</string>
+    <string name="pref_room_server_url_default" translatable="false">http://apprtc.diveinedu.com:8080</string>
     <string name="pref_room_server_url_dlg">Enter a room server URL.</string>
     <string name="pref_room_server_url_key">room_server_url_preference</string>
     <string name="pref_room_server_url_title">Room server URL.</string>

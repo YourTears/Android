@@ -52,6 +52,8 @@ public class CallFragment extends Fragment {
   private ImageButton disconnectButton;
   private ImageButton cameraSwitchButton;
   private ImageButton toggleDebugButton;
+  private ImageButton videoScalingButton;
+  private ScalingType scalingType;
   private OnCallEvents callEvents;
   private boolean displayHud;
   private volatile boolean isRunning;
@@ -64,6 +66,7 @@ public class CallFragment extends Fragment {
   public interface OnCallEvents {
     public void onCallHangUp();
     public void onCameraSwitch();
+    public void onVideoScalingSwitch(ScalingType scalingType);
   }
 
   @Override
@@ -81,6 +84,8 @@ public class CallFragment extends Fragment {
         (ImageButton) controlView.findViewById(R.id.button_call_switch_camera);
     toggleDebugButton =
         (ImageButton) controlView.findViewById(R.id.button_toggle_debug);
+    videoScalingButton =
+              (ImageButton) controlView.findViewById(R.id.button_call_scaling_mode);
 
     // Add buttons click events.
     disconnectButton.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +113,24 @@ public class CallFragment extends Fragment {
       }
     });
 
-    return controlView;
+      videoScalingButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              if (scalingType == ScalingType.SCALE_ASPECT_FILL) {
+                  videoScalingButton.setBackgroundResource(
+                          R.drawable.ic_action_full_screen);
+                  scalingType = ScalingType.SCALE_ASPECT_FIT;
+              } else {
+                  videoScalingButton.setBackgroundResource(
+                          R.drawable.ic_action_return_from_full_screen);
+                  scalingType = ScalingType.SCALE_ASPECT_FILL;
+              }
+              callEvents.onVideoScalingSwitch(scalingType);
+          }
+      });
+      scalingType = ScalingType.SCALE_ASPECT_FILL;
+
+      return controlView;
   }
 
   @Override
