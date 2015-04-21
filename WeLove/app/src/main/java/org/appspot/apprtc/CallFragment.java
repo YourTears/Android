@@ -51,13 +51,15 @@ public class CallFragment extends Fragment {
   private View controlView;
   private ImageButton disconnectButton;
   private ImageButton cameraSwitchButton;
+<<<<<<< HEAD
   private ImageButton toggleDebugButton;
   private ImageButton videoScalingButton;
   private ScalingType scalingType;
+=======
+>>>>>>> 38e3f6d1888a2db43cae1e1a73a2cbade12c02e7
   private OnCallEvents callEvents;
   private boolean displayHud;
   private volatile boolean isRunning;
-  private TextView hudView;
   private final CpuMonitor cpuMonitor = new CpuMonitor();
 
   /**
@@ -76,16 +78,17 @@ public class CallFragment extends Fragment {
         inflater.inflate(R.layout.fragment_call, container, false);
 
     // Create UI controls.
-    hudView =
-        (TextView) controlView.findViewById(R.id.hud_stat_call);
     disconnectButton =
         (ImageButton) controlView.findViewById(R.id.button_call_disconnect);
     cameraSwitchButton =
         (ImageButton) controlView.findViewById(R.id.button_call_switch_camera);
+<<<<<<< HEAD
     toggleDebugButton =
         (ImageButton) controlView.findViewById(R.id.button_toggle_debug);
     videoScalingButton =
               (ImageButton) controlView.findViewById(R.id.button_call_scaling_mode);
+=======
+>>>>>>> 38e3f6d1888a2db43cae1e1a73a2cbade12c02e7
 
     // Add buttons click events.
     disconnectButton.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +105,7 @@ public class CallFragment extends Fragment {
       }
     });
 
+<<<<<<< HEAD
     toggleDebugButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -131,6 +135,9 @@ public class CallFragment extends Fragment {
       scalingType = ScalingType.SCALE_ASPECT_FILL;
 
       return controlView;
+=======
+    return controlView;
+>>>>>>> 38e3f6d1888a2db43cae1e1a73a2cbade12c02e7
   }
 
   @Override
@@ -141,10 +148,6 @@ public class CallFragment extends Fragment {
     if (args != null) {
       displayHud = args.getBoolean(CallActivity.EXTRA_DISPLAY_HUD, false);
     }
-    int visibility = displayHud ? View.VISIBLE : View.INVISIBLE;
-    toggleDebugButton.setVisibility(visibility);
-    hudView.setVisibility(View.INVISIBLE);
-    hudView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
     isRunning = true;
   }
 
@@ -226,7 +229,5 @@ public class CallFragment extends Fragment {
           .append("/")
           .append(cpuMonitor.getCpuAvgAll());
     }
-
-    hudView.setText(bweBuilder.toString() + hudView.getText());
   }
 }
