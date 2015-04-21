@@ -19,8 +19,9 @@ import android.app.Application;
 import android.content.Context;
 
 import com.easemob.EMCallBack;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.TopUser;
+
+import common.FriendInfo;
 
 public class DemoApplication extends Application {
 
@@ -71,7 +72,7 @@ public class DemoApplication extends Application {
 	 *
 	 * @return
 	 */
-	public Map<String, User> getContactList() {
+	public Map<String, FriendInfo> getContactList() {
 	    return hxSDKHelper.getContactList();
 	}
 	
@@ -92,7 +93,7 @@ public class DemoApplication extends Application {
      *
      * @param contactList
      */
-    public void setContactList(Map<String, User> contactList) {
+    public void setContactList(Map<String, FriendInfo> contactList) {
         hxSDKHelper.setContactList(contactList);
     }
     /**

@@ -21,19 +21,20 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
+
+import common.FriendInfo;
 
 /**
  * 简单的好友Adapter实现
  * 
  */
-public class ContactAdapter extends ArrayAdapter<User> implements
+public class ContactAdapter extends ArrayAdapter<FriendInfo> implements
         SectionIndexer {
 
     List<String> list;
-    List<User> userList;
-    List<User> copyUserList;
+    List<FriendInfo> userList;
+    List<FriendInfo> copyUserList;
     private LayoutInflater layoutInflater;
     private SparseIntArray positionOfSection;
     private SparseIntArray sectionOfPosition;
@@ -42,11 +43,11 @@ public class ContactAdapter extends ArrayAdapter<User> implements
     private LoadUserAvatar avatarLoader;
 
     @SuppressLint("SdCardPath")
-	public ContactAdapter(Context context, int resource, List<User> objects) {
+	public ContactAdapter(Context context, int resource, List<FriendInfo> objects) {
         super(context, resource, objects);
         this.res = resource;
         this.userList = objects;
-        copyUserList = new ArrayList<User>();
+        copyUserList = new ArrayList<FriendInfo>();
         copyUserList.addAll(objects);
         layoutInflater = LayoutInflater.from(context);
         avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
@@ -65,16 +66,16 @@ public class ContactAdapter extends ArrayAdapter<User> implements
                 .findViewById(R.id.tv_name);
         TextView tvHeader = (TextView) convertView.findViewById(R.id.header);
         View view_temp = (View) convertView.findViewById(R.id.view_temp);
-        User user = getItem(position);
+        FriendInfo user = getItem(position);
         if (user == null)
             Log.d("ContactAdapter", position + "");
         // 设置nick，demo里不涉及到完整user，用username代替nick显示
 
-        String header = user.getHeader();
-        String usernick = user.getNick();
-        String useravatar = user.getAvatar();
+        String header = user.name;
+        String usernick = user.name;
+        String useravatar = user.imageUrl;
         if (position == 0 || header != null
-                && !header.equals(getItem(position - 1).getHeader())) {
+                && !header.equals(getItem(position - 1).name)) {
             if ("".equals(header)) {
                 tvHeader.setVisibility(View.GONE);
                 view_temp.setVisibility(View.VISIBLE);
@@ -97,7 +98,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
     }
 
     @Override
-    public User getItem(int position) {
+    public FriendInfo getItem(int position) {
         return super.getItem(position);
     }
 
@@ -125,9 +126,9 @@ public class ContactAdapter extends ArrayAdapter<User> implements
         sectionOfPosition.put(0, 0);
         for (int i = 1; i < count; i++) {
 
-            String letter = getItem(i).getHeader();
+            String letter = getItem(i).name;
             System.err.println("contactadapter getsection getHeader:" + letter
-                    + " name:" + getItem(i).getUsername());
+                    + " name:" + getItem(i).name);
             int section = list.size() - 1;
             if (list.get(section) != null && !list.get(section).equals(letter)) {
                 list.add(letter);
@@ -148,9 +149,9 @@ public class ContactAdapter extends ArrayAdapter<User> implements
     }
 
     private class MyFilter extends Filter {
-        List<User> mList = null;
+        List<FriendInfo> mList = null;
 
-        public MyFilter(List<User> myList) {
+        public MyFilter(List<FriendInfo> myList) {
             super();
             this.mList = myList;
         }
@@ -160,7 +161,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
                 CharSequence prefix) {
             FilterResults results = new FilterResults();
             if (mList == null) {
-                mList = new ArrayList<User>();
+                mList = new ArrayList<FriendInfo>();
             }
             if (prefix == null || prefix.length() == 0) {
                 results.values = copyUserList;
@@ -168,10 +169,10 @@ public class ContactAdapter extends ArrayAdapter<User> implements
             } else {
                 String prefixString = prefix.toString();
                 final int count = mList.size();
-                final ArrayList<User> newValues = new ArrayList<User>();
+                final ArrayList<FriendInfo> newValues = new ArrayList<FriendInfo>();
                 for (int i = 0; i < count; i++) {
-                    final User user = mList.get(i);
-                    String username = user.getUsername();
+                    final FriendInfo user = mList.get(i);
+                    String username = user.name;
 
                     EMConversation conversation = EMChatManager.getInstance()
                             .getConversation(username);
@@ -206,7 +207,7 @@ public class ContactAdapter extends ArrayAdapter<User> implements
         protected synchronized void publishResults(CharSequence constraint,
                 FilterResults results) {
             userList.clear();
-            userList.addAll((List<User>) results.values);
+            userList.addAll((List<FriendInfo>) results.values);
             if (results.count > 0) {
                 notifyDataSetChanged();
             } else {

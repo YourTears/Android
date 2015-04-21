@@ -171,8 +171,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private File cameraFile;
     public static int resendPos;
 
-    private GroupListener groupListener;
-
     private ImageView iv_emoticons_normal;
     private ImageView iv_emoticons_checked;
     private RelativeLayout edittext_layout;
@@ -401,10 +399,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         registerReceiver(deliveryAckMessageReceiver,
                 deliveryAckMessageIntentFilter);
 
-        // 监听当前会话的群聊解散被T事件
-        groupListener = new GroupListener();
-        EMGroupManager.getInstance().addGroupChangeListener(groupListener);
-
         // show forward message if the message is not null
         String forward_msg_id = getIntent().getStringExtra("forward_msg_id");
         if (forward_msg_id != null) {
@@ -439,10 +433,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
-
-                    startActivityForResult((new Intent(ChatActivity.this,
-                            ChatRoomSettingActivity.class).putExtra("groupId",
-                            toChatUsername)), REQUEST_CODE_GROUP_DETAIL);
 
                 }
 
@@ -1514,7 +1504,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         activityInstance = null;
-        EMGroupManager.getInstance().removeGroupChangeListener(groupListener);
+
         // 注销广播
         try {
             unregisterReceiver(receiver);
@@ -1731,51 +1721,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         default:
             break;
         }
-    }
-
-    /**
-     * 监测群组解散或者被T事件
-     * 
-     */
-    class GroupListener extends GroupReomveListener {
-
-        @Override
-        public void onUserRemoved(final String groupId, String groupName) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    if (toChatUsername.equals(groupId)) {
-                        Toast.makeText(ChatActivity.this, "你被群创建者从此群中移除",
-                                Toast.LENGTH_SHORT).show();
-
-                        EMChatManager.getInstance().deleteConversation(groupId,
-                                false);
-
-                        if (ChatRoomSettingActivity.instance != null)
-                            ChatRoomSettingActivity.instance.finish();
-                        if (ChatSingleSettingActivity.instance != null)
-                            ChatSingleSettingActivity.instance.finish();
-                        finish();
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void onGroupDestroy(final String groupId, String groupName) {
-            // 群组解散正好在此页面，提示群组被解散，并finish此页面
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    if (toChatUsername.equals(groupId)) {
-
-                        if (ChatRoomSettingActivity.instance != null)
-                            ChatRoomSettingActivity.instance.finish();
-
-                        finish();
-                    }
-                }
-            });
-        }
-
     }
 
     public String getToChatUsername() {

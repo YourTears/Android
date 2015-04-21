@@ -57,8 +57,7 @@ public class UpdateFxidActivity extends Activity {
 
     private void updateIvnServer(final String newFxid) {
         Map<String, String> map = new HashMap<String, String>();
-        String hxid = LocalUserInfo.getInstance(UpdateFxidActivity.this)
-                .getUserInfo("hxid");
+        String hxid = MeInfo.getInstance().sys_id;
         map.put("newFxid", newFxid);
         map.put("hxid", hxid);
         final ProgressDialog dialog = new ProgressDialog(
@@ -79,8 +78,7 @@ public class UpdateFxidActivity extends Activity {
                 try {
                     int code = data.getInteger("code");
                     if (code == 1) {
-                        LocalUserInfo.getInstance(UpdateFxidActivity.this)
-                                .setUserInfo("fxid", newFxid);
+                        MeInfo.getInstance().sys_id = newFxid;
                         finish();
 
                     } else if (code == 3) {

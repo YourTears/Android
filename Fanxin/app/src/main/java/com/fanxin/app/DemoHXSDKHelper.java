@@ -34,12 +34,13 @@ import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.OnMessageNotifyListener;
 import com.easemob.chat.OnNotificationClickListener;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.ChatActivity;
 import com.fanxin.app.fx.MainActivity;
 import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.utils.CommonUtils;
- 
+
+import common.FriendInfo;
+
 
 /**
  * Demo UI HX SDK helper class which subclass HXSDKHelper
@@ -52,7 +53,7 @@ public class DemoHXSDKHelper extends HXSDKHelper {
     /**
      * contact list in cache
      */
-    private Map<String, User> contactList;
+    private Map<String, FriendInfo> contactList;
     private Map<String, TopUser> topUserList;
   
     @Override
@@ -157,7 +158,7 @@ public class DemoHXSDKHelper extends HXSDKHelper {
      * 
      * @return
      */
-    public Map<String, User> getContactList() {
+    public Map<String, FriendInfo> getContactList() {
         if (getHXId() != null && contactList == null) {
             contactList = ((DemoHXSDKModel) getModel()).getContactList();
         }
@@ -196,7 +197,7 @@ public class DemoHXSDKHelper extends HXSDKHelper {
      * 
      * @param contactList
      */
-    public void setContactList(Map<String, User> contactList) {
+    public void setContactList(Map<String, FriendInfo> contactList) {
         this.contactList = contactList;
     }
 

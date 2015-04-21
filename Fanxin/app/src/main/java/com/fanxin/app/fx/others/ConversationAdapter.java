@@ -17,7 +17,6 @@ import com.fanxin.app.Constant;
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.db.InviteMessgeDao;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.ChatActivity;
 import com.fanxin.app.fx.MainActivity;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;

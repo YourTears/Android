@@ -26,10 +26,11 @@ import com.easemob.chat.EMContactManager;
 import com.fanxin.app.Constant;
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.CreatChatRoomActivity.PinyinComparator;
 import com.fanxin.app.fx.others.ContactAdapter;
 import com.fanxin.app.widget.Sidebar;
+
+import common.FriendInfo;
 
 /**
  * 联系人列表页
@@ -38,7 +39,7 @@ import com.fanxin.app.widget.Sidebar;
 @SuppressLint("InflateParams")
 public class FragmentFriends extends Fragment {
     private ContactAdapter adapter;
-    private List<User> contactList;
+    private List<FriendInfo> contactList;
     private ListView listView;
     private boolean hidden;
     private Sidebar sidebar;
@@ -66,7 +67,7 @@ public class FragmentFriends extends Fragment {
         listView = (ListView) getView().findViewById(R.id.list);
        
         // 黑名单列表
-        blackList = EMContactManager.getInstance().getBlackListUsernames();
+        blackList = new ArrayList<String>();
         contactList = new ArrayList<User>();
         // 获取设置contactlist
         getContactList();
@@ -99,8 +100,8 @@ public class FragmentFriends extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 if(position!=0&&position!=contactList.size()+1){
-                    
-                    User user=contactList.get(position-1);
+
+                    FriendInfo user=contactList.get(position-1);
                     String username = user.getUsername();                    
                     startActivity(new Intent(getActivity(), UserInfoActivity.class)
                     .putExtra("hxid", username ).putExtra("nick", user.getNick() ).putExtra("avatar", user.getAvatar() ).putExtra("sex", user.getSex() ));
@@ -182,10 +183,10 @@ public class FragmentFriends extends Fragment {
     private void getContactList() {
         contactList.clear();
         // 获取本地好友列表
-        Map<String, User> users = DemoApplication.getInstance().getContactList();
-        Iterator<Entry<String, User>> iterator = users.entrySet().iterator();
+        Map<String, FriendInfo> users = DemoApplication.getInstance().getContactList();
+        Iterator<Entry<String, FriendInfo>> iterator = users.entrySet().iterator();
         while (iterator.hasNext()) {
-            Entry<String, User> entry = iterator.next();
+            Entry<String, FriendInfo> entry = iterator.next();
             if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME)
                     && !entry.getKey().equals(Constant.GROUP_USERNAME)
                     && !blackList.contains(entry.getKey()))
@@ -201,14 +202,14 @@ public class FragmentFriends extends Fragment {
     }
 
     @SuppressLint("DefaultLocale")
-    public class PinyinComparator implements Comparator<User> {
+    public class PinyinComparator implements Comparator<FriendInfo> {
 
         @SuppressLint("DefaultLocale")
         @Override
-        public int compare(User o1, User o2) {
+        public int compare(FriendInfo o1, FriendInfo o2) {
             // TODO Auto-generated method stub
-            String py1 = o1.getHeader();
-            String py2 = o2.getHeader();
+            String py1 = o1.name;
+            String py2 = o2.name;
             // 判断是否为空""
             if (isEmpty(py1) && isEmpty(py2))
                 return 0;
@@ -216,15 +217,8 @@ public class FragmentFriends extends Fragment {
                 return -1;
             if (isEmpty(py2))
                 return 1;
-            String str1 = "";
-            String str2 = "";
-            try {
-                str1 = ((o1.getHeader()).toUpperCase()).substring(0, 1);
-                str2 = ((o2.getHeader()).toUpperCase()).substring(0, 1);
-            } catch (Exception e) {
-                System.out.println("某个str为\" \" 空");
-            }
-            return str1.compareTo(str2);
+
+            return py1.compareTo(py2);
         }
 
         private boolean isEmpty(String str) {

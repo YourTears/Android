@@ -42,6 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import common.Gender;
 import common.MeInfo;
 
 @SuppressLint("SdCardPath")
@@ -85,11 +86,9 @@ public class MyUserInfoActivity extends Activity {
         hxid = MeInfo.getInstance().sys_id;
         nick = MeInfo.getInstance().name;
         fxid = MeInfo.getInstance().sys_id;
-        sex = MeInfo.getInstance().gender;
-        sign = LocalUserInfo.getInstance(MyUserInfoActivity.this).getUserInfo(
-                "sign");
-        String avatar = LocalUserInfo.getInstance(MyUserInfoActivity.this)
-                .getUserInfo("avatar");
+        sex = MeInfo.getInstance().gender.toString();
+        sign = "";
+        String avatar = MeInfo.getInstance().imageUrl;
 
         re_avatar = (RelativeLayout) this.findViewById(R.id.re_avatar);
         re_name = (RelativeLayout) this.findViewById(R.id.re_name);
@@ -148,8 +147,7 @@ public class MyUserInfoActivity extends Activity {
                         UpdateNickActivity.class),UPDATE_NICK);
                 break;
             case R.id.re_fxid:
-                if (LocalUserInfo.getInstance(MyUserInfoActivity.this)
-                        .getUserInfo("fxid").equals("0")) {
+                if (MeInfo.getInstance().sys_id == "0") {
                     startActivityForResult(new Intent(MyUserInfoActivity.this,
                             UpdateFxidActivity.class),UPDATE_FXID);
 
@@ -369,8 +367,7 @@ public class MyUserInfoActivity extends Activity {
                 try {
                     int code = data.getInteger("code");
                     if (code == 1) {
-                        LocalUserInfo.getInstance(MyUserInfoActivity.this)
-                                .setUserInfo("avatar", image);
+                        MeInfo.getInstance().imageUrl = image;
                     } else if (code == 2) {
 
                         Toast.makeText(MyUserInfoActivity.this, "更新失败...",
@@ -415,8 +412,7 @@ public class MyUserInfoActivity extends Activity {
                 try {
                     int code = data.getInteger("code");
                     if (code == 1) {
-                        LocalUserInfo.getInstance(MyUserInfoActivity.this)
-                                .setUserInfo("sex", sexnum);
+                        MeInfo.getInstance().gender = Gender.valueOf(sexnum);
                     } else if (code == 2) {
 
                         Toast.makeText(MyUserInfoActivity.this, "更新失败...",

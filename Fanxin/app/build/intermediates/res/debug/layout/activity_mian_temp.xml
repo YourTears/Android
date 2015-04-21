@@ -207,4 +207,4 @@
         android:layout_above="@id/view_temp"
         android:layout_below="@id/title" />
 
-</RelativeLayout><!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/Fanxin/app/src/main/res/layout/activity_mian_temp.xml -->
+</RelativeLayout><!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/layout/activity_mian_temp.xml -->

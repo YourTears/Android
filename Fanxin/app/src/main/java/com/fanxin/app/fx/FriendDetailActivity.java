@@ -2,7 +2,6 @@ package com.fanxin.app.fx;
 
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
-import com.fanxin.app.domain.User;
 
 import android.app.Activity;
 import android.os.Bundle;

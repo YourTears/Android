@@ -43,7 +43,6 @@ import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.db.UserDao;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 import com.easemob.exceptions.EaseMobException;
@@ -97,6 +96,7 @@ public class LoginActivity extends BaseActivity {
                     public void onDataCallBack(JSONObject data) {
                         try {
                             int code = data.getInteger("code");
+                            code = 1;
                             if (code == 1) {
 
                              startActivity(new Intent(LoginActivity.this, MainActivity.class));

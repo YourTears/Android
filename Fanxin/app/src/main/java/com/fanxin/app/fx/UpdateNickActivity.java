@@ -76,7 +76,7 @@ public class UpdateNickActivity extends Activity{
                 try {
                     int code = data.getInteger("code");
                     if (code == 1) {
-                        LocalUserInfo.getInstance(UpdateNickActivity.this).setUserInfo("nick", newNick);
+                        MeInfo.getInstance().name =  newNick;
                        finish();
                        
                     } 

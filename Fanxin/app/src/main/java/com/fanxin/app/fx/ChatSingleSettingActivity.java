@@ -22,12 +22,13 @@ import com.easemob.chat.EMContactManager;
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.LoadUserAvatar;
 import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.fx.others.TopUserDao;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.easemob.exceptions.EaseMobException;
+
+import common.FriendInfo;
 
 @SuppressLint({ "SimpleDateFormat", "SdCardPath" })
 public class ChatSingleSettingActivity extends BaseActivity implements
@@ -63,14 +64,14 @@ public class ChatSingleSettingActivity extends BaseActivity implements
         instance = this;
         // 获取传过来的userId
         userId = getIntent().getStringExtra("userId");
-        User user = DemoApplication.getInstance().getContactList().get(userId);
+        FriendInfo user = DemoApplication.getInstance().getContactList().get(userId);
         // 资料错误则不显示
         if (user == null) {
             return;
         }
-        userNick = user.getNick();
-        avatar = user.getAvatar();
-        sex = user.getSex();
+        userNick = user.nickName;
+        avatar = user.imageUrl;
+        sex = user.gender.toString();
         // 黑名单列表
         blackList = EMContactManager.getInstance().getBlackListUsernames();
         // 置顶列表

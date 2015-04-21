@@ -20,10 +20,11 @@ import android.content.Context;
 
 import com.fanxin.app.db.DbOpenHelper;
 import com.fanxin.app.db.UserDao;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.fx.others.TopUserDao;
 import com.fanxin.applib.model.DefaultHXSDKModel;
+
+import common.FriendInfo;
 
 public class DemoHXSDKModel extends DefaultHXSDKModel{
 
@@ -43,14 +44,14 @@ public class DemoHXSDKModel extends DefaultHXSDKModel{
         return true;
     }
     
-    public boolean saveContactList(List<User> contactList) {
+    public boolean saveContactList(List<FriendInfo> contactList) {
         // TODO Auto-generated method stub
         UserDao dao = new UserDao(context);
         dao.saveContactList(contactList);
         return true;
     }
 
-    public Map<String, User> getContactList() {
+    public Map<String, FriendInfo> getContactList() {
         // TODO Auto-generated method stub
         UserDao dao = new UserDao(context);
         return dao.getContactList();
