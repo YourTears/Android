@@ -8,7 +8,6 @@ import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.domain.InviteMessage;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.NewFriendsAdapter;
 
 import android.content.Intent;
@@ -61,14 +60,14 @@ public class NewFriendsActivity extends BaseActivity {
         // 设置adapter
         adapter = new NewFriendsAdapter(this, msgs);
         listView.setAdapter(adapter);
-        User userTemp = DemoApplication.getInstance().getContactList()
-                .get(Constant.NEW_FRIENDS_USERNAME);
-        if (userTemp != null && userTemp.getUnreadMsgCount() != 0) {
-            userTemp.setUnreadMsgCount(0);
-        }
-
-        DemoApplication.getInstance().getContactList()
-                .get(Constant.NEW_FRIENDS_USERNAME).setUnreadMsgCount(0);
+//        User userTemp = DemoApplication.getInstance().getContactList()
+//                .get(Constant.NEW_FRIENDS_USERNAME);
+//        if (userTemp != null && userTemp.getUnreadMsgCount() != 0) {
+//            userTemp.setUnreadMsgCount(0);
+//        }
+//
+//        DemoApplication.getInstance().getContactList()
+//                .get(Constant.NEW_FRIENDS_USERNAME).setUnreadMsgCount(0);
        
     }
 

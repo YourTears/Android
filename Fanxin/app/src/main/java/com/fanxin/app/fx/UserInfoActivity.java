@@ -15,7 +15,6 @@ import com.fanxin.app.Constant;
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.db.UserDao;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadUserAvatar;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
@@ -35,6 +34,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import common.FriendInfo;
 
 public class UserInfoActivity extends Activity {
     private LoadUserAvatar avatarLoader;
@@ -129,32 +130,6 @@ public class UserInfoActivity extends Activity {
 
         finish();
     }
-   
-   @SuppressLint("DefaultLocale")
-   protected void setUserHearder(String username, User user) {
-       String headerName = null;
-       if (!TextUtils.isEmpty(user.getNick())) {
-           headerName = user.getNick();
-       } else {
-           headerName = user.getUsername();
-       }
-       headerName = headerName.trim();
-       if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
-           user.setHeader("");
-       } else if (Character.isDigit(headerName.charAt(0))) {
-           user.setHeader("#");
-       } else {
-           user.setHeader(HanziToPinyin.getInstance()
-                   .get(headerName.substring(0, 1)).get(0).target.substring(0,
-                   1).toUpperCase());
-           char header = user.getHeader().toLowerCase().charAt(0);
-           if (header < 'a' || header > 'z') {
-               user.setHeader("#");
-           }
-       }
-   }
-    
-    
     
     private void refresh(){
         Map<String, String> map = new HashMap<String, String>();
@@ -170,37 +145,37 @@ public class UserInfoActivity extends Activity {
             public void onDataCallBack(JSONObject data) {
                 try {
                     
-                    int code = data.getInteger("code");
-                    if (code == 1) {
-
-                        JSONObject json = data.getJSONObject("user");
-                        String hxid = json.getString("hxid");
-                        String fxid = json.getString("fxid");
-                        String nick = json.getString("nick");
-                        String avatar = json.getString("avatar");
-                        String sex = json.getString("sex");
-                        String region = json.getString("region");
-                        String sign = json.getString("sign");
-                        String tel = json.getString("tel");
-
-                        User user = new User();
-                        user.setFxid(fxid);
-                        user.setUsername(hxid);
-                        user.setBeizhu("");
-                        user.setNick(nick);
-                        user.setRegion(region);
-                        user.setSex(sex);
-                        user.setTel(tel);
-                        user.setSign(sign);
-                        user.setAvatar(avatar);
-                        setUserHearder(hxid, user);
-                        
-                       
-                        UserDao dao = new UserDao(UserInfoActivity.this);
-                        dao.saveContact(user);
-                        DemoApplication.getInstance().getContactList().put(hxid, user);
-                        
-                    } 
+//                    int code = data.getInteger("code");
+//                    if (code == 1) {
+//
+//                        JSONObject json = data.getJSONObject("user");
+//                        String hxid = json.getString("hxid");
+//                        String fxid = json.getString("fxid");
+//                        String nick = json.getString("nick");
+//                        String avatar = json.getString("avatar");
+//                        String sex = json.getString("sex");
+//                        String region = json.getString("region");
+//                        String sign = json.getString("sign");
+//                        String tel = json.getString("tel");
+//
+//                        User user = new User();
+//                        user.setFxid(fxid);
+//                        user.setUsername(hxid);
+//                        user.setBeizhu("");
+//                        user.setNick(nick);
+//                        user.setRegion(region);
+//                        user.setSex(sex);
+//                        user.setTel(tel);
+//                        user.setSign(sign);
+//                        user.setAvatar(avatar);
+//                        setUserHearder(hxid, user);
+//
+//
+//                        UserDao dao = new UserDao(UserInfoActivity.this);
+//                        dao.saveContact(user);
+//                        DemoApplication.getInstance().getContactList().put(hxid, user);
+//
+//                    }
 
                 } catch (JSONException e) {
                      

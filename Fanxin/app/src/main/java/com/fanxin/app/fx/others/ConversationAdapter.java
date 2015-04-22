@@ -42,6 +42,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TextView.BufferType;
 
+import common.FriendInfo;
+
 @SuppressLint("InflateParams")
 public class ConversationAdapter extends BaseAdapter {
     private List<EMConversation> normal_list;
@@ -166,11 +168,11 @@ public class ConversationAdapter extends BaseAdapter {
             holder.iv_avatar = (ImageView) convertView
                     .findViewById(R.id.iv_avatar);
             // 从好友列表中加载该用户的资料
-            User user = DemoApplication.getInstance().getContactList()
+            FriendInfo user = DemoApplication.getInstance().getContactList()
                     .get(username);
             if (user != null) {
-                nick = user.getNick();
-                String avatar = user.getAvatar();
+                nick = user.nickName;
+                String avatar = user.imageUrl;
                 // 显示昵称
                 holder.tv_name.setText(nick);
                 // 显示头像

@@ -18,4 +18,4 @@
     <item android:drawable="@drawable/camera_switch_pressed" android:state_enabled="false"/>
     <item android:drawable="@drawable/camera_switch_normal"/>
 
-</selector><!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/drawable/camera_switch_selector.xml -->
+</selector><!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/Fanxin/app/src/main/res/drawable/camera_switch_selector.xml -->

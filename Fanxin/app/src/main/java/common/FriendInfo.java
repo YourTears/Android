@@ -6,9 +6,18 @@ package common;
 public class FriendInfo {
     public String sys_id;
     public String id;
+    public String phone;
     public String name;
+    public String name_pinyin;
     public String nickName;
     public String imageUrl;
     public Gender gender;
     public FriendStatus status;
+    public String sign;
+    public int regionProvinceId;
+    public int regionCityId;
+    public int homeProvinceId;
+    public int homeCityId;
+    public String region;
+    public String home;
 }

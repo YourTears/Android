@@ -4,4 +4,4 @@
     <item android:state_pressed="true" android:drawable="@drawable/ac1" />
     <item android:state_selected="true" android:drawable="@drawable/ac1" />
     <item android:drawable="@drawable/ac0" />
-</selector><!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/drawable/top_bar_back.xml -->
+</selector><!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/Fanxin/app/src/main/res/drawable/top_bar_back.xml -->

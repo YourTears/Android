@@ -10,6 +10,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import common.FriendInfo;
+import common.Gender;
+
 public class FriendDetailActivity extends Activity {
 
     String hxid = null;
@@ -29,7 +32,7 @@ public class FriendDetailActivity extends Activity {
 
     private void initView() {
 
-        User user = DemoApplication.getInstance().getContactList().get(hxid);
+        FriendInfo user = DemoApplication.getInstance().getContactList().get(hxid);
         if (user != null) {
 
             TextView tv_name = (TextView) this.findViewById(R.id.tv_name);
@@ -38,11 +41,11 @@ public class FriendDetailActivity extends Activity {
             TextView tv_sign = (TextView) this.findViewById(R.id.tv_sign);
             ImageView iv_sex = (ImageView) this.findViewById(R.id.iv_sex);
             ImageView iv_detail = (ImageView) this.findViewById(R.id.iv_detail);
-            tv_name.setText(user.getNick());
-            tv_region.setText(user.getRegion());
-            tv_fxid.setText(user.getFxid());
-            tv_sign.setText(user.getSign());
-            if (user.getSex().equals("1")) {
+            tv_name.setText(user.nickName);
+            tv_region.setText(user.region);
+            tv_fxid.setText(user.sys_id);
+            tv_sign.setText(user.sign);
+            if (user.gender == Gender.male) {
                 iv_sex.setImageResource(R.drawable.ic_sex_male);
             } else {
                 iv_sex.setImageResource(R.drawable.ic_sex_female);

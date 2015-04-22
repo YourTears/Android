@@ -31,7 +31,6 @@ import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.db.UserDao;
 import com.fanxin.app.domain.InviteMessage;
 import com.fanxin.app.domain.InviteMessage.InviteMesageStatus;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 import com.easemob.exceptions.EaseMobException;
@@ -56,6 +55,10 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import common.FriendInfo;
+import common.Gender;
+import common.MeInfo;
 
 @SuppressLint("DefaultLocale")
 public class MainActivity extends BaseActivity {
@@ -101,6 +104,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initMeInfo();
+
         if (savedInstanceState != null
                 && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED,
                         false)) {
@@ -148,6 +154,15 @@ public class MainActivity extends BaseActivity {
 
         });
 
+    }
+
+    private void initMeInfo()
+    {
+        MeInfo.getInstance().sys_id = "132";
+        MeInfo.getInstance().id = "longztc";
+        MeInfo.getInstance().name = "Long";
+        MeInfo.getInstance().imageUrl = "http://s.ata.net.cn/4f98db46908987a21a000003/logo/2012/04/114_80aaf295c083d07a496743699aac3193.png";
+        MeInfo.getInstance().gender = Gender.male;
     }
 
     private void initView() {
@@ -490,7 +505,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onContactDeleted(final List<String> usernameList) {
             // 被删除
-            Map<String, User> localUsers = DemoApplication.getInstance()
+            Map<String, FriendInfo> localUsers = DemoApplication.getInstance()
                     .getContactList();
             for (String username : usernameList) {
                 localUsers.remove(username);
@@ -599,42 +614,10 @@ public class MainActivity extends BaseActivity {
         // 保存msg
         inviteMessgeDao.saveMessage(msg);
         // 未读数加1
-        User user = DemoApplication.getInstance().getContactList()
+        FriendInfo user = DemoApplication.getInstance().getContactList()
                 .get(Constant.NEW_FRIENDS_USERNAME);
-        if (user.getUnreadMsgCount() == 0)
-            user.setUnreadMsgCount(user.getUnreadMsgCount() + 1);
-    }
-
-    /**
-     * set head
-     * 
-     * @param username
-     * @return
-     */
-    @SuppressLint("DefaultLocale")
-    User setUserHead(String username) {
-        User user = new User();
-        user.setUsername(username);
-        String headerName = null;
-        if (!TextUtils.isEmpty(user.getNick())) {
-            headerName = user.getNick();
-        } else {
-            headerName = user.getUsername();
-        }
-        if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
-            user.setHeader("");
-        } else if (Character.isDigit(headerName.charAt(0))) {
-            user.setHeader("#");
-        } else {
-            user.setHeader(HanziToPinyin.getInstance()
-                    .get(headerName.substring(0, 1)).get(0).target.substring(0,
-                    1).toUpperCase());
-            char header = user.getHeader().toLowerCase().charAt(0);
-            if (header < 'a' || header > 'z') {
-                user.setHeader("#");
-            }
-        }
-        return user;
+//        if (user.getUnreadMsgCount() == 0)
+//            user.setUnreadMsgCount(user.getUnreadMsgCount() + 1);
     }
 
     /**
@@ -697,7 +680,7 @@ public class MainActivity extends BaseActivity {
             // 被邀请
             String st3 = getResources().getString(
                     R.string.Invite_you_to_join_a_group_chat);
-            User user = DemoApplication.getInstance().getContactList()
+            FriendInfo user = DemoApplication.getInstance().getContactList()
                     .get(inviter);
             if (user != null) {
                 EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
@@ -705,9 +688,9 @@ public class MainActivity extends BaseActivity {
                 msg.setFrom(inviter);
                 msg.setTo(groupId);
                 msg.setMsgId(UUID.randomUUID().toString());
-                msg.addBody(new TextMessageBody(user.getNick() + st3));
-                msg.setAttribute("useravatar", user.getAvatar());
-                msg.setAttribute("usernick", user.getNick());
+                msg.addBody(new TextMessageBody(user.nickName + st3));
+                msg.setAttribute("useravatar", user.imageUrl);
+                msg.setAttribute("usernick", user.nickName);
                 // 保存邀请消息
                 EMChatManager.getInstance().saveMessage(msg);
                 // 提醒新消息
@@ -885,12 +868,12 @@ public class MainActivity extends BaseActivity {
      * @return
      */
     public int getUnreadAddressCountTotal() {
-        int unreadAddressCountTotal = 0;
-        if (DemoApplication.getInstance().getContactList()
-                .get(Constant.NEW_FRIENDS_USERNAME) != null)
-            unreadAddressCountTotal = DemoApplication.getInstance()
-                    .getContactList().get(Constant.NEW_FRIENDS_USERNAME)
-                    .getUnreadMsgCount();
+        int unreadAddressCountTotal = 8;
+//        if (DemoApplication.getInstance().getContactList()
+//                .get(Constant.NEW_FRIENDS_USERNAME) != null)
+//            unreadAddressCountTotal = DemoApplication.getInstance()
+//                    .getContactList().get(Constant.NEW_FRIENDS_USERNAME)
+//                    .getUnreadMsgCount();
         return unreadAddressCountTotal;
     }
 
@@ -971,110 +954,80 @@ public class MainActivity extends BaseActivity {
 
     private void saveFriends(JSONArray josnArray) {
 
-        Map<String, User> map = new HashMap<String, User>();
+//        Map<String, FriendInfo> map = new HashMap<String, FriendInfo>();
+//
+//        if (josnArray != null) {
+//            for (int i = 0; i < josnArray.size(); i++) {
+//                JSONObject json = (JSONObject) josnArray.getJSONObject(i);
+//                try {
+//                    String hxid = json.getString("hxid");
+//                    String fxid = json.getString("fxid");
+//                    String nick = json.getString("nick");
+//                    String avatar = json.getString("avatar");
+//                    String sex = json.getString("sex");
+//                    String region = json.getString("region");
+//                    String sign = json.getString("sign");
+//                    String tel = json.getString("tel");
+//
+//                    User user = new User();
+//                    user.setFxid(fxid);
+//                    user.setUsername(hxid);
+//                    user.setBeizhu("");
+//                    user.setNick(nick);
+//                    user.setRegion(region);
+//                    user.setSex(sex);
+//                    user.setTel(tel);
+//                    user.setSign(sign);
+//                    user.setAvatar(avatar);
+//                    setUserHearder(hxid, user);
+//                    map.put(hxid, user);
+//
+//                } catch (JSONException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }
+//        // 添加user"申请与通知"
+//        User newFriends = new User();
+//        newFriends.setUsername(Constant.NEW_FRIENDS_USERNAME);
+//        String strChat = getResources().getString(
+//                R.string.Application_and_notify);
+//        newFriends.setNick(strChat);
+//        newFriends.setBeizhu("");
+//        newFriends.setFxid("");
+//        newFriends.setHeader("");
+//        newFriends.setRegion("");
+//        newFriends.setSex("");
+//        newFriends.setTel("");
+//        newFriends.setSign("");
+//        newFriends.setAvatar("");
+//        map.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
+//        // 添加"群聊"
+//        User groupUser = new User();
+//        String strGroup = getResources().getString(R.string.group_chat);
+//        groupUser.setUsername(Constant.GROUP_USERNAME);
+//        groupUser.setNick(strGroup);
+//        groupUser.setHeader("");
+//        groupUser.setNick(strChat);
+//        groupUser.setBeizhu("");
+//        groupUser.setFxid("");
+//        groupUser.setHeader("");
+//        groupUser.setRegion("");
+//        groupUser.setSex("");
+//        groupUser.setTel("");
+//        groupUser.setSign("");
+//        groupUser.setAvatar("");
+//        map.put(Constant.GROUP_USERNAME, groupUser);
+//
+//        // 存入内存
+//        DemoApplication.getInstance().setContactList(map);
+//        // 存入db
+//        UserDao dao = new UserDao(MainActivity.this);
+//        List<User> users = new ArrayList<User>(map.values());
+//        dao.saveContactList(users);
 
-        if (josnArray != null) {
-            for (int i = 0; i < josnArray.size(); i++) {
-                JSONObject json = (JSONObject) josnArray.getJSONObject(i);
-                try {
-                    String hxid = json.getString("hxid");
-                    String fxid = json.getString("fxid");
-                    String nick = json.getString("nick");
-                    String avatar = json.getString("avatar");
-                    String sex = json.getString("sex");
-                    String region = json.getString("region");
-                    String sign = json.getString("sign");
-                    String tel = json.getString("tel");
-
-                    User user = new User();
-                    user.setFxid(fxid);
-                    user.setUsername(hxid);
-                    user.setBeizhu("");
-                    user.setNick(nick);
-                    user.setRegion(region);
-                    user.setSex(sex);
-                    user.setTel(tel);
-                    user.setSign(sign);
-                    user.setAvatar(avatar);
-                    setUserHearder(hxid, user);
-                    map.put(hxid, user);
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-            }
-        }
-        // 添加user"申请与通知"
-        User newFriends = new User();
-        newFriends.setUsername(Constant.NEW_FRIENDS_USERNAME);
-        String strChat = getResources().getString(
-                R.string.Application_and_notify);
-        newFriends.setNick(strChat);
-        newFriends.setBeizhu("");
-        newFriends.setFxid("");
-        newFriends.setHeader("");
-        newFriends.setRegion("");
-        newFriends.setSex("");
-        newFriends.setTel("");
-        newFriends.setSign("");
-        newFriends.setAvatar("");
-        map.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
-        // 添加"群聊"
-        User groupUser = new User();
-        String strGroup = getResources().getString(R.string.group_chat);
-        groupUser.setUsername(Constant.GROUP_USERNAME);
-        groupUser.setNick(strGroup);
-        groupUser.setHeader("");
-        groupUser.setNick(strChat);
-        groupUser.setBeizhu("");
-        groupUser.setFxid("");
-        groupUser.setHeader("");
-        groupUser.setRegion("");
-        groupUser.setSex("");
-        groupUser.setTel("");
-        groupUser.setSign("");
-        groupUser.setAvatar("");
-        map.put(Constant.GROUP_USERNAME, groupUser);
-
-        // 存入内存
-        DemoApplication.getInstance().setContactList(map);
-        // 存入db
-        UserDao dao = new UserDao(MainActivity.this);
-        List<User> users = new ArrayList<User>(map.values());
-        dao.saveContactList(users);
-
-    }
-
-    /**
-     * 设置hearder属性，方便通讯中对联系人按header分类显示，以及通过右侧ABCD...字母栏快速定位联系人
-     * 
-     * @param username
-     * @param user
-     */
-    @SuppressLint("DefaultLocale")
-    protected void setUserHearder(String username, User user) {
-        String headerName = null;
-        if (!TextUtils.isEmpty(user.getNick())) {
-            headerName = user.getNick();
-        } else {
-            headerName = user.getUsername();
-        }
-        headerName = headerName.trim();
-        if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
-            user.setHeader("");
-        } else if (Character.isDigit(headerName.charAt(0))) {
-            user.setHeader("#");
-        } else {
-            user.setHeader(HanziToPinyin.getInstance()
-                    .get(headerName.substring(0, 1)).get(0).target.substring(0,
-                    1).toUpperCase());
-            char header = user.getHeader().toLowerCase().charAt(0);
-            if (header < 'a' || header > 'z') {
-                user.setHeader("#");
-            }
-        }
     }
 
     private void addFriendToList(final String hxid) {
@@ -1087,68 +1040,68 @@ public class MainActivity extends BaseActivity {
             public void onDataCallBack(JSONObject data) {
                 try {
 
-                    int code = data.getInteger("code");
-                    if (code == 1) {
-
-                        JSONObject json = data.getJSONObject("user");
-                        if (json != null && json.size() != 0) {
-
-                        }
-                        String nick = json.getString("nick");
-                        String avatar = json.getString("avatar");
-
-                        String hxid = json.getString("hxid");
-                        String fxid = json.getString("fxid");
-                        String region = json.getString("region");
-                        String sex = json.getString("sex");
-                        String sign = json.getString("sign");
-                        String tel = json.getString("tel");
-                        User user = new User();
-
-                        user.setUsername(hxid);
-                        user.setNick(nick);
-                        user.setAvatar(avatar);
-                        user.setFxid(fxid);
-                        user.setRegion(region);
-                        user.setSex(sex);
-                        user.setSign(sign);
-                        user.setTel(tel);
-                        setUserHearder(hxid, user);
-                        Map<String, User> userlist = DemoApplication
-                                .getInstance().getContactList();
-                        Map<String, User> map_temp = new HashMap<String, User>();
-                        map_temp.put(hxid, user);
-                        userlist.putAll(map_temp);
-                        // 存入内存
-                        DemoApplication.getInstance().setContactList(userlist);
-                        // 存入db
-                        UserDao dao = new UserDao(MainActivity.this);
-
-                        dao.saveContact(user);
-
-                        // 自己封装的javabean
-                        InviteMessage msg = new InviteMessage();
-                        msg.setFrom(hxid);
-                        msg.setTime(System.currentTimeMillis());
-
-                        String reason_temp = nick + "66split88" + avatar
-                                + "66split88"
-                                + String.valueOf(System.currentTimeMillis())
-                                + "66split88" + "已经同意请求";
-                        msg.setReason(reason_temp);
-
-                        msg.setStatus(InviteMesageStatus.BEAGREED);
-                        User userTemp = DemoApplication.getInstance()
-                                .getContactList()
-                                .get(Constant.NEW_FRIENDS_USERNAME);
-                        if (userTemp != null
-                                && userTemp.getUnreadMsgCount() == 0) {
-                            userTemp.setUnreadMsgCount(userTemp
-                                    .getUnreadMsgCount() + 1);
-                        }
-                        notifyNewIviteMessage(msg);
-                    }
-
+//                    int code = data.getInteger("code");
+//                    if (code == 1) {
+//
+//                        JSONObject json = data.getJSONObject("user");
+//                        if (json != null && json.size() != 0) {
+//
+//                        }
+//                        String nick = json.getString("nick");
+//                        String avatar = json.getString("avatar");
+//
+//                        String hxid = json.getString("hxid");
+//                        String fxid = json.getString("fxid");
+//                        String region = json.getString("region");
+//                        String sex = json.getString("sex");
+//                        String sign = json.getString("sign");
+//                        String tel = json.getString("tel");
+//                        FriendInfo user = new FriendInfo();
+//
+//                        user.sys_id = hxid;
+//                        user.
+//                        user.setAvatar(avatar);
+//                        user.setFxid(fxid);
+//                        user.setRegion(region);
+//                        user.setSex(sex);
+//                        user.setSign(sign);
+//                        user.setTel(tel);
+//                        setUserHearder(hxid, user);
+//                        Map<String, User> userlist = DemoApplication
+//                                .getInstance().getContactList();
+//                        Map<String, User> map_temp = new HashMap<String, User>();
+//                        map_temp.put(hxid, user);
+//                        userlist.putAll(map_temp);
+//                        // 存入内存
+//                        DemoApplication.getInstance().setContactList(userlist);
+//                        // 存入db
+//                        UserDao dao = new UserDao(MainActivity.this);
+//
+//                        dao.saveContact(user);
+//
+//                        // 自己封装的javabean
+//                        InviteMessage msg = new InviteMessage();
+//                        msg.setFrom(hxid);
+//                        msg.setTime(System.currentTimeMillis());
+//
+//                        String reason_temp = nick + "66split88" + avatar
+//                                + "66split88"
+//                                + String.valueOf(System.currentTimeMillis())
+//                                + "66split88" + "已经同意请求";
+//                        msg.setReason(reason_temp);
+//
+//                        msg.setStatus(InviteMesageStatus.BEAGREED);
+//                        User userTemp = DemoApplication.getInstance()
+//                                .getContactList()
+//                                .get(Constant.NEW_FRIENDS_USERNAME);
+//                        if (userTemp != null
+//                                && userTemp.getUnreadMsgCount() == 0) {
+//                            userTemp.setUnreadMsgCount(userTemp
+//                                    .getUnreadMsgCount() + 1);
+//                        }
+//                        notifyNewIviteMessage(msg);
+//                    }
+//
                 } catch (JSONException e) {
 
                     e.printStackTrace();

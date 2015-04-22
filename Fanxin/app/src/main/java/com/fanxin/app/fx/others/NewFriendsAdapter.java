@@ -26,7 +26,6 @@ import com.fanxin.app.R;
 import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.db.UserDao;
 import com.fanxin.app.domain.InviteMessage;
-import com.fanxin.app.domain.User;
 import com.fanxin.app.domain.InviteMessage.InviteMesageStatus;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
@@ -47,6 +46,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import common.FriendInfo;
 
 @SuppressLint("ViewHolder")
 public class NewFriendsAdapter extends BaseAdapter {
@@ -236,46 +237,46 @@ public class NewFriendsAdapter extends BaseAdapter {
             public void onDataCallBack(JSONObject data) {
                 try {
 
-                    int code = data.getInteger("code");
-                    if (code == 1) {
-
-                        JSONObject json = data.getJSONObject("user");
-                        if (json != null && json.size() != 0) {
-
-                        }
-                        String nick = json.getString("nick");
-                        String avatar = json.getString("avatar");
-
-                        String hxid = json.getString("hxid");
-                        String fxid = json.getString("fxid");
-                        String region = json.getString("region");
-                        String sex = json.getString("sex");
-                        String sign = json.getString("sign");
-                        String tel = json.getString("tel");
-                        User user = new User();
-
-                        user.setUsername(hxid);
-                        user.setNick(nick);
-                        user.setAvatar(avatar);
-                        user.setFxid(fxid);
-                        user.setRegion(region);
-                        user.setSex(sex);
-                        user.setSign(sign);
-                        user.setTel(tel);
-                        setUserHearder(hxid,user);
-                        Map<String, User> userlist = DemoApplication
-                                .getInstance().getContactList();
-                        Map<String, User> map_temp = new HashMap<String, User>();
-                        map_temp.put(hxid, user);
-                        userlist.putAll(map_temp);
-                        // 存入内存
-                        DemoApplication.getInstance().setContactList(userlist);
-                        // 存入db
-                        UserDao dao = new UserDao(context);
-
-                        dao.saveContact(user);
-
-                    }
+//                    int code = data.getInteger("code");
+//                    if (code == 1) {
+//
+//                        JSONObject json = data.getJSONObject("user");
+//                        if (json != null && json.size() != 0) {
+//
+//                        }
+//                        String nick = json.getString("nick");
+//                        String avatar = json.getString("avatar");
+//
+//                        String hxid = json.getString("hxid");
+//                        String fxid = json.getString("fxid");
+//                        String region = json.getString("region");
+//                        String sex = json.getString("sex");
+//                        String sign = json.getString("sign");
+//                        String tel = json.getString("tel");
+//                        User user = new User();
+//
+//                        user.setUsername(hxid);
+//                        user.setNick(nick);
+//                        user.setAvatar(avatar);
+//                        user.setFxid(fxid);
+//                        user.setRegion(region);
+//                        user.setSex(sex);
+//                        user.setSign(sign);
+//                        user.setTel(tel);
+//                        setUserHearder(hxid,user);
+//                        Map<String, User> userlist = DemoApplication
+//                                .getInstance().getContactList();
+//                        Map<String, User> map_temp = new HashMap<String, User>();
+//                        map_temp.put(hxid, user);
+//                        userlist.putAll(map_temp);
+//                        // 存入内存
+//                        DemoApplication.getInstance().setContactList(userlist);
+//                        // 存入db
+//                        UserDao dao = new UserDao(context);
+//
+//                        dao.saveContact(user);
+//
+//                    }
 
                 } catch (JSONException e) {
 
@@ -295,26 +296,26 @@ public class NewFriendsAdapter extends BaseAdapter {
      * @param user
      */
     @SuppressLint("DefaultLocale")
-    protected void setUserHearder(String username, User user) {
-        String headerName = null;
-        if (!TextUtils.isEmpty(user.getNick())) {
-            headerName = user.getNick();
-        } else {
-            headerName = user.getUsername();
-        }
-        headerName = headerName.trim();
-        if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
-            user.setHeader("");
-        } else if (Character.isDigit(headerName.charAt(0))) {
-            user.setHeader("#");
-        } else {
-            user.setHeader(HanziToPinyin.getInstance()
-                    .get(headerName.substring(0, 1)).get(0).target.substring(0,
-                    1).toUpperCase());
-            char header = user.getHeader().toLowerCase().charAt(0);
-            if (header < 'a' || header > 'z') {
-                user.setHeader("#");
-            }
-        }
+    protected void setUserHearder(String username, FriendInfo user) {
+//        String headerName = null;
+//        if (!TextUtils.isEmpty(user.nickName)) {
+//            headerName = user.getNick();
+//        } else {
+//            headerName = user.getUsername();
+//        }
+//        headerName = headerName.trim();
+//        if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
+//            user.setHeader("");
+//        } else if (Character.isDigit(headerName.charAt(0))) {
+//            user.setHeader("#");
+//        } else {
+//            user.setHeader(HanziToPinyin.getInstance()
+//                    .get(headerName.substring(0, 1)).get(0).target.substring(0,
+//                    1).toUpperCase());
+//            char header = user.getHeader().toLowerCase().charAt(0);
+//            if (header < 'a' || header > 'z') {
+//                user.setHeader("#");
+//            }
+//        }
     }
 }

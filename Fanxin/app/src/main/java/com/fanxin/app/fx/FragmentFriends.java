@@ -3,6 +3,7 @@ package com.fanxin.app.fx;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,7 @@ public class FragmentFriends extends Fragment {
        
         // 黑名单列表
         blackList = new ArrayList<String>();
-        contactList = new ArrayList<User>();
+        contactList = new ArrayList<FriendInfo>();
         // 获取设置contactlist
         getContactList();
         infalter=LayoutInflater.from(getActivity());
@@ -102,9 +103,9 @@ public class FragmentFriends extends Fragment {
                 if(position!=0&&position!=contactList.size()+1){
 
                     FriendInfo user=contactList.get(position-1);
-                    String username = user.getUsername();                    
+                    String username = user.sys_id;
                     startActivity(new Intent(getActivity(), UserInfoActivity.class)
-                    .putExtra("hxid", username ).putExtra("nick", user.getNick() ).putExtra("avatar", user.getAvatar() ).putExtra("sex", user.getSex() ));
+                    .putExtra("hxid", username).putExtra("nick", user.nickName ).putExtra("avatar", user.imageUrl ).putExtra("sex", user.gender.toString() ));
                 }
                
 
@@ -183,20 +184,21 @@ public class FragmentFriends extends Fragment {
     private void getContactList() {
         contactList.clear();
         // 获取本地好友列表
-        Map<String, FriendInfo> users = DemoApplication.getInstance().getContactList();
-        Iterator<Entry<String, FriendInfo>> iterator = users.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry<String, FriendInfo> entry = iterator.next();
-            if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME)
-                    && !entry.getKey().equals(Constant.GROUP_USERNAME)
-                    && !blackList.contains(entry.getKey()))
-                contactList.add(entry.getValue());
-        }
-  
- 
-        // 对list进行排序
-        Collections.sort(contactList, new PinyinComparator() {
-        });
+        Map<String, FriendInfo> users = new HashMap<String, FriendInfo>();
+//        Map<String, FriendInfo> users = DemoApplication.getInstance().getContactList();
+//        Iterator<Entry<String, FriendInfo>> iterator = users.entrySet().iterator();
+//        while (iterator.hasNext()) {
+//            Entry<String, FriendInfo> entry = iterator.next();
+//            if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME)
+//                    && !entry.getKey().equals(Constant.GROUP_USERNAME)
+//                    && !blackList.contains(entry.getKey()))
+//                contactList.add(entry.getValue());
+//        }
+//
+//
+//        // 对list进行排序
+//        Collections.sort(contactList, new PinyinComparator() {
+//        });
 
  
     }

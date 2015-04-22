@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/icon_check_blue" android:state_selected="true"></item>  
     <item android:drawable="@drawable/icon_check_blue" android:state_pressed="true"></item>  
     <item android:drawable="@drawable/jy_jb_btn_off"></item>  
-</selector>  <!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/drawable/check_blue.xml -->
+</selector>  <!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/Fanxin/app/src/main/res/drawable/check_blue.xml -->

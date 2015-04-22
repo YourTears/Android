@@ -110,13 +110,13 @@ public class CreatChatRoomActivity extends BaseActivity {
         }
 
         // 获取好友列表
-        final List<FriendInfo> alluserList = new ArrayList<FriendInfo>();
-        for (FriendInfo user : DemoApplication.getInstance().getContactList()
-                .values()) {
-            if (!user.name.equals(Constant.NEW_FRIENDS_USERNAME)
-                    & !user.name.equals(Constant.GROUP_USERNAME))
-                alluserList.add(user);
-        }
+        final List<FriendInfo> alluserList = (List)DemoApplication.getInstance().getContactList().values();
+//        for (User user : DemoApplication.getInstance().getContactList()
+//                .values()) {
+//            if (!user.getUsername().equals(Constant.NEW_FRIENDS_USERNAME)
+//                    & !user.getUsername().equals(Constant.GROUP_USERNAME))
+//                alluserList.add(user);
+//        }
         // 对list进行排序
         Collections.sort(alluserList, new PinyinComparator() {
         });
@@ -143,12 +143,12 @@ public class CreatChatRoomActivity extends BaseActivity {
 
         et_search.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before,
-                    int count) {
+                                      int count) {
                 if (s.length() > 0) {
                     String str_s = et_search.getText().toString().trim();
                     List<FriendInfo> users_temp = new ArrayList<FriendInfo>();
                     for (FriendInfo user : alluserList) {
-                        String usernick = user.name;
+                        String usernick = user.nickName;
                         Log.e("usernick--->>>", usernick);
                         Log.e("str_s--->>>", str_s);
 
@@ -175,7 +175,7 @@ public class CreatChatRoomActivity extends BaseActivity {
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count,
-                    int after) {
+                                          int after) {
             }
 
             public void afterTextChanged(Editable s) {
@@ -192,7 +192,7 @@ public class CreatChatRoomActivity extends BaseActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+                                    int position, long id) {
 
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
                 checkBox.toggle();
@@ -215,10 +215,10 @@ public class CreatChatRoomActivity extends BaseActivity {
 
     private void showCheckImage(Bitmap bitmap, FriendInfo glufineid) {
 
-        if (exitingMembers.contains(glufineid.name) && groupId != null) {
+        if (exitingMembers.contains(glufineid.id) && groupId != null) {
             return;
         }
-        if (addList.contains(glufineid.name)) {
+        if (addList.contains(glufineid.id)) {
             return;
         }
         total++;
@@ -247,7 +247,7 @@ public class CreatChatRoomActivity extends BaseActivity {
                 iv_search.setVisibility(View.GONE);
             }
         }
-        addList.add(glufineid.name);
+        addList.add(glufineid.id);
     }
 
     private void deleteImage(FriendInfo glufineid) {
@@ -256,7 +256,7 @@ public class CreatChatRoomActivity extends BaseActivity {
         menuLinerLayout.removeView(view);
         total--;
         tv_checked.setText("确定(" + total + ")");
-        addList.remove(glufineid.name);
+        addList.remove(glufineid.id);
         if (total < 1) {
             if (iv_search.getVisibility() == View.GONE) {
                 iv_search.setVisibility(View.VISIBLE);
@@ -264,6 +264,203 @@ public class CreatChatRoomActivity extends BaseActivity {
         }
 
     }
+
+    /**
+     * 确认选择的members
+     *
+     * @param v
+     */
+    public void save() {
+        if (addList.size() == 0) {
+            Toast.makeText(CreatChatRoomActivity.this, "请选择用户",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // 如果只有一个用户说明只是单聊,并且不是从群组加人
+        if (addList.size() == 1 && isCreatingNewGroup) {
+            String userId = addList.get(0);
+            FriendInfo user = DemoApplication.getInstance().getContactList()
+                    .get(userId);
+            if (user != null) {
+                String userNick = user.name;
+                String userAvatar = user.imageUrl;
+                startActivity(new Intent(getApplicationContext(),
+                        ChatActivity.class).putExtra("userId", userId)
+                        .putExtra("userNick", userNick)
+                        .putExtra("userAvatar", userAvatar));
+
+                finish();
+            }
+
+        } else {
+
+            if (isCreatingNewGroup) {
+                progressDialog.setMessage("正在创建群聊...");
+            } else {
+                progressDialog.setMessage("正在加人...");
+            }
+            progressDialog.show();
+            creatNewGroup(addList);
+
+        }
+
+    }
+
+    /**
+     * 创建新群组
+     *
+     * @param newmembers
+     */
+    private void creatNewGroup(List<String> members) {
+
+        String nick = MeInfo.getInstance().name;
+
+        String avatar = MeInfo.getInstance().imageUrl;
+        if (isCreatingNewGroup) {
+            JSONObject myjson = new JSONObject();
+            myjson.put("hxid", hxid);
+            myjson.put("nick", nick);
+            myjson.put("avatar", avatar);
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.add(myjson);
+            String groupName = nick;
+            ;
+            for (int i = 0; i < members.size(); i++) {
+
+                FriendInfo user = DemoApplication.getInstance().getContactList()
+                        .get(members.get(i));
+                if (user != null) {
+                    JSONObject json_member = new JSONObject();
+                    json_member.put("hxid", user.sys_id);
+                    json_member.put("nick", user.nickName);
+                    json_member.put("avatar", user.imageUrl);
+                    jsonArray.add(json_member);
+                    if (i < 4) {
+                        groupName += "、" + user.nickName;
+                    } else if (i == 4) {
+                        groupName += "...";
+
+                    }
+                }
+
+            }
+
+            JSONObject finalJson = new JSONObject();
+            finalJson.put("jsonArray", jsonArray);
+
+            finalJson.put("groupname", "未命名");
+
+            String myDesc = "temp";
+
+            String groupJSON = finalJson.toJSONString();
+            Log.e("groupName----->>>>>", groupName);
+            try {
+                EMGroup group_temp = EMGroupManager.getInstance()
+                        .createPrivateGroup(groupJSON, myDesc,
+                                members.toArray(new String[0]), true);
+                if (group_temp != null) {
+                    String group_temp_id = group_temp.getGroupId();
+                    String group_temp_name = group_temp.getGroupName();
+                    String group_temp_desc = group_temp.getDescription();
+                    Log.e("group_temp_id----->>>>>", group_temp_id);
+                    Log.e("group_temp_name----->>>>>", group_temp_name);
+                    Log.e("group_temp_desc----->>>>>", group_temp_desc);
+                    progressDialog.dismiss();
+                    startActivity(new Intent(getApplicationContext(),
+                            ChatActivity.class)
+                            .putExtra("groupId", group_temp_id)
+                            .putExtra("chatType", ChatActivity.CHATTYPE_GROUP)
+                            .putExtra("groupName", groupName));
+                }
+
+            } catch (EaseMobException e) {
+                e.printStackTrace();
+            }
+        } else {
+
+            // 群主加人调用此方法
+            try {
+                if (hxid.equals(group.getOwner())) {
+                    EMGroupManager.getInstance().addUsersToGroup(groupId,
+                            members.toArray(new String[0]));
+                } else {
+                    EMGroupManager.getInstance().inviteUser(groupId,
+                            members.toArray(new String[0]), null);
+                }
+
+                JSONObject oldjson = JSONObject.parseObject(groupname);
+                JSONArray oldjsonArray = oldjson.getJSONArray("jsonArray");
+
+                String groupName = oldjson.getString("groupname");
+                for (int i = 0; i < members.size(); i++) {
+
+                    FriendInfo user = DemoApplication.getInstance().getContactList()
+                            .get(members.get(i));
+                    if (user != null) {
+                        JSONObject json_member = new JSONObject();
+                        json_member.put("hxid", user.sys_id);
+                        json_member.put("nick", user.nickName);
+                        json_member.put("avatar", user.imageUrl);
+                        oldjsonArray.add(json_member);
+
+                    }
+                }
+                JSONObject finalJson = new JSONObject();
+                finalJson.put("jsonArray", oldjsonArray);
+
+                finalJson.put("groupname", groupName);
+                String groupJSON = finalJson.toJSONString();
+                if (hxid.equals(group.getOwner())) {
+                    EMGroupManager.getInstance()
+                            .changeGroupName(groupId, groupJSON);//
+                }else{
+                    updateGroupName(groupId, groupJSON);
+                }
+                startActivity(new Intent(getApplicationContext(),
+                        ChatActivity.class).putExtra("groupId", groupId)
+                        .putExtra("chatType", ChatActivity.CHATTYPE_GROUP)
+                        .putExtra("groupName", groupName));
+
+                progressDialog.dismiss();
+            } catch (EaseMobException e) {
+                progressDialog.dismiss();
+                Toast.makeText(CreatChatRoomActivity.this, "群聊加人失败。。。",
+                        Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    private void updateGroupName(String groupId, String updateStr) {
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("groupId", groupId);
+        map.put("groupName", updateStr);
+        LoadDataFromServer task = new LoadDataFromServer(
+                CreatChatRoomActivity.this, Constant.URL_UPDATE_Groupnanme,
+                map);
+
+        task.getData(new DataCallBack() {
+
+            @Override
+            public void onDataCallBack(JSONObject data) {
+                if (data != null) {
+                    int code = data.getInteger("code");
+
+                    if (code != 1) {
+                        // 通知管理员。。。
+
+                    }
+
+                }
+            }
+        });
+
+    }
+
 
     /**
      * adapter
@@ -278,7 +475,7 @@ public class CreatChatRoomActivity extends BaseActivity {
         private int res;
 
         public PickContactAdapter(Context context, int resource,
-                List<FriendInfo> users) {
+                                  List<FriendInfo> users) {
 
             layoutInflater = LayoutInflater.from(context);
             avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
@@ -297,7 +494,7 @@ public class CreatChatRoomActivity extends BaseActivity {
         @SuppressLint("ViewHolder")
         @Override
         public View getView(final int position, View convertView,
-                ViewGroup parent) {
+                            ViewGroup parent) {
 
             convertView = layoutInflater.inflate(res, null);
 
@@ -307,12 +504,12 @@ public class CreatChatRoomActivity extends BaseActivity {
                     .findViewById(R.id.tv_name);
             TextView tvHeader = (TextView) convertView
                     .findViewById(R.id.header);
-            final User user = list.get(position);
+            final FriendInfo user = list.get(position);
 
-            final String avater = user.getAvatar();
-            String name = user.getNick();
-            String header = user.getHeader();
-            final String username = user.getUsername();
+            final String avater = user.imageUrl;
+            String name = user.nickName;
+            String header = user.name_pinyin;
+            final String username = user.sys_id;
             tv_name.setText(name);
             iv_avatar.setImageResource(R.drawable.default_useravatar);
             iv_avatar.setTag(avater);
@@ -323,7 +520,7 @@ public class CreatChatRoomActivity extends BaseActivity {
 
                             @Override
                             public void onImageDownloaded(ImageView imageView,
-                                    Bitmap bitmap) {
+                                                          Bitmap bitmap) {
                                 if (imageView.getTag() == avater) {
                                     imageView.setImageBitmap(bitmap);
 
@@ -371,7 +568,7 @@ public class CreatChatRoomActivity extends BaseActivity {
                 checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView,
-                            boolean isChecked) {
+                                                 boolean isChecked) {
                         // 群组中原来的成员一直设为选中状态
                         if (exitingMembers.contains(username)) {
                             isChecked = true;
@@ -425,7 +622,7 @@ public class CreatChatRoomActivity extends BaseActivity {
                 return "";
             }
 
-            String header = list.get(position).getHeader();
+            String header = list.get(position).name_pinyin;
 
             return header;
 
@@ -449,8 +646,8 @@ public class CreatChatRoomActivity extends BaseActivity {
         @Override
         public int compare(FriendInfo o1, FriendInfo o2) {
             // TODO Auto-generated method stub
-            String py1 = o1.name;
-            String py2 = o2.name;
+            String py1 = o1.name_pinyin;
+            String py2 = o2.name_pinyin;
             // 判断是否为空""
             if (isEmpty(py1) && isEmpty(py2))
                 return 0;
