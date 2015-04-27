@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 
-import com.fanxin.AppConstant;
+import appLogic.AppConstant;
 import com.fanxin.app.R;
 import com.fanxin.app.fx.LoginActivity;
 import com.fanxin.app.fx.MainActivity;

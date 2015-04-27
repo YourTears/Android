@@ -28,7 +28,7 @@ import com.fanxin.app.R;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 
-import common.MeInfo;
+import appLogic.MeInfo;
 
 public class UpdateFxidActivity extends Activity {
     @Override

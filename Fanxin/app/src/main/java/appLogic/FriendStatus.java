@@ -1,4 +1,4 @@
-package common;
+package appLogic;
 
 /**
  * Created by tiazh on 4/21/2015.

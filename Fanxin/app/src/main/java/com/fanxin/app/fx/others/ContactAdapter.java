@@ -23,7 +23,7 @@ import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 
-import common.FriendInfo;
+import appLogic.FriendInfo;
 
 /**
  * 简单的好友Adapter实现

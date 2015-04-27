@@ -14,28 +14,23 @@ import java.util.Map;
 import com.fanxin.app.Constant;
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
-import com.fanxin.app.db.UserDao;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadUserAvatar;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.easemob.util.HanziToPinyin;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import common.FriendInfo;
 
 public class UserInfoActivity extends Activity {
     private LoadUserAvatar avatarLoader;

@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import common.MeInfo;
+import appLogic.MeInfo;
 
 @SuppressLint("SdCardPath")
 public class FragmentProfile extends Fragment {

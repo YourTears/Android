@@ -21,15 +21,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.fanxin.app.Constant;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.db.InviteMessgeDao;
-import com.fanxin.app.db.UserDao;
 import com.fanxin.app.domain.InviteMessage;
 import com.fanxin.app.domain.InviteMessage.InviteMesageStatus;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
-import com.easemob.util.HanziToPinyin;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -37,7 +34,6 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -47,7 +43,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import common.FriendInfo;
+import appLogic.FriendInfo;
 
 @SuppressLint("ViewHolder")
 public class NewFriendsAdapter extends BaseAdapter {

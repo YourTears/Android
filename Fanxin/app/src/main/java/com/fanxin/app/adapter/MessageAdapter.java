@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.text.Spannable;
 import android.util.Log;
@@ -61,7 +60,7 @@ import com.easemob.util.FileUtils;
 import com.easemob.util.LatLng;
 import com.easemob.util.TextFormater;
 
-import common.MeInfo;
+import appLogic.MeInfo;
 
 @SuppressLint({ "SdCardPath", "InflateParams" })
 public class MessageAdapter extends BaseAdapter {

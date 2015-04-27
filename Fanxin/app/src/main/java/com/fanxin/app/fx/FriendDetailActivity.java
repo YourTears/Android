@@ -10,8 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import common.FriendInfo;
-import common.Gender;
+import appLogic.FriendInfo;
+import appLogic.Gender;
 
 public class FriendDetailActivity extends Activity {
 

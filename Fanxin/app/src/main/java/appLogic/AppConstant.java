@@ -1,4 +1,4 @@
-package com.fanxin;
+package appLogic;
 
 /**
  * Created by tiazh on 4/22/2015.

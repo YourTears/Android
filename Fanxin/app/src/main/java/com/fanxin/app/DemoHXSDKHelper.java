@@ -16,19 +16,11 @@ package com.fanxin.app;
 import java.util.Map;
 
 import android.content.Intent;
-import android.content.IntentFilter;
-
- 
-
-
-
-
 
 
 import com.fanxin.applib.controller.HXSDKHelper;
 import com.fanxin.applib.model.HXSDKModel;
 import com.easemob.EMCallBack;
-import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.EMMessage.Type;
@@ -39,7 +31,7 @@ import com.fanxin.app.fx.MainActivity;
 import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.utils.CommonUtils;
 
-import common.FriendInfo;
+import appLogic.FriendInfo;
 
 
 /**

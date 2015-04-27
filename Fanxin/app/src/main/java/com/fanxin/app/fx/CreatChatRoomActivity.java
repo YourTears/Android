@@ -47,8 +47,8 @@ import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.easemob.exceptions.EaseMobException;
 
-import common.FriendInfo;
-import common.MeInfo;
+import appLogic.FriendInfo;
+import appLogic.MeInfo;
 
 
 @SuppressLint({ "InflateParams", "SdCardPath" })

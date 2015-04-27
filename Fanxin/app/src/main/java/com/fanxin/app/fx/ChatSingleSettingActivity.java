@@ -28,7 +28,7 @@ import com.fanxin.app.fx.others.TopUserDao;
 import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.easemob.exceptions.EaseMobException;
 
-import common.FriendInfo;
+import appLogic.FriendInfo;
 
 @SuppressLint({ "SimpleDateFormat", "SdCardPath" })
 public class ChatSingleSettingActivity extends BaseActivity implements

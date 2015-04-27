@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import common.MeInfo;
+import appLogic.MeInfo;
 
 public class AddFriendsFinalActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {

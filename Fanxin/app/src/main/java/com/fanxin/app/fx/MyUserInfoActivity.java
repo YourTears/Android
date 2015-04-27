@@ -42,8 +42,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import common.Gender;
-import common.MeInfo;
+import appLogic.Gender;
+import appLogic.MeInfo;
 
 @SuppressLint("SdCardPath")
 public class MyUserInfoActivity extends Activity {

@@ -21,7 +21,7 @@ import android.content.Context;
 import com.easemob.EMCallBack;
 import com.fanxin.app.fx.others.TopUser;
 
-import common.FriendInfo;
+import appLogic.FriendInfo;
 
 public class DemoApplication extends Application {
 

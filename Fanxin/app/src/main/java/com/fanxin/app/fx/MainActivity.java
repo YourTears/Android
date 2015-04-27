@@ -35,7 +35,6 @@ import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
-import com.easemob.util.HanziToPinyin;
 import com.easemob.util.NetUtils;
 
 import android.annotation.SuppressLint;
@@ -47,7 +46,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -56,9 +54,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import common.FriendInfo;
-import common.Gender;
-import common.MeInfo;
+import appLogic.FriendInfo;
+import appLogic.MeInfo;
+import common.Util;
 
 @SuppressLint("DefaultLocale")
 public class MainActivity extends BaseActivity {
@@ -158,11 +156,7 @@ public class MainActivity extends BaseActivity {
 
     private void initMeInfo()
     {
-        MeInfo.getInstance().sys_id = "132";
-        MeInfo.getInstance().id = "longztc";
-        MeInfo.getInstance().name = "Long";
-        MeInfo.getInstance().imageUrl = "http://s.ata.net.cn/4f98db46908987a21a000003/logo/2012/04/114_80aaf295c083d07a496743699aac3193.png";
-        MeInfo.getInstance().gender = Gender.male;
+        MeInfo.getMeInfo(Util.getAssertInputStream(this.getResources().getAssets(), "meInfo.json"));
     }
 
     private void initView() {

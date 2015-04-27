@@ -42,7 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TextView.BufferType;
 
-import common.FriendInfo;
+import appLogic.FriendInfo;
 
 @SuppressLint("InflateParams")
 public class ConversationAdapter extends BaseAdapter {

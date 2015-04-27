@@ -1,13 +1,10 @@
 package com.fanxin.app.fx;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -23,15 +20,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.easemob.chat.EMContactManager;
 import com.fanxin.app.Constant;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
-import com.fanxin.app.fx.CreatChatRoomActivity.PinyinComparator;
 import com.fanxin.app.fx.others.ContactAdapter;
 import com.fanxin.app.widget.Sidebar;
 
-import common.FriendInfo;
+import appLogic.FriendInfo;
 
 /**
  * 联系人列表页

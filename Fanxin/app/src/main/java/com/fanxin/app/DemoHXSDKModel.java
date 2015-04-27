@@ -24,7 +24,7 @@ import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.fx.others.TopUserDao;
 import com.fanxin.applib.model.DefaultHXSDKModel;
 
-import common.FriendInfo;
+import appLogic.FriendInfo;
 
 public class DemoHXSDKModel extends DefaultHXSDKModel{
 

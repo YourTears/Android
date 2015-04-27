@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/chat_voice_call_pressed" android:state_selected="true"/>
     <item android:drawable="@drawable/chat_voice_call_normal"/>
 
-</selector><!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/Fanxin/app/src/main/res/drawable/chat_voice_call_selector.xml -->
+</selector><!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/drawable/chat_voice_call_selector.xml -->
