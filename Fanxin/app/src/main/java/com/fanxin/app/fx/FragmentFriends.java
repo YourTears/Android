@@ -26,6 +26,7 @@ import com.fanxin.app.fx.others.ContactAdapter;
 import com.fanxin.app.widget.Sidebar;
 
 import appLogic.FriendInfo;
+import appLogic.Gender;
 
 /**
  * 联系人列表页
@@ -177,24 +178,14 @@ public class FragmentFriends extends Fragment {
      */
     private void getContactList() {
         contactList.clear();
-        // 获取本地好友列表
-        Map<String, FriendInfo> users = new HashMap<String, FriendInfo>();
-//        Map<String, FriendInfo> users = DemoApplication.getInstance().getContactList();
-//        Iterator<Entry<String, FriendInfo>> iterator = users.entrySet().iterator();
-//        while (iterator.hasNext()) {
-//            Entry<String, FriendInfo> entry = iterator.next();
-//            if (!entry.getKey().equals(Constant.NEW_FRIENDS_USERNAME)
-//                    && !entry.getKey().equals(Constant.GROUP_USERNAME)
-//                    && !blackList.contains(entry.getKey()))
-//                contactList.add(entry.getValue());
-//        }
-//
-//
-//        // 对list进行排序
-//        Collections.sort(contactList, new PinyinComparator() {
-//        });
 
- 
+        FriendInfo fi1 = new FriendInfo();
+        fi1.gender = Gender.female;
+        fi1.id = "feifei";
+        fi1.name = "Fei Fei";
+        fi1.imageUrl = "http://static-jkxy.qiniudn.com/eoeandroid%2Fferweima.jpg";
+
+        contactList.add(fi1);
     }
 
     @SuppressLint("DefaultLocale")
