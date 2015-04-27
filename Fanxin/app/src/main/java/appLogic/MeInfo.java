@@ -13,6 +13,7 @@ public class MeInfo {
     public String id;
     public String name;
     public String imageUrl;
+    public String phone;
     public Gender gender;
 
     private static MeInfo m_instance = null;
@@ -44,6 +45,7 @@ public class MeInfo {
             getInstance().sys_id = json.getString("sys_id");
             getInstance().id = json.getString("id");
             getInstance().name = json.getString("name");
+            getInstance().phone = json.getString("phone");
             getInstance().gender = appLogic.Util.parseGender(json.getInt("gender"));
             getInstance().imageUrl = json.getString("imageUrl");
 
