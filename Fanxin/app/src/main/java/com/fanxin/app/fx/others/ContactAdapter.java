@@ -66,14 +66,14 @@ public class ContactAdapter extends ArrayAdapter<FriendInfo> implements
                 .findViewById(R.id.tv_name);
         TextView tvHeader = (TextView) convertView.findViewById(R.id.header);
         View view_temp = (View) convertView.findViewById(R.id.view_temp);
-        FriendInfo user = getItem(position);
-        if (user == null)
-            Log.d("ContactAdapter", position + "");
+        FriendInfo friend = getItem(position);
+
+        convertView.setTag(friend.id);
         // 设置nick，demo里不涉及到完整user，用username代替nick显示
 
-        String header = user.name;
-        String usernick = user.name;
-        String useravatar = user.imageUrl;
+        String header = friend.name;
+        String usernick = friend.name;
+        String useravatar = friend.imageUrl;
         if (position == 0 || header != null
                 && !header.equals(getItem(position - 1).name)) {
             if ("".equals(header)) {

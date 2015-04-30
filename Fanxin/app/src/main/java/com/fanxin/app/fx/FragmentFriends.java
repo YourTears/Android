@@ -1,10 +1,6 @@
 package com.fanxin.app.fx;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -25,8 +21,10 @@ import com.fanxin.app.R;
 import com.fanxin.app.fx.others.ContactAdapter;
 import com.fanxin.app.widget.Sidebar;
 
+import appLogic.AppConstant;
 import appLogic.FriendInfo;
-import appLogic.Gender;
+import appLogic.FriendStatus;
+import appLogic.FriendsManager;
 
 /**
  * 联系人列表页
@@ -35,12 +33,10 @@ import appLogic.Gender;
 @SuppressLint("InflateParams")
 public class FragmentFriends extends Fragment {
     private ContactAdapter adapter;
-    private List<FriendInfo> contactList;
     private ListView listView;
     private boolean hidden;
     private Sidebar sidebar;
- 
-    private List<String> blackList;
+
     private TextView tv_unread;
     private TextView tv_total;
     private LayoutInflater infalter;
@@ -61,12 +57,7 @@ public class FragmentFriends extends Fragment {
             return;
         
         listView = (ListView) getView().findViewById(R.id.list);
-       
-        // 黑名单列表
-        blackList = new ArrayList<String>();
-        contactList = new ArrayList<FriendInfo>();
-        // 获取设置contactlist
-        getContactList();
+
         infalter=LayoutInflater.from(getActivity());
         View headView = infalter.inflate(R.layout.item_contact_list_header,
                 null);
@@ -88,26 +79,21 @@ public class FragmentFriends extends Fragment {
         tv_total = (TextView) footerView.findViewById(R.id.tv_total);
         // 设置adapter
         adapter = new ContactAdapter(getActivity(), R.layout.item_contact_list,
-                contactList);
+                AppConstant.friendsManager.friends);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                if(position!=0&&position!=contactList.size()+1){
-
-                    FriendInfo user=contactList.get(position-1);
-                    String username = user.sys_id;
-                    startActivity(new Intent(getActivity(), UserInfoActivity.class)
-                    .putExtra("hxid", username).putExtra("nick", user.nickName ).putExtra("avatar", user.imageUrl ).putExtra("sex", user.gender.toString() ));
+                String friendId = (String)view.getTag();
+                if(friendId != null && !friendId.isEmpty()) {
+                    startActivity(new Intent(getActivity(), UserInfoActivity.class).putExtra("id", friendId));
                 }
-               
-
             }
         });
        
-        tv_total.setText(String.valueOf(contactList.size())+"位联系人");
+        tv_total.setText(String.valueOf(AppConstant.friendsManager.getFriendCount())+"位联系人");
       
         RelativeLayout re_newfriends=(RelativeLayout) headView.findViewById(R.id.re_newfriends);
         RelativeLayout re_chatroom=(RelativeLayout) headView.findViewById(R.id.re_chatroom);
@@ -156,9 +142,9 @@ public class FragmentFriends extends Fragment {
             // 可能会在子线程中调到这方法
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    getContactList();
+
                     adapter.notifyDataSetChanged();
-                    tv_total.setText(String.valueOf(contactList.size())+"位联系人");
+                    tv_total.setText(String.valueOf(AppConstant.friendsManager.getFriendCount())+"位联系人");
                     if(((MainActivity)getActivity()).unreadAddressLable.getVisibility()==View.VISIBLE){
                         tv_unread.setVisibility(View.VISIBLE);
                         tv_unread.setText(((MainActivity)getActivity()).unreadAddressLable.getText());
@@ -171,21 +157,6 @@ public class FragmentFriends extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 获取联系人列表，并过滤掉黑名单和排序
-     */
-    private void getContactList() {
-        contactList.clear();
-
-        FriendInfo fi1 = new FriendInfo();
-        fi1.gender = Gender.female;
-        fi1.id = "feifei";
-        fi1.name = "Fei Fei";
-        fi1.imageUrl = "http://static-jkxy.qiniudn.com/eoeandroid%2Fferweima.jpg";
-
-        contactList.add(fi1);
     }
 
     @SuppressLint("DefaultLocale")

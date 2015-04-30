@@ -54,7 +54,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import appLogic.AppConstant;
 import appLogic.FriendInfo;
+import appLogic.FriendsManager;
 import appLogic.MeInfo;
 import common.Util;
 
@@ -157,6 +159,8 @@ public class MainActivity extends BaseActivity {
     private void initMeInfo()
     {
         MeInfo.getMeInfo(Util.getAssertInputStream(this.getResources().getAssets(), "meInfo.json"));
+        AppConstant.friendsManager = FriendsManager.getInstance();
+        AppConstant.friendsManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
     }
 
     private void initView() {

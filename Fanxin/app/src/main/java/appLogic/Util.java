@@ -10,4 +10,15 @@ public class Util {
         else
             return Gender.male;
     }
+
+    public static FriendStatus parseFriendStatus(int status){
+        if(status == 0)
+            return FriendStatus.pendingAccept;
+        else if(status == 1)
+            return FriendStatus.pendingAccepted;
+        else if(status == 2)
+            return FriendStatus.blocked;
+        else
+            return FriendStatus.friend;
+    }
 }

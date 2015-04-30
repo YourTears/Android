@@ -98,7 +98,7 @@ public class MessageAdapter extends BaseAdapter {
 
     private Map<String, Timer> timers = new Hashtable<String, Timer>();
 
-    public MessageAdapter(Context context, String username, int chatType) {
+    public MessageAdapter(Context context, String username) {
         this.username = username;
         this.context = context;
         inflater = LayoutInflater.from(context);

@@ -1,10 +1,8 @@
 {
-    "user":
-    {
-        "sys_id":"11224870",
-        "id":"longztc",
-        "name":"Long",
-        "gender":"0",
-        "imageUrl":"http://s.ata.net.cn/4f98db46908987a21a000003/logo/2012/04/114_80aaf295c083d07a496743699aac3193.png"
-    }
+    "sys_id":"11224870",
+    "id":"longztc",
+    "name":"Long",
+    "gender":"1",
+    "phone" : "13818085246",
+    "imageUrl":"http://s.ata.net.cn/4f98db46908987a21a000003/logo/2012/04/114_80aaf295c083d07a496743699aac3193.png"
 }

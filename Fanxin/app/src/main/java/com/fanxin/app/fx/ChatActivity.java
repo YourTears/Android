@@ -94,6 +94,8 @@ import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
 import com.easemob.util.VoiceRecorder;
 
+import appLogic.AppConstant;
+import appLogic.FriendInfo;
 import appLogic.MeInfo;
 
 /**
@@ -158,12 +160,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private InputMethodManager manager;
     private List<String> reslist;
     private Drawable[] micImages;
-    private int chatType;
     private EMConversation conversation;
     private NewMessageBroadcastReceiver receiver;
     public static ChatActivity activityInstance = null;
     // 给谁发送消息
-    private String toChatUsername;
+    private FriendInfo friend;
     private VoiceRecorder voiceRecorder;
     private MessageAdapter adapter;
     private File cameraFile;
@@ -179,8 +180,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private Button btnMore;
     public String playMsgId;
 
-    String myUserNick = "";
-    String myUserAvatar = "";
     // 分享的照片
     String iamge_path = null;
     // 设置按钮
@@ -200,15 +199,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        // 读取本地自己的头像和昵称
-        myUserNick = MeInfo.getInstance().name;
-        myUserAvatar = MeInfo.getInstance().imageUrl;
+        String friendId = this.getIntent().getStringExtra("id");
+        friend = AppConstant.friendsManager.getFriend(friendId);
+
         initView();
         setUpView();
-        iamge_path = this.getIntent().getStringExtra("iamge_path");
-        if (iamge_path != null && !iamge_path.equals("")) {
-            sendPicture(iamge_path, true);
-        }
     }
 
     /**
@@ -332,27 +327,15 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
                 .newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "demo");
-        // 判断单聊还是群聊
-        chatType = getIntent().getIntExtra("chatType", CHATTYPE_SINGLE);
-        // type=getIntent().getIntExtra("type", 0);
 
-        if (chatType == CHATTYPE_SINGLE) { // 单聊
-            toChatUsername = getIntent().getStringExtra("userId");
-            String toChatUserNick = getIntent().getStringExtra("userNick");
-            ((TextView) findViewById(R.id.name)).setText(toChatUserNick);
+        ((TextView) findViewById(R.id.name)).setText(friend.name);
 
-        } else {
+//        conversation = EMChatManager.getInstance().getConversation(
+//                friend.name);
+//        // 把此会话的未读数置为0
+//        conversation.resetUnreadMsgCount();
 
-            findViewById(R.id.container_voice_call).setVisibility(View.GONE);
-            toChatUsername = getIntent().getStringExtra("groupId");
-            String groupName = getIntent().getStringExtra("groupName");
-            ((TextView) findViewById(R.id.name)).setText(groupName);
-        }
-        conversation = EMChatManager.getInstance().getConversation(
-                toChatUsername);
-        // 把此会话的未读数置为0
-        conversation.resetUnreadMsgCount();
-        adapter = new MessageAdapter(this, toChatUsername, chatType);
+        adapter = new MessageAdapter(this, friend.id);
         // 显示消息
         listView.setAdapter(adapter);
         listView.setOnScrollListener(new ListScrollListener());
@@ -405,38 +388,23 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         }
         iv_setting = (ImageView) this.findViewById(R.id.iv_setting);
         iv_setting_group = (ImageView) this.findViewById(R.id.iv_setting_group);
-        if (chatType == CHATTYPE_SINGLE) {
-            iv_setting.setVisibility(View.VISIBLE);
-            iv_setting_group.setVisibility(View.GONE);
-            iv_setting.setOnClickListener(new OnClickListener() {
+        iv_setting.setVisibility(View.VISIBLE);
+        iv_setting_group.setVisibility(View.GONE);
+        iv_setting.setOnClickListener(new OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
 
-                    startActivity(
+                startActivity(
 
-                    new Intent(ChatActivity.this,
-                            ChatSingleSettingActivity.class).putExtra("userId",
-                            toChatUsername));
+                        new Intent(ChatActivity.this,
+                                ChatSingleSettingActivity.class).putExtra("userId",
+                                friend.id));
 
-                }
+            }
 
-            });
-        } else {
-            iv_setting.setVisibility(View.GONE);
-            iv_setting_group.setVisibility(View.VISIBLE);
-            iv_setting_group.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-
-                }
-
-            });
-        }
-
+        });
     }
 
     /**
@@ -489,7 +457,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         if (resultCode == RESULT_OK) { // 清空消息
             if (requestCode == REQUEST_CODE_EMPTY_HISTORY) {
                 // 清空会话
-                EMChatManager.getInstance().clearConversation(toChatUsername);
+                EMChatManager.getInstance().clearConversation(friend.name);
                 adapter.refresh();
             } else if (requestCode == REQUEST_CODE_CAMERA) { // 发送照片
                 if (cameraFile != null && cameraFile.exists())
@@ -706,17 +674,15 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
         if (content.length() > 0) {
             EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
-            // 如果是群聊，设置chattype,默认是单聊
-            if (chatType == CHATTYPE_GROUP)
-                message.setChatType(ChatType.GroupChat);
+
             TextMessageBody txtBody = new TextMessageBody(content);
             // 设置消息body
             message.addBody(txtBody);
             // 设置要发给谁,用户username或者群聊groupid
-            message.setReceipt(toChatUsername);
+            message.setReceipt(friend.name);
             // message.setAttribute("to_usernick", toChatUserNick);
             // message.setAttribute("to_useravatar", toChatUserAvatar);
-            message.setAttribute("useravatar", myUserAvatar);
+            message.setAttribute("useravatar", MeInfo.getInstance());
             message.setAttribute("usernick", myUserNick);
             // 把messgage加到conversation中
             conversation.addMessage(message);
@@ -750,7 +716,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             // 如果是群聊，设置chattype,默认是单聊
             if (chatType == CHATTYPE_GROUP)
                 message.setChatType(ChatType.GroupChat);
-            message.setReceipt(toChatUsername);
+            message.setReceipt(friend.name);
             // message.setAttribute("to_usernick", toChatUserNick);
             // message.setAttribute("to_useravatar", toChatUserAvatar);
             message.setAttribute("useravatar", myUserAvatar);
@@ -778,7 +744,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
      */
     private void sendPicture(final String filePath, boolean is_share) {
         Log.e("filePath------>>>>", filePath);
-        String to = toChatUsername;
+        String to = friend.name;
         // create and add image message in view
         final EMMessage message = EMMessage
                 .createSendMessage(EMMessage.Type.IMAGE);
@@ -822,7 +788,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             // 如果是群聊，设置chattype,默认是单聊
             if (chatType == CHATTYPE_GROUP)
                 message.setChatType(ChatType.GroupChat);
-            String to = toChatUsername;
+            String to = friend.name;
             message.setReceipt(to);
             // message.setAttribute("to_usernick", toChatUserNick);
             // message.setAttribute("to_useravatar", toChatUserAvatar);
@@ -897,7 +863,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         LocationMessageBody locBody = new LocationMessageBody(locationAddress,
                 latitude, longitude);
         message.addBody(locBody);
-        message.setReceipt(toChatUsername);
+        message.setReceipt(friend.name);
         // message.setAttribute("to_usernick", toChatUserNick);
         // message.setAttribute("to_useravatar", toChatUserAvatar);
         message.setAttribute("useravatar", myUserAvatar);
@@ -952,7 +918,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         if (chatType == CHATTYPE_GROUP)
             message.setChatType(ChatType.GroupChat);
 
-        message.setReceipt(toChatUsername);
+        message.setReceipt(friend.name);
         // add message body
         NormalFileMessageBody body = new NormalFileMessageBody(new File(
                 filePath));
@@ -1250,14 +1216,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             // }
             // }
             // }
-            if (!username.equals(toChatUsername)) {
+            if (!username.equals(friend.name)) {
                 // 消息不是发给当前会话，return
                 notifyNewMessage(message);
                 return;
             }
 
             // conversation =
-            // EMChatManager.getInstance().getConversation(toChatUsername);
+            // EMChatManager.getInstance().getConversation(friend.name);
             // 通知adapter有新消息，更新ui
             adapter.refresh();
             listView.setSelection(listView.getCount() - 1);
@@ -1336,7 +1302,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                     recordingHint
                             .setText(getString(R.string.move_up_to_cancel));
                     recordingHint.setBackgroundColor(Color.TRANSPARENT);
-                    voiceRecorder.startRecording(null, toChatUsername,
+                    voiceRecorder.startRecording(null, friend.name,
                             getApplicationContext());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1381,7 +1347,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                         if (length > 0) {
                             sendVoice(voiceRecorder.getVoiceFilePath(),
                                     voiceRecorder
-                                            .getVoiceFileName(toChatUsername),
+                                            .getVoiceFileName(friend.name),
                                     Integer.toString(length), false);
                         } else if (length == EMError.INVALID_FILE) {
                             Toast.makeText(getApplicationContext(), "无录音权限",
@@ -1522,7 +1488,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     protected void onResume() {
         super.onResume();
         // GluGroup group_temp = DemoApplication.getInstance().getGroupsList()
-        // .get(toChatUsername);
+        // .get(friend.name);
         // if (group_temp != null)
         // ((TextView) findViewById(R.id.name)).setText(group_temp
         // .getGroupName());
@@ -1678,7 +1644,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     protected void onNewIntent(Intent intent) {
         // 点击notification bar进入聊天页面，保证只有一个聊天页面
         String username = intent.getStringExtra("userId");
-        if (toChatUsername.equals(username))
+        if (friend.name.equals(username))
             super.onNewIntent(intent);
         else {
             finish();
@@ -1721,8 +1687,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-    public String getToChatUsername() {
-        return toChatUsername;
+    public String getfriend.name() {
+        return friend.name;
     }
 
 }

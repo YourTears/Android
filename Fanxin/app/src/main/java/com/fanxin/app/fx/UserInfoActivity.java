@@ -32,9 +32,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import appLogic.AppConstant;
+import appLogic.FriendInfo;
+import appLogic.FriendStatus;
+import appLogic.Gender;
+
 public class UserInfoActivity extends Activity {
     private LoadUserAvatar avatarLoader;
-    boolean is_friend = false;
+    private FriendInfo friend = null;
      String hxid;
     @SuppressLint("SdCardPath")
     @Override
@@ -46,37 +51,33 @@ public class UserInfoActivity extends Activity {
         ImageView iv_avatar = (ImageView) this.findViewById(R.id.iv_avatar);
         ImageView iv_sex = (ImageView) this.findViewById(R.id.iv_sex);
         TextView tv_name = (TextView) this.findViewById(R.id.tv_name);
-        final String nick = this.getIntent().getStringExtra("nick");
-        final String avatar = this.getIntent().getStringExtra("avatar");
-        String sex = this.getIntent().getStringExtra("sex");
-        hxid = this.getIntent().getStringExtra("hxid");
-        if (nick != null && avatar != null && sex != null && hxid != null) {
-            tv_name.setText(nick);
-            if (sex.equals("1")) {
+        String id = this.getIntent().getStringExtra("id");
+        friend = AppConstant.friendsManager.getFriend(id);
+
+        if (friend != null) {
+            tv_name.setText(friend.name);
+            if (friend.gender == Gender.male) {
                 iv_sex.setImageResource(R.drawable.ic_sex_male);
-            } else if (sex.equals("2")) {
+            } else if (friend.gender == Gender.female) {
                 iv_sex.setImageResource(R.drawable.ic_sex_female);
             } else {
                 iv_sex.setVisibility(View.GONE);
             }
-            if (DemoApplication.getInstance().getContactList()
-                    .containsKey(hxid)) {
-                is_friend = true;
+
+            if (friend.friendStatus == FriendStatus.friend) {
                 btn_sendmsg.setText("发消息");
             }
-
-            showUserAvatar(iv_avatar, avatar);
         }
 
         btn_sendmsg.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (is_friend) {
+                if (friend.friendStatus == FriendStatus.friend) {
                     Intent intent = new Intent();
                     intent.putExtra("userId", hxid);
            
-                    intent.putExtra("userNick", nick);
+                    intent.putExtra("userNick", friend.name);
 
                     intent.setClass(UserInfoActivity.this, ChatActivity.class);
                     startActivity(intent);

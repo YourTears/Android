@@ -12,7 +12,7 @@ public class FriendInfo {
     public String nickName;
     public String imageUrl;
     public Gender gender;
-    public FriendStatus status;
+    public FriendStatus friendStatus;
     public String sign;
     public int regionProvinceId;
     public int regionCityId;
@@ -20,4 +20,6 @@ public class FriendInfo {
     public int homeCityId;
     public String region;
     public String home;
+
+
 }

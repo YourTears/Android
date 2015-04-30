@@ -103,12 +103,12 @@ public class LoadDataFromServer {
                             entity.addPart(key, new FileBody(file));
                         } else {
 
-                            try {
-                                entity.addPart(key, new StringBody(value,
-                                        Charset.forName("UTF-8")));
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
+//                            try {
+//                                entity.addPart(key, new StringBody(value,
+//                                        Charset.forName("UTF-8")));
+//                            } catch (UnsupportedEncodingException e) {
+//                                e.printStackTrace();
+//                            }
                         }
                     }
 
