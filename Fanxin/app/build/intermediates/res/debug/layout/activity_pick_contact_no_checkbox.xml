@@ -39,14 +39,6 @@
             android:divider="#E2E2E2"
             android:dividerHeight="1dp" />
 
-        <com.fanxin.app.widget.Sidebar
-            android:id="@+id/sidebar"
-            android:layout_width="25dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="@android:color/transparent"
-            android:clickable="true" />
-
         <TextView
             android:id="@+id/floating_header"
             android:layout_width="wrap_content"

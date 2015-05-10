@@ -2,8 +2,6 @@ package com.fanxin.app.fx;
 
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
-import com.fanxin.app.fx.others.LoadUserAvatar;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,12 +16,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import appLogic.AppConstant;
+import appLogic.ImageManager;
 import appLogic.MeInfo;
+import common.AsyncImageLoader;
 
-@SuppressLint("SdCardPath")
 public class FragmentProfile extends Fragment {
 
-    private LoadUserAvatar avatarLoader;
     private String avatar = "";
     private ImageView iv_avatar;
     private TextView tv_name;
@@ -40,7 +39,6 @@ public class FragmentProfile extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        avatarLoader = new LoadUserAvatar(getActivity(), "/sdcard/fanxin/");
         RelativeLayout re_myinfo = (RelativeLayout) getView().findViewById(
                 R.id.re_myinfo);
         re_myinfo.setOnClickListener(new OnClickListener() {
@@ -76,53 +74,9 @@ public class FragmentProfile extends Fragment {
         } else {
             tv_fxid.setText("微信号:" + fxid);
         }
-        showUserAvatar(iv_avatar, avatar);
+
+        AsyncImageLoader imageLoader = new AsyncImageLoader(iv_avatar, true);
+        imageLoader.execute(AppConstant.meInfo.imageUrl,
+                ImageManager.getImageLocalPath(AppConstant.meInfo.imageUrl, AppConstant.meInfo.id));
     }
-
-    private void showUserAvatar(ImageView iamgeView, String avatar) {
-        final String url_avatar = Constant.URL_Avatar + avatar;
-        iamgeView.setTag(url_avatar);
-        if (url_avatar != null && !url_avatar.equals("")) {
-            Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
-                    new ImageDownloadedCallBack() {
-
-                        @Override
-                        public void onImageDownloaded(ImageView imageView,
-                                Bitmap bitmap) {
-                            if (imageView.getTag() == url_avatar) {
-                                imageView.setImageBitmap(bitmap);
-
-                            }
-                        }
-
-                    });
-            if (bitmap != null)
-                iamgeView.setImageBitmap(bitmap);
-
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        String vatar_temp = MeInfo.getInstance().imageUrl;
-        if (!vatar_temp.equals(avatar)) {
-            showUserAvatar(iv_avatar, avatar);
-        }
-
-        String nick_temp = MeInfo.getInstance().name;
-        String fxid_temp = MeInfo.getInstance().sys_id;
-
-        if (!nick_temp.equals(nick)) {
-            tv_name.setText(nick_temp);
-        }
-        if (!fxid_temp.equals(fxid)) {
-            if (fxid_temp.equals("0")) {
-                tv_fxid.setText("微信号：未设置");
-            } else {
-                tv_fxid.setText("微信号:" + fxid_temp);
-            }
-        }
-    }
-
 }

@@ -47,8 +47,6 @@ import com.fanxin.app.R;
 import com.fanxin.app.activity.FXAlertDialog;
 import com.fanxin.app.activity.ShowBigImage;
 import com.fanxin.app.fx.ChatActivity;
-import com.fanxin.app.fx.others.LoadUserAvatar;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.fanxin.app.task.LoadImageTask;
 import com.fanxin.app.utils.ImageCache;
 import com.fanxin.app.utils.ImageUtils;
@@ -61,11 +59,10 @@ import com.easemob.util.LatLng;
 import com.easemob.util.TextFormater;
 
 import appLogic.MeInfo;
+import common.AsyncImageLoader;
 
 @SuppressLint({ "SdCardPath", "InflateParams" })
 public class MessageAdapter extends BaseAdapter {
-    private LoadUserAvatar avatarLoader;
-
     private final static String TAG = "msg";
 
     private static final int MESSAGE_TYPE_RECV_TXT = 0;
@@ -105,7 +102,6 @@ public class MessageAdapter extends BaseAdapter {
         activity = (Activity) context;
         this.conversation = EMChatManager.getInstance().getConversation(
                 username);
-        avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
     }
 
     // public void setUser(String user) {
@@ -559,25 +555,7 @@ public class MessageAdapter extends BaseAdapter {
                 holder.head_iv.setTag(avater);
 
                 if (avater != null && !avater.equals("")) {
-                    Bitmap bitmap = avatarLoader.loadImage(holder.head_iv,
-                            avater, new ImageDownloadedCallBack() {
 
-                                @Override
-                                public void onImageDownloaded(
-                                        ImageView imageView, Bitmap bitmap) {
-                                    if (imageView.getTag() == avater) {
-                                        imageView.setImageBitmap(bitmap);
-
-                                    }
-                                }
-
-                            });
-
-                    if (bitmap != null) {
-
-                        holder.head_iv.setImageBitmap(bitmap);
-
-                    }
 
                 }
 
@@ -591,26 +569,8 @@ public class MessageAdapter extends BaseAdapter {
                 holder.head_iv.setTag(avater);
 
                 if (avater != null && !avater.equals("")) {
-                    Bitmap bitmap = avatarLoader.loadImage(holder.head_iv,
-                            avater, new ImageDownloadedCallBack() {
-
-                                @Override
-                                public void onImageDownloaded(
-                                        ImageView imageView, Bitmap bitmap) {
-                                    if (imageView.getTag() == avater) {
-                                        imageView.setImageBitmap(bitmap);
-
-                                    }
-                                }
-
-                            });
-
-                    if (bitmap != null) {
-
-                        holder.head_iv.setImageBitmap(bitmap);
-
-                    }
-
+                    AsyncImageLoader imageLoader = new AsyncImageLoader(holder.head_iv, true);
+                    //imageLoader.execute(avater, Constant.meInfo.getImageLocalPath());
                 }
 
             }

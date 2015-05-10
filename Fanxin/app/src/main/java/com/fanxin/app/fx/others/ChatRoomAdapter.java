@@ -8,8 +8,6 @@ import com.easemob.chat.EMGroup;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.fx.ChatActivity;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -29,13 +27,11 @@ public class ChatRoomAdapter extends BaseAdapter {
     Context context;
     List<EMGroup> grouplist;
     private LayoutInflater inflater;
-    private LoadUserAvatar avatarLoader;
 
     public ChatRoomAdapter(Context context, List<EMGroup> grouplist) {
         this.context = context;
         this.grouplist = grouplist;
         inflater = LayoutInflater.from(context);
-        avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
     }
 
     @Override
@@ -193,20 +189,7 @@ public class ChatRoomAdapter extends BaseAdapter {
         final String url_avatar = Constant.URL_Avatar + avatar;
         iamgeView.setTag(url_avatar);
         if (url_avatar != null && !url_avatar.equals("")) {
-            Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
-                    new ImageDownloadedCallBack() {
 
-                        public void onImageDownloaded(ImageView imageView,
-                                Bitmap bitmap) {
-                            if (imageView.getTag() == url_avatar) {
-                                imageView.setImageBitmap(bitmap);
-
-                            }
-                        }
-
-                    });
-            if (bitmap != null)
-                iamgeView.setImageBitmap(bitmap);
 
         }
     }

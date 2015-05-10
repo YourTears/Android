@@ -26,7 +26,6 @@ import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.domain.InviteMessage;
 import com.fanxin.app.domain.InviteMessage.InviteMesageStatus;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -51,14 +50,11 @@ public class NewFriendsAdapter extends BaseAdapter {
     List<InviteMessage> msgs;
     private InviteMessgeDao messgeDao;
     int total = 0;
-    private LoadUserAvatar avatarLoader;
 
-    @SuppressLint("SdCardPath")
     public NewFriendsAdapter(Context context, List<InviteMessage> msgs) {
         this.context = context;
         this.msgs = msgs;
         messgeDao = new InviteMessgeDao(context);
-        avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
         total = msgs.size();
     }
 
@@ -145,21 +141,6 @@ public class NewFriendsAdapter extends BaseAdapter {
         final String url_avatar = Constant.URL_Avatar + avatar;
         iamgeView.setTag(url_avatar);
         if (url_avatar != null && !url_avatar.equals("")) {
-            Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
-                    new ImageDownloadedCallBack() {
-
-                        @Override
-                        public void onImageDownloaded(ImageView imageView,
-                                Bitmap bitmap) {
-                            if (imageView.getTag() == url_avatar) {
-                                imageView.setImageBitmap(bitmap);
-
-                            }
-                        }
-
-                    });
-            if (bitmap != null)
-                iamgeView.setImageBitmap(bitmap);
 
         }
     }

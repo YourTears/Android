@@ -70,7 +70,6 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMMessage;
-import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.ImageMessageBody;
 import com.easemob.chat.LocationMessageBody;
 import com.easemob.chat.NormalFileMessageBody;
@@ -96,7 +95,6 @@ import com.easemob.util.VoiceRecorder;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
-import appLogic.MeInfo;
 
 /**
  * 聊天页面
@@ -200,7 +198,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.activity_chat);
 
         String friendId = this.getIntent().getStringExtra("id");
-        friend = AppConstant.friendsManager.getFriend(friendId);
+        friend = AppConstant.friendManager.getFriend(friendId);
 
         initView();
         setUpView();
@@ -335,7 +333,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 //        // 把此会话的未读数置为0
 //        conversation.resetUnreadMsgCount();
 
-        adapter = new MessageAdapter(this, friend.id);
+        //adapter = new MessageAdapter(this, friend.id);
         // 显示消息
         listView.setAdapter(adapter);
         listView.setOnScrollListener(new ListScrollListener());
@@ -682,8 +680,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             message.setReceipt(friend.name);
             // message.setAttribute("to_usernick", toChatUserNick);
             // message.setAttribute("to_useravatar", toChatUserAvatar);
-            message.setAttribute("useravatar", MeInfo.getInstance());
-            message.setAttribute("usernick", myUserNick);
+            message.setAttribute("useravatar", AppConstant.meInfo.imageUrl);
+            message.setAttribute("usernick", AppConstant.meInfo.name);
             // 把messgage加到conversation中
             conversation.addMessage(message);
             // 通知adapter有消息变动，adapter会根据加入的这条message显示消息和调用sdk的发送方法
@@ -713,14 +711,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             final EMMessage message = EMMessage
                     .createSendMessage(EMMessage.Type.VOICE);
 
-            // 如果是群聊，设置chattype,默认是单聊
-            if (chatType == CHATTYPE_GROUP)
-                message.setChatType(ChatType.GroupChat);
             message.setReceipt(friend.name);
             // message.setAttribute("to_usernick", toChatUserNick);
             // message.setAttribute("to_useravatar", toChatUserAvatar);
-            message.setAttribute("useravatar", myUserAvatar);
-            message.setAttribute("usernick", myUserNick);
+            message.setAttribute("useravatar", AppConstant.meInfo.imageUrl);
+            message.setAttribute("usernick", AppConstant.meInfo.name);
             int len = Integer.parseInt(length);
             VoiceMessageBody body = new VoiceMessageBody(new File(filePath),
                     len);
@@ -748,15 +743,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         // create and add image message in view
         final EMMessage message = EMMessage
                 .createSendMessage(EMMessage.Type.IMAGE);
-        // 如果是群聊，设置chattype,默认是单聊
-        if (chatType == CHATTYPE_GROUP)
-            message.setChatType(ChatType.GroupChat);
 
         message.setReceipt(to);
         // message.setAttribute("to_usernick", toChatUserNick);
         // message.setAttribute("to_useravatar", toChatUserAvatar);
-        message.setAttribute("useravatar", myUserAvatar);
-        message.setAttribute("usernick", myUserNick);
+        message.setAttribute("useravatar", AppConstant.meInfo.imageUrl);
+        message.setAttribute("usernick", AppConstant.meInfo.name);
         if (is_share) {
             message.setAttribute("isShare", "yes");
         }
@@ -785,15 +777,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         try {
             EMMessage message = EMMessage
                     .createSendMessage(EMMessage.Type.VIDEO);
-            // 如果是群聊，设置chattype,默认是单聊
-            if (chatType == CHATTYPE_GROUP)
-                message.setChatType(ChatType.GroupChat);
+
             String to = friend.name;
             message.setReceipt(to);
             // message.setAttribute("to_usernick", toChatUserNick);
             // message.setAttribute("to_useravatar", toChatUserAvatar);
-            message.setAttribute("useravatar", myUserAvatar);
-            message.setAttribute("usernick", myUserNick);
+            message.setAttribute("useravatar", AppConstant.meInfo.imageUrl);
+            message.setAttribute("usernick", AppConstant.meInfo.name);
             VideoMessageBody body = new VideoMessageBody(videoFile, thumbPath,
                     length, videoFile.length());
             message.addBody(body);
@@ -857,17 +847,15 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             String imagePath, String locationAddress) {
         EMMessage message = EMMessage
                 .createSendMessage(EMMessage.Type.LOCATION);
-        // 如果是群聊，设置chattype,默认是单聊
-        if (chatType == CHATTYPE_GROUP)
-            message.setChatType(ChatType.GroupChat);
+
         LocationMessageBody locBody = new LocationMessageBody(locationAddress,
                 latitude, longitude);
         message.addBody(locBody);
         message.setReceipt(friend.name);
         // message.setAttribute("to_usernick", toChatUserNick);
         // message.setAttribute("to_useravatar", toChatUserAvatar);
-        message.setAttribute("useravatar", myUserAvatar);
-        message.setAttribute("usernick", myUserNick);
+        message.setAttribute("useravatar", AppConstant.meInfo.imageUrl);
+        message.setAttribute("usernick", AppConstant.meInfo.name);
         conversation.addMessage(message);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -914,9 +902,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
         // 创建一个文件消息
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.FILE);
-        // 如果是群聊，设置chattype,默认是单聊
-        if (chatType == CHATTYPE_GROUP)
-            message.setChatType(ChatType.GroupChat);
 
         message.setReceipt(friend.name);
         // add message body
@@ -925,8 +910,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         message.addBody(body);
         // message.setAttribute("to_usernick", toChatUserNick);
         // message.setAttribute("to_useravatar", toChatUserAvatar);
-        message.setAttribute("useravatar", myUserAvatar);
-        message.setAttribute("usernick", myUserNick);
+        message.setAttribute("useravatar", AppConstant.meInfo.imageUrl);
+        message.setAttribute("usernick", AppConstant.meInfo.name);
         conversation.addMessage(message);
         listView.setAdapter(adapter);
         adapter.refresh();
@@ -1599,14 +1584,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                     // sdk初始化加载的聊天记录为20条，到顶时去db里获取更多
                     List<EMMessage> messages;
                     try {
-                        // 获取更多messges，调用此方法的时候从db获取的messages
-                        // sdk会自动存入到此conversation中
-                        if (chatType == CHATTYPE_SINGLE)
                             messages = conversation.loadMoreMsgFromDB(adapter
                                     .getItem(0).getMsgId(), pagesize);
-                        else
-                            messages = conversation.loadMoreGroupMsgFromDB(
-                                    adapter.getItem(0).getMsgId(), pagesize);
                     } catch (Exception e1) {
                         loadmorePB.setVisibility(View.GONE);
                         return;
@@ -1687,7 +1666,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-    public String getfriend.name() {
+    public String getFriendName() {
         return friend.name;
     }
 

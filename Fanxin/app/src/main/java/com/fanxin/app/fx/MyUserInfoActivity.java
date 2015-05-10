@@ -20,9 +20,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.fx.others.LoadDataFromServer;
-import com.fanxin.app.fx.others.LoadUserAvatar;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -66,7 +64,6 @@ public class MyUserInfoActivity extends Activity {
     private static final int PHOTO_REQUEST_CUT = 3;// 结果
     private static final int UPDATE_FXID = 4;// 结果
     private static final int UPDATE_NICK = 5;// 结果
-    private LoadUserAvatar avatarLoader;
     String hxid;
     String fxid;
     String sex;
@@ -77,7 +74,6 @@ public class MyUserInfoActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myinfo);
-        avatarLoader = new LoadUserAvatar(this, "/sdcard/fanxin/");
         initView();
 
     }
@@ -326,21 +322,6 @@ public class MyUserInfoActivity extends Activity {
         final String url_avatar = Constant.URL_Avatar + avatar;
         iamgeView.setTag(url_avatar);
         if (url_avatar != null && !url_avatar.equals("")) {
-            Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
-                    new ImageDownloadedCallBack() {
-
-                        @Override
-                        public void onImageDownloaded(ImageView imageView,
-                                Bitmap bitmap) {
-                            if (imageView.getTag() == url_avatar) {
-                                imageView.setImageBitmap(bitmap);
-
-                            }
-                        }
-
-                    });
-            if (bitmap != null)
-                iamgeView.setImageBitmap(bitmap);
 
         }
     }

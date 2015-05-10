@@ -42,9 +42,7 @@ import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
-import com.fanxin.app.fx.others.LoadUserAvatar;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.easemob.exceptions.EaseMobException;
 
 import appLogic.FriendInfo;
@@ -470,7 +468,6 @@ public class CreatChatRoomActivity extends BaseActivity {
         private LayoutInflater layoutInflater;
         private boolean[] isCheckedArray;
         private Bitmap[] bitmaps;
-        private LoadUserAvatar avatarLoader;
         private List<FriendInfo> list = new ArrayList<FriendInfo>();
         private int res;
 
@@ -478,7 +475,6 @@ public class CreatChatRoomActivity extends BaseActivity {
                                   List<FriendInfo> users) {
 
             layoutInflater = LayoutInflater.from(context);
-            avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
 
             this.res = resource;
             this.list = users;
@@ -515,26 +511,6 @@ public class CreatChatRoomActivity extends BaseActivity {
             iv_avatar.setTag(avater);
             Bitmap bitmap = null;
             if (avater != null && !avater.equals("")) {
-                bitmap = avatarLoader.loadImage(iv_avatar, avater,
-                        new ImageDownloadedCallBack() {
-
-                            @Override
-                            public void onImageDownloaded(ImageView imageView,
-                                                          Bitmap bitmap) {
-                                if (imageView.getTag() == avater) {
-                                    imageView.setImageBitmap(bitmap);
-
-                                }
-                            }
-
-                        });
-
-                if (bitmap != null) {
-
-                    iv_avatar.setImageBitmap(bitmap);
-
-                }
-
                 bitmaps[position] = bitmap;
 
             }

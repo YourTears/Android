@@ -19,12 +19,9 @@ import android.widget.TextView;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.fx.others.ContactAdapter;
-import com.fanxin.app.widget.Sidebar;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
-import appLogic.FriendStatus;
-import appLogic.FriendsManager;
 
 /**
  * 联系人列表页
@@ -35,7 +32,6 @@ public class FragmentFriends extends Fragment {
     private ContactAdapter adapter;
     private ListView listView;
     private boolean hidden;
-    private Sidebar sidebar;
 
     private TextView tv_unread;
     private TextView tv_total;
@@ -65,8 +61,7 @@ public class FragmentFriends extends Fragment {
         View footerView = infalter.inflate(R.layout.item_contact_list_footer,
                 null);
         listView.addFooterView(footerView);
-        sidebar = (Sidebar) getView().findViewById(R.id.sidebar);
-        sidebar.setListView(listView);
+
         tv_unread = (TextView) headView.findViewById(R.id.tv_unread);
         if(((MainActivity)getActivity()).unreadAddressLable.getVisibility()==View.VISIBLE){
             tv_unread.setVisibility(View.VISIBLE);
@@ -79,7 +74,7 @@ public class FragmentFriends extends Fragment {
         tv_total = (TextView) footerView.findViewById(R.id.tv_total);
         // 设置adapter
         adapter = new ContactAdapter(getActivity(), R.layout.item_contact_list,
-                AppConstant.friendsManager.friends);
+                AppConstant.friendManager.friends);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -93,7 +88,7 @@ public class FragmentFriends extends Fragment {
             }
         });
        
-        tv_total.setText(String.valueOf(AppConstant.friendsManager.getFriendCount())+"位联系人");
+        tv_total.setText(String.valueOf(AppConstant.friendManager.getFriendCount())+"位联系人");
       
         RelativeLayout re_newfriends=(RelativeLayout) headView.findViewById(R.id.re_newfriends);
         RelativeLayout re_chatroom=(RelativeLayout) headView.findViewById(R.id.re_chatroom);
@@ -144,7 +139,7 @@ public class FragmentFriends extends Fragment {
                 public void run() {
 
                     adapter.notifyDataSetChanged();
-                    tv_total.setText(String.valueOf(AppConstant.friendsManager.getFriendCount())+"位联系人");
+                    tv_total.setText(String.valueOf(AppConstant.friendManager.getFriendCount())+"位联系人");
                     if(((MainActivity)getActivity()).unreadAddressLable.getVisibility()==View.VISIBLE){
                         tv_unread.setVisibility(View.VISIBLE);
                         tv_unread.setText(((MainActivity)getActivity()).unreadAddressLable.getText());

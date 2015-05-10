@@ -19,7 +19,6 @@ import com.fanxin.app.R;
 import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.fx.ChatActivity;
 import com.fanxin.app.fx.MainActivity;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.fanxin.app.utils.SmileUtils;
 import com.easemob.util.DateUtils;
 
@@ -49,7 +48,6 @@ public class ConversationAdapter extends BaseAdapter {
     private List<EMConversation> normal_list;
     private List<EMConversation> top_list;
     private LayoutInflater inflater;
-    private LoadUserAvatar avatarLoader;
     private Context context;
     Map<String, TopUser> topMap;
 
@@ -62,7 +60,6 @@ public class ConversationAdapter extends BaseAdapter {
         this.normal_list = normal_list;
         this.top_list = top_list;
         inflater = LayoutInflater.from(context);
-        avatarLoader = new LoadUserAvatar(context, "/sdcard/fanxin/");
     }
 
     @Override
@@ -407,20 +404,6 @@ public class ConversationAdapter extends BaseAdapter {
         final String url_avatar = Constant.URL_Avatar + avatar;
         iamgeView.setTag(url_avatar);
         if (url_avatar != null && !url_avatar.equals("")) {
-            Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
-                    new ImageDownloadedCallBack() {
-
-                        public void onImageDownloaded(ImageView imageView,
-                                Bitmap bitmap) {
-                            if (imageView.getTag() == url_avatar) {
-                                imageView.setImageBitmap(bitmap);
-
-                            }
-                        }
-
-                    });
-            if (bitmap != null)
-                iamgeView.setImageBitmap(bitmap);
 
         }
     }

@@ -2,29 +2,16 @@ package com.fanxin.app.fx;
 
 import java.util.HashMap;
 import java.util.Map;
- 
-
-
-
-
-
-
-
 
 import com.fanxin.app.Constant;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.fx.others.LoadDataFromServer;
-import com.fanxin.app.fx.others.LoadUserAvatar;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,21 +25,20 @@ import appLogic.FriendStatus;
 import appLogic.Gender;
 
 public class UserInfoActivity extends Activity {
-    private LoadUserAvatar avatarLoader;
     private FriendInfo friend = null;
      String hxid;
-    @SuppressLint("SdCardPath")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userinfo);
-        avatarLoader = new LoadUserAvatar(this, "/sdcard/fanxin/");
+
         Button btn_sendmsg = (Button) this.findViewById(R.id.btn_sendmsg);
         ImageView iv_avatar = (ImageView) this.findViewById(R.id.iv_avatar);
         ImageView iv_sex = (ImageView) this.findViewById(R.id.iv_sex);
         TextView tv_name = (TextView) this.findViewById(R.id.tv_name);
         String id = this.getIntent().getStringExtra("id");
-        friend = AppConstant.friendsManager.getFriend(id);
+        friend = AppConstant.friendManager.getFriend(id);
 
         if (friend != null) {
             tv_name.setText(friend.name);
@@ -75,11 +61,9 @@ public class UserInfoActivity extends Activity {
             public void onClick(View v) {
                 if (friend.friendStatus == FriendStatus.friend) {
                     Intent intent = new Intent();
-                    intent.putExtra("userId", hxid);
-           
-                    intent.putExtra("userNick", friend.name);
-
+                    intent.putExtra("id", friend.id);
                     intent.setClass(UserInfoActivity.this, ChatActivity.class);
+
                     startActivity(intent);
                 } else {
 
@@ -97,29 +81,6 @@ public class UserInfoActivity extends Activity {
 
         });
        refresh();
-    }
-
-    private void showUserAvatar(ImageView iamgeView, String avatar) {
-        final String url_avatar = Constant.URL_Avatar + avatar;
-        iamgeView.setTag(url_avatar);
-        if (url_avatar != null && !url_avatar.equals("")) {
-            Bitmap bitmap = avatarLoader.loadImage(iamgeView, url_avatar,
-                    new ImageDownloadedCallBack() {
-
-                        @Override
-                        public void onImageDownloaded(ImageView imageView,
-                                Bitmap bitmap) {
-                            if (imageView.getTag() == url_avatar) {
-                                imageView.setImageBitmap(bitmap);
-
-                            }
-                        }
-
-                    });
-            if (bitmap != null)
-                iamgeView.setImageBitmap(bitmap);
-
-        }
     }
 
     public void back(View view) {

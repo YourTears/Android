@@ -22,10 +22,8 @@ import com.easemob.chat.EMContactManager;
 import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
-import com.fanxin.app.fx.others.LoadUserAvatar;
 import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.fx.others.TopUserDao;
-import com.fanxin.app.fx.others.LoadUserAvatar.ImageDownloadedCallBack;
 import com.easemob.exceptions.EaseMobException;
 
 import appLogic.FriendInfo;
@@ -48,7 +46,6 @@ public class ChatSingleSettingActivity extends BaseActivity implements
     private String userNick;
     private String avatar;
     String sex;
-    private LoadUserAvatar avatarLoader;
     private List<String> blackList;
     // 置顶列表
     Map<String, TopUser> topMap = new HashMap<String, TopUser>();
@@ -59,7 +56,6 @@ public class ChatSingleSettingActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singlechat_setting);
-        avatarLoader = new LoadUserAvatar(this, "/sdcard/fanxin/");
 
         instance = this;
         // 获取传过来的userId
@@ -129,25 +125,6 @@ public class ChatSingleSettingActivity extends BaseActivity implements
         iv_avatar.setImageResource(R.drawable.default_useravatar);
         iv_avatar.setTag(avatar);
         if (avatar != null && !avatar.equals("")) {
-            Bitmap bitmap = avatarLoader.loadImage(iv_avatar, avatar,
-                    new ImageDownloadedCallBack() {
-
-                        @Override
-                        public void onImageDownloaded(ImageView imageView,
-                                Bitmap bitmap) {
-                            if (imageView.getTag() == avatar) {
-                                imageView.setImageBitmap(bitmap);
-
-                            }
-                        }
-
-                    });
-
-            if (bitmap != null) {
-
-                iv_avatar.setImageBitmap(bitmap);
-
-            }
 
         }
         iv_avatar.setOnClickListener(new OnClickListener() {

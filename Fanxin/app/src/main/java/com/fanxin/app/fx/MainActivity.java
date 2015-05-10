@@ -43,6 +43,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -56,7 +57,8 @@ import android.widget.Toast;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
-import appLogic.FriendsManager;
+import appLogic.FriendManager;
+import appLogic.ImageManager;
 import appLogic.MeInfo;
 import common.Util;
 
@@ -159,8 +161,16 @@ public class MainActivity extends BaseActivity {
     private void initMeInfo()
     {
         MeInfo.getMeInfo(Util.getAssertInputStream(this.getResources().getAssets(), "meInfo.json"));
-        AppConstant.friendsManager = FriendsManager.getInstance();
-        AppConstant.friendsManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
+
+        AppConstant.meInfo = MeInfo.getInstance();
+        AppConstant.friendManager = FriendManager.getInstance();
+        AppConstant.friendManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
+
+        AppConstant.dataFolder = Util.getAppFilePath(this);
+        AppConstant.imageFolder = AppConstant.dataFolder + "/images";
+
+        Util.createFolder(AppConstant.dataFolder);
+        Util.createFolder(AppConstant.imageFolder);
     }
 
     private void initView() {
@@ -369,11 +379,11 @@ public class MainActivity extends BaseActivity {
             if (ChatActivity.activityInstance != null) {
                 if (message.getChatType() == ChatType.GroupChat) {
                     if (message.getTo().equals(
-                            ChatActivity.activityInstance.getToChatUsername()))
+                            ChatActivity.activityInstance.getFriendName()))
                         return;
                 } else {
                     if (from.equals(ChatActivity.activityInstance
-                            .getToChatUsername()))
+                            .getFriendName()))
                         return;
                 }
             }
@@ -419,7 +429,7 @@ public class MainActivity extends BaseActivity {
                     if (ChatActivity.activityInstance != null) {
                         if (msg.getChatType() == ChatType.Chat) {
                             if (from.equals(ChatActivity.activityInstance
-                                    .getToChatUsername()))
+                                    .getFriendName()))
                                 return;
                         }
                     }
@@ -518,11 +528,11 @@ public class MainActivity extends BaseActivity {
                     if (ChatActivity.activityInstance != null
                             && usernameList
                                     .contains(ChatActivity.activityInstance
-                                            .getToChatUsername())) {
+                                            .getFriendName())) {
                         Toast.makeText(
                                 MainActivity.this,
                                 ChatActivity.activityInstance
-                                        .getToChatUsername() + st10,
+                                        .getFriendName() + st10,
                                 Toast.LENGTH_SHORT).show();
                         ChatActivity.activityInstance.finish();
                     }
