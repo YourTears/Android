@@ -36,7 +36,6 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="黄方意"
                 android:textColor="#353535"
                 android:textSize="16sp" />
 
@@ -50,14 +49,14 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_fxid"
+            android:id="@+id/tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@id/iv_avatar"
-            android:text="微信号:"
+            android:text="ID:"
             android:textColor="#AAAAAA"
             android:textSize="14sp" />
         
@@ -95,7 +94,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/iv_xiangce"
-            android:text="相册"
+            android:text="我的信息"
             android:textColor="#353535"
             android:textSize="16sp" />
 
@@ -130,7 +129,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/iv_shoucang"
-            android:text="收藏"
+            android:text="期待的她"
             android:textColor="#353535"
             android:textSize="16sp" />
     </RelativeLayout>

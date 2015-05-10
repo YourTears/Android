@@ -1,11 +1,7 @@
 package com.fanxin.app.fx;
 
-import com.fanxin.app.Constant;
 import com.fanxin.app.R;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,21 +14,12 @@ import android.widget.TextView;
 
 import appLogic.AppConstant;
 import appLogic.ImageManager;
-import appLogic.MeInfo;
 import common.AsyncImageLoader;
 
 public class FragmentProfile extends Fragment {
-
-    private String avatar = "";
-    private ImageView iv_avatar;
-    private TextView tv_name;
-    TextView tv_fxid;
-    String fxid;
-    String nick;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -60,22 +47,15 @@ public class FragmentProfile extends Fragment {
             }
 
         });
-        nick = MeInfo.getInstance().name;
-        fxid = MeInfo.getInstance().sys_id;
 
-        avatar = MeInfo.getInstance().imageUrl;
+        ImageView imageView = (ImageView) re_myinfo.findViewById(R.id.iv_avatar);
+        TextView nameTextView = (TextView) re_myinfo.findViewById(R.id.tv_name);
+        TextView idTextView = (TextView) re_myinfo.findViewById(R.id.tv_id);
 
-        iv_avatar = (ImageView) re_myinfo.findViewById(R.id.iv_avatar);
-        tv_name = (TextView) re_myinfo.findViewById(R.id.tv_name);
-        tv_fxid = (TextView) re_myinfo.findViewById(R.id.tv_fxid);
-        tv_name.setText(nick);
-        if (fxid.equals("0")) {
-            tv_fxid.setText("微信号：未设置");
-        } else {
-            tv_fxid.setText("微信号:" + fxid);
-        }
+        nameTextView.setText(AppConstant.meInfo.name);
+        idTextView.setText("ID:" + AppConstant.meInfo.id);
 
-        AsyncImageLoader imageLoader = new AsyncImageLoader(iv_avatar, true);
+        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, true);
         imageLoader.execute(AppConstant.meInfo.imageUrl,
                 ImageManager.getImageLocalPath(AppConstant.meInfo.imageUrl, AppConstant.meInfo.id));
     }
