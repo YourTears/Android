@@ -128,8 +128,8 @@ public class CreatChatRoomActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreatChatRoomActivity.this,
-                        ChatRoomActivity.class));
+                //startActivity(new Intent(CreatChatRoomActivity.this,
+                //        ChatRoomActivity.class));
                 finish();
             }
 

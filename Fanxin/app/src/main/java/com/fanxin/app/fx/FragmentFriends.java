@@ -33,7 +33,6 @@ public class FragmentFriends extends Fragment {
     private ListView listView;
     private boolean hidden;
 
-    private TextView tv_unread;
     private TextView tv_total;
     private LayoutInflater infalter;
 
@@ -55,21 +54,9 @@ public class FragmentFriends extends Fragment {
         listView = (ListView) getView().findViewById(R.id.list);
 
         infalter=LayoutInflater.from(getActivity());
-        View headView = infalter.inflate(R.layout.item_contact_list_header,
-                null);
-        listView.addHeaderView(headView);
         View footerView = infalter.inflate(R.layout.item_contact_list_footer,
                 null);
         listView.addFooterView(footerView);
-
-        tv_unread = (TextView) headView.findViewById(R.id.tv_unread);
-        if(((MainActivity)getActivity()).unreadAddressLable.getVisibility()==View.VISIBLE){
-            tv_unread.setVisibility(View.VISIBLE);
-            tv_unread.setText(((MainActivity)getActivity()).unreadAddressLable.getText());
-            
-        }else{
-            tv_unread.setVisibility(View.GONE);
-        }
         
         tv_total = (TextView) footerView.findViewById(R.id.tv_total);
         // 设置adapter
@@ -89,27 +76,6 @@ public class FragmentFriends extends Fragment {
         });
        
         tv_total.setText(String.valueOf(AppConstant.friendManager.getFriendCount())+"位联系人");
-      
-        RelativeLayout re_newfriends=(RelativeLayout) headView.findViewById(R.id.re_newfriends);
-        RelativeLayout re_chatroom=(RelativeLayout) headView.findViewById(R.id.re_chatroom);
-        re_newfriends.setOnClickListener(new OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),NewFriendsActivity.class)); 
-                
-            }
-            
-        });
-        re_chatroom.setOnClickListener(new OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),ChatRoomActivity.class)); 
-            }
-            
-        });
-
     }
 
     @Override
@@ -140,13 +106,6 @@ public class FragmentFriends extends Fragment {
 
                     adapter.notifyDataSetChanged();
                     tv_total.setText(String.valueOf(AppConstant.friendManager.getFriendCount())+"位联系人");
-                    if(((MainActivity)getActivity()).unreadAddressLable.getVisibility()==View.VISIBLE){
-                        tv_unread.setVisibility(View.VISIBLE);
-                        tv_unread.setText(((MainActivity)getActivity()).unreadAddressLable.getText());
-                        
-                    }else{
-                        tv_unread.setVisibility(View.GONE);
-                    }
                 }
             });
         } catch (Exception e) {
