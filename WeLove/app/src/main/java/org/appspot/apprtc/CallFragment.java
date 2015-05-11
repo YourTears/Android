@@ -48,186 +48,162 @@ import java.util.Map;
  * Fragment for call control.
  */
 public class CallFragment extends Fragment {
-  private View controlView;
-  private ImageButton disconnectButton;
-  private ImageButton cameraSwitchButton;
-<<<<<<< HEAD
-  private ImageButton toggleDebugButton;
-  private ImageButton videoScalingButton;
-  private ScalingType scalingType;
-=======
->>>>>>> 38e3f6d1888a2db43cae1e1a73a2cbade12c02e7
-  private OnCallEvents callEvents;
-  private boolean displayHud;
-  private volatile boolean isRunning;
-  private final CpuMonitor cpuMonitor = new CpuMonitor();
+    private View controlView;
+    private ImageButton disconnectButton;
+    private ImageButton cameraSwitchButton;
+    private ImageButton videoScalingButton;
+    private ScalingType scalingType;
+    private OnCallEvents callEvents;
+    private boolean displayHud;
+    private volatile boolean isRunning;
+    private final CpuMonitor cpuMonitor = new CpuMonitor();
 
-  /**
-   * Call control interface for container activity.
-   */
-  public interface OnCallEvents {
-    public void onCallHangUp();
-    public void onCameraSwitch();
-    public void onVideoScalingSwitch(ScalingType scalingType);
-  }
+    /**
+     * Call control interface for container activity.
+     */
+    public interface OnCallEvents {
+        public void onCallHangUp();
+        public void onCameraSwitch();
+        public void onVideoScalingSwitch(ScalingType scalingType);
+    }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    controlView =
-        inflater.inflate(R.layout.fragment_call, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        controlView =
+                inflater.inflate(R.layout.fragment_call, container, false);
 
-    // Create UI controls.
-    disconnectButton =
-        (ImageButton) controlView.findViewById(R.id.button_call_disconnect);
-    cameraSwitchButton =
-        (ImageButton) controlView.findViewById(R.id.button_call_switch_camera);
-<<<<<<< HEAD
-    toggleDebugButton =
-        (ImageButton) controlView.findViewById(R.id.button_toggle_debug);
-    videoScalingButton =
-              (ImageButton) controlView.findViewById(R.id.button_call_scaling_mode);
-=======
->>>>>>> 38e3f6d1888a2db43cae1e1a73a2cbade12c02e7
+        disconnectButton =
+                (ImageButton) controlView.findViewById(R.id.button_call_disconnect);
+        cameraSwitchButton =
+                (ImageButton) controlView.findViewById(R.id.button_call_switch_camera);
+        videoScalingButton =
+                (ImageButton) controlView.findViewById(R.id.button_call_scaling_mode);
 
-    // Add buttons click events.
-    disconnectButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        callEvents.onCallHangUp();
-      }
-    });
+        // Add buttons click events.
+        disconnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callEvents.onCallHangUp();
+            }
+        });
 
-    cameraSwitchButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        callEvents.onCameraSwitch();
-      }
-    });
+        cameraSwitchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callEvents.onCameraSwitch();
+            }
+        });
 
-<<<<<<< HEAD
-    toggleDebugButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (displayHud) {
-          int visibility = (hudView.getVisibility() == View.VISIBLE)
-              ? View.INVISIBLE : View.VISIBLE;
-          hudView.setVisibility(visibility);
+        videoScalingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (scalingType == ScalingType.SCALE_ASPECT_FILL) {
+                    videoScalingButton.setBackgroundResource(
+                            R.drawable.ic_action_full_screen);
+                    scalingType = ScalingType.SCALE_ASPECT_FIT;
+                } else {
+                    videoScalingButton.setBackgroundResource(
+                            R.drawable.ic_action_return_from_full_screen);
+                    scalingType = ScalingType.SCALE_ASPECT_FILL;
+                }
+                callEvents.onVideoScalingSwitch(scalingType);
+            }
+        });
+        scalingType = ScalingType.SCALE_ASPECT_FILL;
+
+        return controlView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Bundle args = getArguments();
+        if (args != null) {
+            displayHud = args.getBoolean(CallActivity.EXTRA_DISPLAY_HUD, false);
         }
-      }
-    });
-
-      videoScalingButton.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-              if (scalingType == ScalingType.SCALE_ASPECT_FILL) {
-                  videoScalingButton.setBackgroundResource(
-                          R.drawable.ic_action_full_screen);
-                  scalingType = ScalingType.SCALE_ASPECT_FIT;
-              } else {
-                  videoScalingButton.setBackgroundResource(
-                          R.drawable.ic_action_return_from_full_screen);
-                  scalingType = ScalingType.SCALE_ASPECT_FILL;
-              }
-              callEvents.onVideoScalingSwitch(scalingType);
-          }
-      });
-      scalingType = ScalingType.SCALE_ASPECT_FILL;
-
-      return controlView;
-=======
-    return controlView;
->>>>>>> 38e3f6d1888a2db43cae1e1a73a2cbade12c02e7
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
-
-    Bundle args = getArguments();
-    if (args != null) {
-      displayHud = args.getBoolean(CallActivity.EXTRA_DISPLAY_HUD, false);
+        int visibility = displayHud ? View.VISIBLE : View.INVISIBLE;
+        isRunning = true;
     }
-    isRunning = true;
-  }
 
-  @Override
-  public void onStop() {
-    isRunning = false;
-    super.onStop();
-  }
-
-  @Override
-  public void onAttach(Activity activity) {
-    super.onAttach(activity);
-    callEvents = (OnCallEvents) activity;
-  }
-
-  private Map<String, String> getReportMap(StatsReport report) {
-    Map<String, String> reportMap = new HashMap<String, String>();
-    for (StatsReport.Value value : report.values) {
-      reportMap.put(value.name, value.value);
+    @Override
+    public void onStop() {
+        isRunning = false;
+        super.onStop();
     }
-    return reportMap;
-  }
 
-  public void updateEncoderStatistics(final StatsReport[] reports) {
-    if (!isRunning || !displayHud) {
-      return;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        callEvents = (OnCallEvents) activity;
     }
-    String fps = null;
-    String targetBitrate = null;
-    String actualBitrate = null;
-    StringBuilder bweBuilder = new StringBuilder();
-    for (StatsReport report : reports) {
-      if (report.type.equals("ssrc") && report.id.contains("ssrc")
-          && report.id.contains("send")) {
-        Map<String, String> reportMap = getReportMap(report);
-        String trackId = reportMap.get("googTrackId");
-        if (trackId != null
-            && trackId.contains(PeerConnectionClient.VIDEO_TRACK_ID)) {
-          fps = reportMap.get("googFrameRateSent");
-        }
-      } else if (report.id.equals("bweforvideo")) {
-        Map<String, String> reportMap = getReportMap(report);
-        targetBitrate = reportMap.get("googTargetEncBitrate");
-        actualBitrate = reportMap.get("googActualEncBitrate");
 
+    private Map<String, String> getReportMap(StatsReport report) {
+        Map<String, String> reportMap = new HashMap<String, String>();
         for (StatsReport.Value value : report.values) {
-          String name = value.name.replace("goog", "")
-              .replace("Available", "").replace("Bandwidth", "")
-              .replace("Bitrate", "").replace("Enc", "");
-          bweBuilder.append(name).append("=").append(value.value)
-              .append(" ");
+            reportMap.put(value.name, value.value);
         }
-        bweBuilder.append("\n");
-      }
+        return reportMap;
     }
 
-    StringBuilder stat = new StringBuilder(128);
-    if (fps != null) {
-      stat.append("Fps:  ")
-          .append(fps)
-          .append("\n");
-    }
-    if (targetBitrate != null) {
-      stat.append("Target BR: ")
-          .append(targetBitrate)
-          .append("\n");
-    }
-    if (actualBitrate != null) {
-      stat.append("Actual BR: ")
-          .append(actualBitrate)
-          .append("\n");
-    }
+    public void updateEncoderStatistics(final StatsReport[] reports) {
+        if (!isRunning || !displayHud) {
+            return;
+        }
+        String fps = null;
+        String targetBitrate = null;
+        String actualBitrate = null;
+        StringBuilder bweBuilder = new StringBuilder();
+        for (StatsReport report : reports) {
+            if (report.type.equals("ssrc") && report.id.contains("ssrc")
+                    && report.id.contains("send")) {
+                Map<String, String> reportMap = getReportMap(report);
+                String trackId = reportMap.get("googTrackId");
+                if (trackId != null
+                        && trackId.contains(PeerConnectionClient.VIDEO_TRACK_ID)) {
+                    fps = reportMap.get("googFrameRateSent");
+                }
+            } else if (report.id.equals("bweforvideo")) {
+                Map<String, String> reportMap = getReportMap(report);
+                targetBitrate = reportMap.get("googTargetEncBitrate");
+                actualBitrate = reportMap.get("googActualEncBitrate");
 
-    if (cpuMonitor.sampleCpuUtilization()) {
-      stat.append("CPU%: ")
-          .append(cpuMonitor.getCpuCurrent())
-          .append("/")
-          .append(cpuMonitor.getCpuAvg3())
-          .append("/")
-          .append(cpuMonitor.getCpuAvgAll());
+                for (StatsReport.Value value : report.values) {
+                    String name = value.name.replace("goog", "")
+                            .replace("Available", "").replace("Bandwidth", "")
+                            .replace("Bitrate", "").replace("Enc", "");
+                    bweBuilder.append(name).append("=").append(value.value)
+                            .append(" ");
+                }
+                bweBuilder.append("\n");
+            }
+        }
+
+        StringBuilder stat = new StringBuilder(128);
+        if (fps != null) {
+            stat.append("Fps:  ")
+                    .append(fps)
+                    .append("\n");
+        }
+        if (targetBitrate != null) {
+            stat.append("Target BR: ")
+                    .append(targetBitrate)
+                    .append("\n");
+        }
+        if (actualBitrate != null) {
+            stat.append("Actual BR: ")
+                    .append(actualBitrate)
+                    .append("\n");
+        }
+
+        if (cpuMonitor.sampleCpuUtilization()) {
+            stat.append("CPU%: ")
+                    .append(cpuMonitor.getCpuCurrent())
+                    .append("/")
+                    .append(cpuMonitor.getCpuAvg3())
+                    .append("/")
+                    .append(cpuMonitor.getCpuAvgAll());
+        }
     }
-  }
 }

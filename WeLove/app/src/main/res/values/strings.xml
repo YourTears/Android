@@ -26,7 +26,6 @@
     <string name="pref_startaudiobitratevalue_default">32</string>
     <string name="pref_audiocodec_default">OPUS</string>
     <string name="pref_cpu_usage_detection_default" translatable="false">true</string>
-<<<<<<< HEAD
 
     <string name="pref_room_server_url_key">room_server_url_preference</string>
     <string name="pref_room_server_url_title">Room server URL.</string>
@@ -36,9 +35,7 @@
     <string name="pref_displayhud_key">displayhud_preference</string>
     <string name="pref_displayhud_title">Display call statistics.</string>
     <string name="pref_displayhud_dlg">Display call statistics.</string>
-=======
-    <string name="pref_room_server_url_default" translatable="false">http://apprtc.diveinedu.com:8080</string>
->>>>>>> 38e3f6d1888a2db43cae1e1a73a2cbade12c02e7
+
     <string name="pref_displayhud_default" translatable="false">false</string>
     <!-- Video call settings -->
 
