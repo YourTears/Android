@@ -38,8 +38,6 @@ import com.fanxin.app.video.util.ImageCache;
 import com.fanxin.app.video.util.ImageResizer;
 import com.fanxin.app.video.util.Utils;
 import com.fanxin.app.widget.RecyclingImageView;
-import com.easemob.util.DateUtils;
-import com.easemob.util.TextFormater;
 
 public class ImageGridFragment extends Fragment implements OnItemClickListener {
 
@@ -252,9 +250,7 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 				holder.icon.setVisibility(View.VISIBLE);
 				VideoEntity entty=mList.get(position-1);
 				holder.tvDur.setVisibility(View.VISIBLE);
-				
-				holder.tvDur.setText(DateUtils.toTime(entty.duration));
-				holder.tvSize.setText(TextFormater.getDataSize(entty.size));
+
 				holder.imageView.setImageResource(R.drawable.empty_photo);
 				mImageResizer.loadImage(entty.filePath, holder.imageView);
 			}

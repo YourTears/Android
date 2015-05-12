@@ -53,16 +53,11 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.easemob.EMError;
-import com.easemob.chat.EMChatManager;
 import com.fanxin.app.Constant;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-import com.easemob.exceptions.EaseMobException;
- 
 
 /**
  * 注册页
@@ -283,19 +278,19 @@ public class RegisterActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-            case PHOTO_REQUEST_TAKEPHOTO:
+                case PHOTO_REQUEST_TAKEPHOTO:
 
-                startPhotoZoom(
-                        Uri.fromFile(new File("/sdcard/fanxin/", imageName)),
-                        480);
-                break;
+                    startPhotoZoom(
+                            Uri.fromFile(new File("/sdcard/fanxin/", imageName)),
+                            480);
+                    break;
 
-            case PHOTO_REQUEST_GALLERY:
-                if (data != null)
-                    startPhotoZoom(data.getData(), 480);
-                break;
+                case PHOTO_REQUEST_GALLERY:
+                    if (data != null)
+                        startPhotoZoom(data.getData(), 480);
+                    break;
 
-            case PHOTO_REQUEST_CUT:
+                case PHOTO_REQUEST_CUT:
 //                BitmapFactory.Options options = new BitmapFactory.Options();
 //
 //                /**
@@ -304,11 +299,11 @@ public class RegisterActivity extends BaseActivity {
 //                 * ，但此时调用options.outHeight时，已经包含了图片的高了
 //                 */
 //                options.inJustDecodeBounds = true;
-                Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/fanxin/"
-                        +imageName);
-                iv_photo.setImageBitmap(bitmap);
+                    Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/fanxin/"
+                            + imageName);
+                    iv_photo.setImageBitmap(bitmap);
 
-                break;
+                    break;
 
             }
             super.onActivityResult(requestCode, resultCode, data);
@@ -356,13 +351,13 @@ public class RegisterActivity extends BaseActivity {
 
         @Override
         public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                int arg3) {
+                                      int arg3) {
 
         }
 
         @Override
         public void onTextChanged(CharSequence cs, int start, int before,
-                int count) {
+                                  int count) {
 
             boolean Sign1 = et_usernick.getText().length() > 0;
             boolean Sign2 = et_usertel.getText().length() > 0;
@@ -383,8 +378,7 @@ public class RegisterActivity extends BaseActivity {
 
     /**
      * 注册
-     * 
-     * @param view
+     *
      */
     public void register(final String hxid, final String password) {
         // String st1 = getResources().getString(
@@ -410,45 +404,16 @@ public class RegisterActivity extends BaseActivity {
                     R.string.Registration_failed);
             new Thread(new Runnable() {
                 public void run() {
-                    try {
-                        // 调用sdk注册方法
-                        EMChatManager.getInstance().createAccountOnServer(hxid,
-                                password);
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                if (!RegisterActivity.this.isFinishing())
-                                    dialog.dismiss();
-                                // 保存用户名
-                                DemoApplication.getInstance().setUserName(hxid);
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (!RegisterActivity.this.isFinishing())
+                                dialog.dismiss();
 
-                                Toast.makeText(getApplicationContext(), st6, 0)
-                                        .show();
-                                finish();
-                            }
-                        });
-                    } catch (final EaseMobException e) {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                if (!RegisterActivity.this.isFinishing())
-                                    dialog.dismiss();
-                                int errorCode = e.getErrorCode();
-                                if (errorCode == EMError.NONETWORK_ERROR) {
-                                    Toast.makeText(getApplicationContext(),
-                                            st7, Toast.LENGTH_SHORT).show();
-                                } else if (errorCode == EMError.USER_ALREADY_EXISTS) {
-                                    Toast.makeText(getApplicationContext(),
-                                            st8, Toast.LENGTH_SHORT).show();
-                                } else if (errorCode == EMError.UNAUTHORIZED) {
-                                    Toast.makeText(getApplicationContext(),
-                                            st9, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(),
-                                            st10 + e.getMessage(),
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
+                            Toast.makeText(getApplicationContext(), st6, 0)
+                                    .show();
+                            finish();
+                        }
+                    });
                 }
             }).start();
 

@@ -16,14 +16,11 @@ package com.fanxin.app.task;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
-import com.easemob.chat.EMMessage;
-import com.easemob.util.EMLog;
-
-public class DownloadImageTask extends AsyncTask<EMMessage, Integer, Bitmap>{
+public class DownloadImageTask extends AsyncTask<Object, Integer, Bitmap>{
 	private DownloadFileCallback callback;
 	Bitmap bitmap = null;
 	public boolean downloadThumbnail = false;
-	EMMessage message;
+    Object message;
 	private String remoteDir;
 
 	public DownloadImageTask(String remoteDir, DownloadFileCallback callback){
@@ -32,7 +29,7 @@ public class DownloadImageTask extends AsyncTask<EMMessage, Integer, Bitmap>{
 	}
 	
 	@Override
-	protected Bitmap doInBackground(EMMessage... params) {
+	protected Bitmap doInBackground(Object... params) {
 	    /*
 	    try {
 	        message = params[1];//视频的图片path信息的message
@@ -125,8 +122,6 @@ public class DownloadImageTask extends AsyncTask<EMMessage, Integer, Bitmap>{
 	public static String getThumbnailImagePath(String imagePath) {
         String path = imagePath.substring(0, imagePath.lastIndexOf("/") + 1);
         path += "th" + imagePath.substring(imagePath.lastIndexOf("/")+1, imagePath.length());
-        EMLog.d("msg", "original image path:" + imagePath);
-        EMLog.d("msg", "thum image path:" + path);
         return path;
     }
 }

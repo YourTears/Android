@@ -11,10 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.easemob.EMCallBack;
-import com.easemob.chat.EMChat;
 import com.fanxin.app.R;
-import com.easemob.util.EMLog;
 
 /**
  * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
@@ -93,51 +90,5 @@ public class DiagnoseActivity extends BaseActivity implements OnClickListener {
 		progressDialog.setMessage("上传日志中...");
 		progressDialog.setCancelable(false);
 		progressDialog.show();
-
-		EMChat.getInstance().uploadLog(new EMCallBack() {
-
-			@Override
-			public void onSuccess() {
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						progressDialog.dismiss();
-						Toast.makeText(DiagnoseActivity.this, "日志上传成功",
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
-
-			@Override
-			public void onProgress(final int progress, String status) {
-				// getActivity().runOnUiThread(new Runnable() {
-				//
-				// @Override
-				// public void run() {
-				// progressDialog.setMessage("上传中 "+progress+"%");
-				//
-				// }
-				// });
-
-			}
-
-			@Override
-			public void onError(int code, String message) {
-				EMLog.e("###", message);
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						progressDialog.dismiss();
-						Toast.makeText(DiagnoseActivity.this, "log上传失败",
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-
-			}
-		});
-
 	}
-
 }

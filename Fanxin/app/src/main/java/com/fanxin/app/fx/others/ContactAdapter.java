@@ -17,9 +17,6 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMConversation;
-import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 
 import appLogic.AppConstant;

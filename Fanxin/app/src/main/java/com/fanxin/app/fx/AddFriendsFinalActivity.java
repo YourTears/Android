@@ -1,7 +1,5 @@
 package com.fanxin.app.fx;
 
-import com.easemob.chat.EMContactManager;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.FXAlertDialog;
 
@@ -40,25 +38,11 @@ public class AddFriendsFinalActivity extends Activity {
     
     /**
      * 添加contact
-     * 
-     * @param view
+     *
      */
     @SuppressLint("ShowToast")
     public void addContact(final String glufine_id,final String myreason) {
         if (glufine_id == null || glufine_id.equals("")) {
-            return;
-        }
-
-        if (DemoApplication.getInstance().getUserName().equals(glufine_id)) {
-            startActivity(new Intent(this, FXAlertDialog.class).putExtra("msg",
-                    "不能添加自己"));
-            return;
-        }
-
-        if (DemoApplication.getInstance().getContactList()
-                .containsKey(glufine_id)) {
-            startActivity(new Intent(this, FXAlertDialog.class).putExtra("msg",
-                    "此用户已是你的好友"));
             return;
         }
 
@@ -82,8 +66,6 @@ public class AddFriendsFinalActivity extends Activity {
                     }
                     String reason = name + "66split88" + avatar + "66split88"
                             + String.valueOf(time)+"66split88"+myreason_temp;
-                    EMContactManager.getInstance().addContact(glufine_id,
-                            reason);
                     runOnUiThread(new Runnable() {
                         @SuppressLint("ShowToast")
                         public void run() {

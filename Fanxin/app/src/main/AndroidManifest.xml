@@ -34,7 +34,6 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
-        android:name="DemoApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo_fanxin"
         android:label="@string/app_name" >
@@ -379,6 +378,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="apprtc.CallActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="fullUser" >
         </activity>
      
         <!-- 开机自启动服务 -->

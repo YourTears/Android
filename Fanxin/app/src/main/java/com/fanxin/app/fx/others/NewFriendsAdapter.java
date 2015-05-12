@@ -4,22 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
- 
-
-
-
-
-
-
-
-
-
-
-
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMGroupManager;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.db.InviteMessgeDao;
@@ -148,7 +134,6 @@ public class NewFriendsAdapter extends BaseAdapter {
      * 同意好友请求或者群申请
      * 
      * @param button
-     * @param username
      */
     private void acceptInvitation(final Button button, final InviteMessage msg,
             final TextView textview) {
@@ -161,13 +146,7 @@ public class NewFriendsAdapter extends BaseAdapter {
             public void run() {
                 // 调用sdk的同意方法
                 try {
-                    if (msg.getGroupId() == null) // 同意好友请求
-                        EMChatManager.getInstance().acceptInvitation(
-                                msg.getFrom());
-                    else
-                        // 同意加群申请
-                        EMGroupManager.getInstance().acceptApplication(
-                                msg.getFrom(), msg.getGroupId());
+
                     ((Activity) context).runOnUiThread(new Runnable() {
 
                         @Override

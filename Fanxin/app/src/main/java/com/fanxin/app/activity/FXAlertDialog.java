@@ -29,7 +29,6 @@ import com.fanxin.app.R;
 import com.fanxin.app.fx.ChatActivity;
 import com.fanxin.app.task.DownloadImageTask;
 import com.fanxin.app.utils.ImageCache;
-import com.easemob.util.ImageUtils;
 
 public class FXAlertDialog extends BaseActivity {
 	private TextView mTextView;
@@ -81,7 +80,7 @@ public class FXAlertDialog extends BaseActivity {
 		    if(ImageCache.getInstance().get(path) != null){
 		        imageView.setImageBitmap(ImageCache.getInstance().get(path));
 		    }else{
-		        Bitmap bm = ImageUtils.decodeScaleImage(path, 150, 150);
+		        Bitmap bm = null;
 		        imageView.setImageBitmap(bm);
 		        ImageCache.getInstance().put(path, bm);
 		    }

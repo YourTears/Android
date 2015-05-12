@@ -18,8 +18,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.fanxin.app.fx.others.TopUserDao;
-import com.fanxin.applib.controller.HXSDKHelper;
- 
 
 public class DbOpenHelper extends SQLiteOpenHelper{
 
@@ -70,7 +68,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	}
 	
 	private static String getUserDatabaseName() {
-        return  HXSDKHelper.getInstance().getHXId() + "_glufine.db";
+        return null;
     }
 	
 	@Override

@@ -23,7 +23,6 @@ import android.widget.ProgressBar;
 import com.fanxin.app.R;
 import com.fanxin.app.utils.ImageCache;
 import com.fanxin.app.widget.photoview.PhotoView;
-import com.easemob.util.ImageUtils;
 
 public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 
@@ -47,7 +46,7 @@ public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		int degree = ImageUtils.readPictureDegree(path);
+		int degree = 0;
 		if (degree != 0) {
 			pb.setVisibility(View.VISIBLE);
 			photoView.setVisibility(View.INVISIBLE);
@@ -60,7 +59,7 @@ public class LoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(Void... params) {
-		Bitmap bitmap = ImageUtils.decodeScaleImage(path, width, height);
+		Bitmap bitmap = null;
 		return bitmap;
 	}
 

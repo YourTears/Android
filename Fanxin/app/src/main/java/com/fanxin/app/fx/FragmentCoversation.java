@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,11 +17,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMConversation;
-import com.easemob.chat.EMMessage;
 import com.fanxin.app.Constant;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.fx.others.ConversationAdapter;
 import com.fanxin.app.fx.others.TopUser;
@@ -31,8 +28,8 @@ public class FragmentCoversation extends Fragment {
     private ListView listView;
     private ConversationAdapter adapter;
 
-    private List<EMConversation> normal_list = new ArrayList<EMConversation>();
-    private List<EMConversation> top_list = new ArrayList<EMConversation>();
+    private List<Object> normal_list = new ArrayList<Object>();
+    private List<Object> top_list = new ArrayList<Object>();
 
     private Map<String, TopUser> topMap;
     public RelativeLayout errorItem;
@@ -53,7 +50,7 @@ public class FragmentCoversation extends Fragment {
         errorItem = (RelativeLayout) getView().findViewById(R.id.rl_error_item);
         errorText = (TextView) errorItem.findViewById(R.id.tv_connect_errormsg);
 
-        topMap = DemoApplication.getInstance().getTopUserList();
+        topMap = null;
         normal_list.addAll(loadConversationsWithRecentChat());
         listView = (ListView) getView().findViewById(R.id.list);
         adapter = new ConversationAdapter(getActivity(), normal_list, top_list,topMap);
@@ -76,48 +73,18 @@ public class FragmentCoversation extends Fragment {
 
     /**
      * 获取所有会话
-     * 
-     * @param context
+     *
      * @return +
      */
-    private List<EMConversation> loadConversationsWithRecentChat() {
+    private List<Object> loadConversationsWithRecentChat() {
         // 获取所有会话，包括陌生人
-        Hashtable<String, EMConversation> conversations = EMChatManager
-                .getInstance().getAllConversations();
+        Hashtable<String, Object> conversations = null;
 
-        List<EMConversation> list = new ArrayList<EMConversation>();
-        List<EMConversation> topList1 = new ArrayList<EMConversation>();
+        List<Object> list = new ArrayList<Object>();
+        List<Object> topList1 = new ArrayList<Object>();
 
         // 置顶列表再刷新一次
 
-        // 过滤掉messages seize为0的conversation
-        for (EMConversation conversation : conversations.values()) {
-
-            if (conversation.getAllMessages().size() != 0) {
-                // 不在置顶列表里面
-                if (!topMap.containsKey(conversation.getUserName())) {
-                    list.add(conversation);
-                } else {
-                    // 在置顶列表里面
-                    topList1.add(conversation);
-                }
-                //
-                // for(EMMessage msg:conversation.getAllMessages()){
-                // if(msg.getFrom().equals("admin")){
-                // try {
-                // Log.e("type--->>",msg.getStringAttribute("type"));
-                // Log.e("groupid--->>",msg.getStringAttribute("groupid"));
-                // } catch (EaseMobException e) {
-                // // TODO Auto-generated catch block
-                // e.printStackTrace();
-                // }
-                // }
-                //
-                // }
-
-            }
-
-        }
         top_list.clear();
         top_list.addAll(topList1);
         // 排序
@@ -128,30 +95,10 @@ public class FragmentCoversation extends Fragment {
 
     /**
      * 根据最后一条消息的时间排序
-     * 
-     * @param usernames
+     *
      */
     private void sortConversationByLastChatTime(
-            List<EMConversation> conversationList) {
-        Collections.sort(conversationList, new Comparator<EMConversation>() {
-            @Override
-            public int compare(final EMConversation con1,
-                    final EMConversation con2) {
-
-                EMMessage con2LastMessage = con2.getLastMessage();
-                EMMessage con1LastMessage = con1.getLastMessage();
-                if (con2LastMessage.getMsgTime() == con1LastMessage
-                        .getMsgTime()) {
-                    return 0;
-                } else if (con2LastMessage.getMsgTime() > con1LastMessage
-                        .getMsgTime()) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-
-        });
+            List<Object> conversationList) {
     }
 
     @Override

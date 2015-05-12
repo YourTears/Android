@@ -35,15 +35,11 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
 import com.fanxin.app.Constant;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-import com.easemob.exceptions.EaseMobException;
 
 import appLogic.FriendInfo;
 import appLogic.MeInfo;
@@ -73,7 +69,6 @@ public class CreatChatRoomActivity extends BaseActivity {
     // 添加的列表
     private List<String> addList = new ArrayList<String>();
     private String hxid;
-    private EMGroup group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +85,6 @@ public class CreatChatRoomActivity extends BaseActivity {
         if (groupId != null) {
 
             isCreatingNewGroup = false;
-            group = EMGroupManager.getInstance().getGroup(groupId);
-            if (group != null) {
-                exitingMembers = group.getMembers();
-                groupname = group.getGroupName();
-            }
-
         } else if (userId != null) {
 
             isCreatingNewGroup = true;
@@ -108,7 +97,7 @@ public class CreatChatRoomActivity extends BaseActivity {
         }
 
         // 获取好友列表
-        final List<FriendInfo> alluserList = (List)DemoApplication.getInstance().getContactList().values();
+        final List<FriendInfo> alluserList = null;
 //        for (User user : DemoApplication.getInstance().getContactList()
 //                .values()) {
 //            if (!user.getUsername().equals(Constant.NEW_FRIENDS_USERNAME)
@@ -266,7 +255,6 @@ public class CreatChatRoomActivity extends BaseActivity {
     /**
      * 确认选择的members
      *
-     * @param v
      */
     public void save() {
         if (addList.size() == 0) {
@@ -278,8 +266,7 @@ public class CreatChatRoomActivity extends BaseActivity {
         // 如果只有一个用户说明只是单聊,并且不是从群组加人
         if (addList.size() == 1 && isCreatingNewGroup) {
             String userId = addList.get(0);
-            FriendInfo user = DemoApplication.getInstance().getContactList()
-                    .get(userId);
+            FriendInfo user = null;
             if (user != null) {
                 String userNick = user.name;
                 String userAvatar = user.imageUrl;
@@ -308,7 +295,6 @@ public class CreatChatRoomActivity extends BaseActivity {
     /**
      * 创建新群组
      *
-     * @param newmembers
      */
     private void creatNewGroup(List<String> members) {
 
@@ -326,8 +312,7 @@ public class CreatChatRoomActivity extends BaseActivity {
             ;
             for (int i = 0; i < members.size(); i++) {
 
-                FriendInfo user = DemoApplication.getInstance().getContactList()
-                        .get(members.get(i));
+                FriendInfo user = null;
                 if (user != null) {
                     JSONObject json_member = new JSONObject();
                     json_member.put("hxid", user.sys_id);
@@ -352,49 +337,18 @@ public class CreatChatRoomActivity extends BaseActivity {
             String myDesc = "temp";
 
             String groupJSON = finalJson.toJSONString();
-            Log.e("groupName----->>>>>", groupName);
-            try {
-                EMGroup group_temp = EMGroupManager.getInstance()
-                        .createPrivateGroup(groupJSON, myDesc,
-                                members.toArray(new String[0]), true);
-                if (group_temp != null) {
-                    String group_temp_id = group_temp.getGroupId();
-                    String group_temp_name = group_temp.getGroupName();
-                    String group_temp_desc = group_temp.getDescription();
-                    Log.e("group_temp_id----->>>>>", group_temp_id);
-                    Log.e("group_temp_name----->>>>>", group_temp_name);
-                    Log.e("group_temp_desc----->>>>>", group_temp_desc);
-                    progressDialog.dismiss();
-                    startActivity(new Intent(getApplicationContext(),
-                            ChatActivity.class)
-                            .putExtra("groupId", group_temp_id)
-                            .putExtra("chatType", ChatActivity.CHATTYPE_GROUP)
-                            .putExtra("groupName", groupName));
-                }
 
-            } catch (EaseMobException e) {
-                e.printStackTrace();
-            }
         } else {
 
             // 群主加人调用此方法
             try {
-                if (hxid.equals(group.getOwner())) {
-                    EMGroupManager.getInstance().addUsersToGroup(groupId,
-                            members.toArray(new String[0]));
-                } else {
-                    EMGroupManager.getInstance().inviteUser(groupId,
-                            members.toArray(new String[0]), null);
-                }
-
                 JSONObject oldjson = JSONObject.parseObject(groupname);
                 JSONArray oldjsonArray = oldjson.getJSONArray("jsonArray");
 
                 String groupName = oldjson.getString("groupname");
                 for (int i = 0; i < members.size(); i++) {
 
-                    FriendInfo user = DemoApplication.getInstance().getContactList()
-                            .get(members.get(i));
+                    FriendInfo user = null;
                     if (user != null) {
                         JSONObject json_member = new JSONObject();
                         json_member.put("hxid", user.sys_id);
@@ -409,19 +363,14 @@ public class CreatChatRoomActivity extends BaseActivity {
 
                 finalJson.put("groupname", groupName);
                 String groupJSON = finalJson.toJSONString();
-                if (hxid.equals(group.getOwner())) {
-                    EMGroupManager.getInstance()
-                            .changeGroupName(groupId, groupJSON);//
-                }else{
-                    updateGroupName(groupId, groupJSON);
-                }
+
                 startActivity(new Intent(getApplicationContext(),
                         ChatActivity.class).putExtra("groupId", groupId)
                         .putExtra("chatType", ChatActivity.CHATTYPE_GROUP)
                         .putExtra("groupName", groupName));
 
                 progressDialog.dismiss();
-            } catch (EaseMobException e) {
+            } catch (Exception e) {
                 progressDialog.dismiss();
                 Toast.makeText(CreatChatRoomActivity.this, "群聊加人失败。。。",
                         Toast.LENGTH_LONG).show();

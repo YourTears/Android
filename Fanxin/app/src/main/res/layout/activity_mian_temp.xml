@@ -49,6 +49,36 @@
         android:orientation="horizontal" >
 
         <RelativeLayout
+            android:id="@+id/re_find"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="onTabClicked"
+            android:padding="3dp" >
+
+            <ImageView
+                android:id="@+id/ib_find"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_centerHorizontal="true"
+                android:background="#ffffff"
+                android:focusable="false"
+                android:scaleType="centerInside"
+                android:src="@drawable/tab_find" />
+
+            <TextView
+                android:id="@+id/tv_find"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_find"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="3dp"
+                android:text="Love"
+                android:textColor="#9A9A9A"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/re_weixin"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -73,7 +103,7 @@
                 android:layout_below="@id/ib_weixin"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:text="微信"
+                android:text="聊天"
                 android:textColor="#9A9A9A"
                 android:textSize="12sp" />
 
@@ -129,36 +159,6 @@
                 android:gravity="center"
                 android:text="7"
                 android:textColor="@android:color/white"
-                android:textSize="12sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/re_find"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="onTabClicked"
-            android:padding="3dp" >
-
-            <ImageView
-                android:id="@+id/ib_find"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_centerHorizontal="true"
-                android:background="#ffffff"
-                android:focusable="false"
-                android:scaleType="centerInside"
-                android:src="@drawable/tab_find" />
-
-            <TextView
-                android:id="@+id/tv_find"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ib_find"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="3dp"
-                android:text="发现"
-                android:textColor="#9A9A9A"
                 android:textSize="12sp" />
         </RelativeLayout>
 

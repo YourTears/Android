@@ -43,7 +43,7 @@ public class FragmentProfile extends Fragment {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+                //startActivity(new Intent(getActivity(), SettingActivity.class));
             }
 
         });

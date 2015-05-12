@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">凡信</string>
+    <string name="app_name">WeLove</string>
     <string name="text_ack_msg">已读</string>
     <string name="text_delivered_msg">送达</string>
     <string name="back">返回</string>
@@ -249,5 +249,33 @@
     <string name="Move_into_the_blacklist_new">移入到黑名单</string>
     <string name="Change_the_group_name">改变群名称</string>
     <string name="The_dissolution_of_chatting_new">解散群聊</string>
+
+    <!-- AppRTC related -->
+    <string name="connecting_server">正在连接...</string>
+    <string name="pref_videocall_default">true</string>
+    <string name="pref_resolution_default">Default</string>
+    <string name="pref_fps_default">Default</string>
+    <string name="pref_startvideobitrate_default">Default</string>
+    <string name="pref_startvideobitratevalue_default">1000</string>
+    <string name="pref_videocodec_default">VP8</string>
+    <string name="pref_hwcodec_default">true</string>
+    <string name="pref_value_enabled">Enabled</string>
+    <string name="pref_value_disabled">Disabled</string>
+    <string name="pref_startaudiobitrate_default">Default</string>
+    <string name="pref_startaudiobitratevalue_default">32</string>
+    <string name="pref_audiocodec_default">OPUS</string>
+    <string name="pref_cpu_usage_detection_default" translatable="false">true</string>
+
+    <string name="pref_room_server_url_key">room_server_url_preference</string>
+    <string name="pref_room_server_url_title">Room server URL.</string>
+    <string name="pref_room_server_url_dlg">Enter a room server URL.</string>
+    <string name="pref_room_server_url_default" translatable="false">http://apprtc.diveinedu.com:8080</string>
+
+    <string name="pref_displayhud_key">displayhud_preference</string>
+    <string name="pref_displayhud_title">Display call statistics.</string>
+    <string name="pref_displayhud_dlg">Display call statistics.</string>
+
+    <string name="pref_displayhud_default" translatable="false">false</string>
+    <!-- AppRTC related -->
 
 </resources>

@@ -46,7 +46,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.blind.welove.R;
+import com.fanxin.app.R;
 
 import org.webrtc.IceCandidate;
 import org.webrtc.SessionDescription;

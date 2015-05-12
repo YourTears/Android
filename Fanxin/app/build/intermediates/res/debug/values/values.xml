@@ -226,7 +226,7 @@
     <string name="address_book">通讯录</string>
     <string name="agree">同意</string>
     <string name="answer">接听</string>
-    <string name="app_name">凡信</string>
+    <string name="app_name">WeLove</string>
     <string name="are_empty_group_of_news">正在清空群消息...</string>
     <string name="attach_file">文件</string>
     <string name="attach_location">位置</string>
@@ -262,6 +262,7 @@
     <string name="confirmpassword">确认密码</string>
     <string name="connect_conflict">同一帐号已在其他设备登录</string>
     <string name="connect_failuer_toast">请检查网络或稍候重试</string>
+    <string name="connecting_server">正在连接...</string>
     <string name="copy">复制</string>
     <string name="copy_message">复制消息</string>
     <string name="delete">删除</string>
@@ -318,6 +319,27 @@
     <string name="picture">[图片]</string>
     <string name="please_check">key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置</string>
     <string name="please_set_the_current">请设置当前用户的昵称\n为了ios离线推送不是userid而是nick，详情见注释</string>
+    <string name="pref_audiocodec_default">OPUS</string>
+    <string name="pref_cpu_usage_detection_default" translatable="false">true</string>
+    <string name="pref_displayhud_default" translatable="false">false</string>
+    <string name="pref_displayhud_dlg">Display call statistics.</string>
+    <string name="pref_displayhud_key">displayhud_preference</string>
+    <string name="pref_displayhud_title">Display call statistics.</string>
+    <string name="pref_fps_default">Default</string>
+    <string name="pref_hwcodec_default">true</string>
+    <string name="pref_resolution_default">Default</string>
+    <string name="pref_room_server_url_default" translatable="false">http://apprtc.diveinedu.com:8080</string>
+    <string name="pref_room_server_url_dlg">Enter a room server URL.</string>
+    <string name="pref_room_server_url_key">room_server_url_preference</string>
+    <string name="pref_room_server_url_title">Room server URL.</string>
+    <string name="pref_startaudiobitrate_default">Default</string>
+    <string name="pref_startaudiobitratevalue_default">32</string>
+    <string name="pref_startvideobitrate_default">Default</string>
+    <string name="pref_startvideobitratevalue_default">1000</string>
+    <string name="pref_value_disabled">Disabled</string>
+    <string name="pref_value_enabled">Enabled</string>
+    <string name="pref_videocall_default">true</string>
+    <string name="pref_videocodec_default">VP8</string>
     <string name="prompt">提示</string>
     <string name="receive_the_passthrough">收到透传：action：</string>
     <string name="recoding_fail">录音失败，请重试！</string>

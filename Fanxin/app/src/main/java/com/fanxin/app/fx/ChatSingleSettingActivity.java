@@ -17,14 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMContactManager;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.fx.others.TopUserDao;
-import com.easemob.exceptions.EaseMobException;
 
 import appLogic.FriendInfo;
 
@@ -60,7 +56,7 @@ public class ChatSingleSettingActivity extends BaseActivity implements
         instance = this;
         // 获取传过来的userId
         userId = getIntent().getStringExtra("userId");
-        FriendInfo user = DemoApplication.getInstance().getContactList().get(userId);
+        FriendInfo user = null;
         // 资料错误则不显示
         if (user == null) {
             return;
@@ -68,10 +64,7 @@ public class ChatSingleSettingActivity extends BaseActivity implements
         userNick = user.nickName;
         avatar = user.imageUrl;
         sex = user.gender.toString();
-        // 黑名单列表
-        blackList = EMContactManager.getInstance().getBlackListUsernames();
-        // 置顶列表
-        topMap = DemoApplication.getInstance().getTopUserList();
+
         //
         progressDialog = new ProgressDialog(this);
         initView();
@@ -185,7 +178,6 @@ public class ChatSingleSettingActivity extends BaseActivity implements
             new Handler().postDelayed(new Runnable() {
 
                 public void run() {
-                    EMChatManager.getInstance().clearConversation(userId);
                     progressDialog.dismiss();
 
                 }
@@ -252,8 +244,6 @@ public class ChatSingleSettingActivity extends BaseActivity implements
             public void run() {
                 try {
                     // 加入到黑名单
-                    EMContactManager.getInstance().addUserToBlackList(username,
-                            false);
                     runOnUiThread(new Runnable() {
                         public void run() {
                             progressDialog.dismiss();
@@ -264,16 +254,8 @@ public class ChatSingleSettingActivity extends BaseActivity implements
 
                         }
                     });
-                } catch (final EaseMobException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(),
-                                    "设置失败，原因：" + e.toString(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
                 }
             }
         }).start();
@@ -288,13 +270,9 @@ public class ChatSingleSettingActivity extends BaseActivity implements
     private void removeOutBlacklist(final String tobeRemoveUser) {
 
         try {
-
-            // 移出黑民单
-            EMContactManager.getInstance().deleteUserFromBlackList(
-                    tobeRemoveUser);
             iv_switch_block_groupmsg.setVisibility(View.INVISIBLE);
             iv_switch_unblock_groupmsg.setVisibility(View.VISIBLE);
-        } catch (EaseMobException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             runOnUiThread(new Runnable() {
                 public void run() {

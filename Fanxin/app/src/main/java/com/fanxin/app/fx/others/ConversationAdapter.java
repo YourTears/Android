@@ -5,22 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMConversation;
-import com.easemob.chat.EMGroup;
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chat.EMMessage;
-import com.easemob.chat.TextMessageBody;
 import com.fanxin.app.Constant;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
-import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.fx.ChatActivity;
 import com.fanxin.app.fx.MainActivity;
-import com.fanxin.app.utils.SmileUtils;
-import com.easemob.util.DateUtils;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -45,15 +33,15 @@ import appLogic.FriendInfo;
 
 @SuppressLint("InflateParams")
 public class ConversationAdapter extends BaseAdapter {
-    private List<EMConversation> normal_list;
-    private List<EMConversation> top_list;
+    private List<Object> normal_list;
+    private List<Object> top_list;
     private LayoutInflater inflater;
     private Context context;
     Map<String, TopUser> topMap;
 
     @SuppressLint("SdCardPath")
     public ConversationAdapter(Context context,
-            List<EMConversation> normal_list, List<EMConversation> top_list,
+            List<Object> normal_list, List<Object> top_list,
             Map<String, TopUser> topMap) {
         this.context = context;
         this.topMap = topMap;
@@ -68,7 +56,7 @@ public class ConversationAdapter extends BaseAdapter {
     }
 
     @Override
-    public EMConversation getItem(int position) {
+    public Object getItem(int position) {
 
         if (position < top_list.size()) {
             return top_list.get(position);
@@ -90,53 +78,15 @@ public class ConversationAdapter extends BaseAdapter {
         ViewHolder holder = new ViewHolder();
 
         // 获取与此用户/群组的会话
-        final EMConversation conversation = getItem(position);
+        final Object conversation = getItem(position);
         // 获取用户username或者群组groupid
-        final String username = conversation.getUserName();
-        List<EMGroup> groups = EMGroupManager.getInstance().getAllGroups();
+        final String username = null;
 
         boolean isGroup = false;
         String nick = "";
         String groupName = "";
         String[] avatars = new String[5];
         int membersNum = 0;
-        for (EMGroup group : groups) {
-            if (group.getGroupId().equals(username)) {
-                isGroup = true;
-
-                String groupName_temp = group.getGroupName();
-
-                JSONObject jsonObject = JSONObject.parseObject(groupName_temp);
-                JSONArray jsonarray = jsonObject.getJSONArray("jsonArray");
-                groupName = jsonObject.getString("groupname");
-
-                String groupName_temp2 = "";
-                membersNum = jsonarray.size();
-
-                for (int i = 0; i < membersNum; i++) {
-                    JSONObject json = (JSONObject) jsonarray.get(i);
-                    if (i < 5) {
-                        avatars[i] = json.getString("avatar");
-                        Log.e("avatars[i]----->>>", avatars[i]);
-                    }
-
-                    if (i == 0) {
-                        groupName_temp2 = json.getString("nick");
-                    } else if (i < 4) {
-                        groupName_temp2 += "、" + json.getString("nick");
-
-                    } else if (i == 4) {
-                        groupName_temp2 += "。。。";
-                    }
-                }
-
-                if (groupName.equals("未命名")) {
-                    groupName = groupName_temp2;
-                }
-
-                break;
-            }
-        }
 
         //
         // convertView= inflater.inflate(R.layout.item_conversation_single,
@@ -165,8 +115,7 @@ public class ConversationAdapter extends BaseAdapter {
             holder.iv_avatar = (ImageView) convertView
                     .findViewById(R.id.iv_avatar);
             // 从好友列表中加载该用户的资料
-            FriendInfo user = DemoApplication.getInstance().getContactList()
-                    .get(username);
+            FriendInfo user = null;
             if (user != null) {
                 nick = user.nickName;
                 String avatar = user.imageUrl;
@@ -256,34 +205,34 @@ public class ConversationAdapter extends BaseAdapter {
                 showUserAvatar(holder.iv_avatar5, avatars[4]);
 
             }
-
         }
-        if (conversation.getUnreadMsgCount() > 0) {
+
+        int count = 1;
+        if (count > 0) {
             // 显示与此用户的消息未读数
-            holder.tv_unread.setText(String.valueOf(conversation
-                    .getUnreadMsgCount()));
+            holder.tv_unread.setText(String.valueOf(count));
             holder.tv_unread.setVisibility(View.VISIBLE);
         } else {
             holder.tv_unread.setVisibility(View.INVISIBLE);
         }
 
-        if (conversation.getMsgCount() != 0) {
-            // 把最后一条消息的内容作为item的message内容
-            EMMessage lastMessage = conversation.getLastMessage();
-            holder.tv_content.setText(
-                    SmileUtils.getSmiledText(context,
-                            getMessageDigest(lastMessage, context)),
-                    BufferType.SPANNABLE);
-
-            holder.tv_time.setText(DateUtils.getTimestampString(new Date(
-                    lastMessage.getMsgTime())));
-            if (lastMessage.direct == EMMessage.Direct.SEND
-                    && lastMessage.status == EMMessage.Status.FAIL) {
-                holder.msgState.setVisibility(View.VISIBLE);
-            } else {
-                holder.msgState.setVisibility(View.GONE);
-            }
-        }
+//        if (conversation.getMsgCount() != 0) {
+//            // 把最后一条消息的内容作为item的message内容
+//            EMMessage lastMessage = conversation.getLastMessage();
+//            holder.tv_content.setText(
+//                    SmileUtils.getSmiledText(context,
+//                            getMessageDigest(lastMessage, context)),
+//                    BufferType.SPANNABLE);
+//
+//            holder.tv_time.setText(DateUtils.getTimestampString(new Date(
+//                    lastMessage.getMsgTime())));
+//            if (lastMessage.direct == EMMessage.Direct.SEND
+//                    && lastMessage.status == EMMessage.Status.FAIL) {
+//                holder.msgState.setVisibility(View.VISIBLE);
+//            } else {
+//                holder.msgState.setVisibility(View.GONE);
+//            }
+//        }
         final String groupName_temp = groupName;
         final boolean isGroup_temp = isGroup;
         final String nick_temp = nick;
@@ -295,7 +244,7 @@ public class ConversationAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (username
-                        .equals(DemoApplication.getInstance().getUserName()))
+                        .equals(null))
                     Toast.makeText(context, "不能和自己聊天...", Toast.LENGTH_SHORT)
                             .show();
 
@@ -331,8 +280,6 @@ public class ConversationAdapter extends BaseAdapter {
 
                     title = nick_temp;
                 }
-
-                showMyDialog(title, conversation);
 
                 return false;
             }
@@ -415,51 +362,8 @@ public class ConversationAdapter extends BaseAdapter {
      * @param context
      * @return
      */
-    private String getMessageDigest(EMMessage message, Context context) {
+    private String getMessageDigest(Object message, Context context) {
         String digest = "";
-        switch (message.getType()) {
-        case LOCATION: // 位置消息
-            if (message.direct == EMMessage.Direct.RECEIVE) {
-
-                digest = getStrng(context, R.string.location_recv);
-                digest = String.format(digest, message.getFrom());
-                return digest;
-            } else {
-                // digest = EasyUtils.getAppResourceString(context,
-                // "location_prefix");
-                digest = getStrng(context, R.string.location_prefix);
-            }
-            break;
-        case IMAGE: // 图片消息
-
-            digest = getStrng(context, R.string.picture);
-
-            break;
-        case VOICE:// 语音消息
-            digest = getStrng(context, R.string.voice);
-            break;
-        case VIDEO: // 视频消息
-            digest = getStrng(context, R.string.video);
-            break;
-        case TXT: // 文本消息
-            if (!message.getBooleanAttribute(
-                    Constant.MESSAGE_ATTR_IS_VOICE_CALL, false)) {
-                TextMessageBody txtBody = (TextMessageBody) message.getBody();
-                digest = txtBody.getMessage();
-            } else {
-                TextMessageBody txtBody = (TextMessageBody) message.getBody();
-                digest = getStrng(context, R.string.voice_call)
-                        + txtBody.getMessage();
-            }
-            break;
-        case FILE: // 普通文件消息
-            digest = getStrng(context, R.string.file);
-            break;
-        default:
-            System.err.println("error, unknow type");
-            return "";
-        }
-
         return digest;
     }
 
@@ -467,7 +371,7 @@ public class ConversationAdapter extends BaseAdapter {
         return context.getResources().getString(resId);
     }
 
-    private void showMyDialog(String title, final EMConversation conversation) {
+    private void showMyDialog(String title, final Object conversation) {
 
         final AlertDialog dlg = new AlertDialog.Builder(context).create();
         dlg.show();
@@ -482,7 +386,7 @@ public class ConversationAdapter extends BaseAdapter {
         tv_title.setText(title);
 
         TextView tv_content1 = (TextView) window.findViewById(R.id.tv_content1);
-        final String username = conversation.getUserName();
+        final String username = null;
         // 是否已经置顶
 
         if (topMap.containsKey(username)) {
@@ -511,13 +415,12 @@ public class ConversationAdapter extends BaseAdapter {
                     topUser.setType(1);
                     topUser.setUserName(username);
                     Map<String, TopUser> map = new HashMap<String, TopUser>();
-                    map.put(conversation.getUserName(), topUser);
                     topMap.putAll(map);
                     TopUserDao topUserDao = new TopUserDao(context);
                     topUserDao.saveTopUser(topUser);
 
                 }
-                ((MainActivity) context).homefragment.refresh();
+                ((MainActivity) context).conversationfragment.refresh();
                 dlg.cancel();
             }
         });
@@ -525,12 +428,7 @@ public class ConversationAdapter extends BaseAdapter {
         tv_content2.setText("删除该聊天");
         tv_content2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                EMChatManager.getInstance().deleteConversation(
-                        conversation.getUserName(), conversation.isGroup());
-                InviteMessgeDao inviteMessgeDao = new InviteMessgeDao(context);
-                inviteMessgeDao.deleteMessage(conversation.getUserName());
-
-                ((MainActivity) context).homefragment.refresh();
+                ((MainActivity) context).conversationfragment.refresh();
 
                 dlg.cancel();
 

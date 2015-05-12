@@ -1,9 +1,5 @@
 package com.fanxin.app.fx.others;
 
-import internal.org.apache.http.entity.mime.MultipartEntity;
-import internal.org.apache.http.entity.mime.content.FileBody;
-import internal.org.apache.http.entity.mime.content.StringBody;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -90,53 +86,12 @@ public class LoadDataFromServer {
             public void run() {
                 HttpClient client = new DefaultHttpClient();
 
-                MultipartEntity entity = new MultipartEntity();
-
-                Set keys = map.keySet();
-                if (keys != null) {
-                    Iterator iterator = keys.iterator();
-                    while (iterator.hasNext()) {
-                        String key = (String) iterator.next();
-                        String value = (String) map.get(key);
-                        if (key.equals("file")) {
-                            File file = new File(value);
-                            entity.addPart(key, new FileBody(file));
-                        } else {
-
-//                            try {
-//                                entity.addPart(key, new StringBody(value,
-//                                        Charset.forName("UTF-8")));
-//                            } catch (UnsupportedEncodingException e) {
-//                                e.printStackTrace();
-//                            }
-                        }
-                    }
-
-                }
-                // 如果包含数组，要把包含的数组放进去，项目目前只有members这个数组，所有固定键值，为了更灵活
-                // 可以将传入自定义的键名......
-                if (has_Array) {
-                    for (int i = 0; i < members.size(); i++) {
-
-                        try {
-                            entity.addPart(
-                                    "members[]",
-                                    new StringBody(members.get(i), Charset
-                                            .forName("UTF-8")));
-                        } catch (UnsupportedEncodingException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
                 client.getParams().setParameter(
                         CoreConnectionPNames.CONNECTION_TIMEOUT, 30000);
                 // 请求超时
                 client.getParams().setParameter(
                         CoreConnectionPNames.SO_TIMEOUT, 30000);
                 HttpPost post = new HttpPost(url);
-                post.setEntity(entity);
                 StringBuilder builder = new StringBuilder();
                 try {
                     HttpResponse response = client.execute(post);

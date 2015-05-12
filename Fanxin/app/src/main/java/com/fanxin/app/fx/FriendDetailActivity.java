@@ -1,6 +1,5 @@
 package com.fanxin.app.fx;
 
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 
 import android.app.Activity;
@@ -32,7 +31,7 @@ public class FriendDetailActivity extends Activity {
 
     private void initView() {
 
-        FriendInfo user = DemoApplication.getInstance().getContactList().get(hxid);
+        FriendInfo user = null;
         if (user != null) {
 
             TextView tv_name = (TextView) this.findViewById(R.id.tv_name);

@@ -34,19 +34,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.easemob.EMCallBack;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMContactManager;
-import com.easemob.chat.EMGroupManager;
 import com.fanxin.app.Constant;
-import com.fanxin.app.DemoApplication;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.db.UserDao;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-import com.easemob.exceptions.EaseMobException;
-import com.easemob.util.HanziToPinyin;
 
 /**
  * 登陆页面

@@ -30,15 +30,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 
-import com.easemob.chat.EMChatConfig;
 import com.fanxin.app.R;
 import com.fanxin.app.task.LoadLocalBigImgTask;
 import com.fanxin.app.utils.ImageCache;
+import com.fanxin.app.utils.ImageUtils;
 import com.fanxin.app.widget.photoview.PhotoView;
-import com.easemob.cloud.CloudOperationCallback;
-import com.easemob.cloud.HttpFileManager;
-import com.easemob.util.ImageUtils;
-import com.easemob.util.PathUtil;
 
 /**
  * 下载显示大图
@@ -77,8 +73,7 @@ public class ShowBigImage extends BaseActivity {
 			// int screenHeight =metrics.heightPixels;
 			bitmap = ImageCache.getInstance().get(uri.getPath());
 			if (bitmap == null) {
-				LoadLocalBigImgTask task = new LoadLocalBigImgTask(this, uri.getPath(), image, loadLocalPb, ImageUtils.SCALE_IMAGE_WIDTH,
-						ImageUtils.SCALE_IMAGE_HEIGHT);
+				LoadLocalBigImgTask task = new LoadLocalBigImgTask(this, uri.getPath(), image, loadLocalPb, 100, 100);
 				if (android.os.Build.VERSION.SDK_INT > 10) {
 					task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				} else {
@@ -112,14 +107,7 @@ public class ShowBigImage extends BaseActivity {
 	 * @return
 	 */
 	public String getLocalFilePath(String remoteUrl){
-		String localPath;
-		if (remoteUrl.contains("/")){
-			localPath = PathUtil.getInstance().getImagePath().getAbsolutePath() + "/"
-					+ remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1);
-		}else{
-			localPath = PathUtil.getInstance().getImagePath().getAbsolutePath() + "/" + remoteUrl;
-		}
-		return localPath;
+		return null;
 	}
 	
 	/**
@@ -134,65 +122,6 @@ public class ShowBigImage extends BaseActivity {
 		pd.setMessage("下载图片: 0%");
 		pd.show();
 		localFilePath = getLocalFilePath(remoteFilePath);
-		final HttpFileManager httpFileMgr = new HttpFileManager(this, EMChatConfig.getInstance().getStorageUrl());
-		final CloudOperationCallback callback = new CloudOperationCallback() {
-			public void onSuccess(String resultMsg) {
-
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						DisplayMetrics metrics = new DisplayMetrics();
-						getWindowManager().getDefaultDisplay().getMetrics(metrics);
-						int screenWidth = metrics.widthPixels;
-						int screenHeight = metrics.heightPixels;
-
-						bitmap = ImageUtils.decodeScaleImage(localFilePath, screenWidth, screenHeight);
-						if (bitmap == null) {
-							image.setImageResource(default_res);
-						} else {
-							image.setImageBitmap(bitmap);
-							ImageCache.getInstance().put(localFilePath, bitmap);
-							isDownloaded = true;
-						}
-						if (pd != null) {
-							pd.dismiss();
-						}
-					}
-				});
-			}
-
-			public void onError(String msg) {
-				Log.e("###", "offline file transfer error:" + msg);
-				File file = new File(localFilePath);
-				if (file.exists()&&file.isFile()) {
-					file.delete();
-				}
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						pd.dismiss();
-						image.setImageResource(default_res);
-					}
-				});
-			}
-
-			public void onProgress(final int progress) {
-				Log.d("ease", "Progress: " + progress);
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						pd.setMessage("下载图片: " + progress + "%");
-					}
-				});
-			}
-		};
-
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				httpFileMgr.downloadFile(remoteFilePath, localFilePath, headers, callback);
-			}
-		}).start();
 	}
 
 	@Override
