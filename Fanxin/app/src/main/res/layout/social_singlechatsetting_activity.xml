@@ -70,7 +70,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/default_useravatar" />
+                        android:src="@drawable/default_boy_drawable" />
 
                     <TextView
                         android:id="@+id/tv_username"

@@ -8,16 +8,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
+import com.fanxin.app.activity.UserInfoActivity;
 import com.fanxin.app.fx.others.ContactAdapter;
 
 import appLogic.AppConstant;
@@ -29,6 +28,7 @@ import appLogic.FriendInfo;
  */
 @SuppressLint("InflateParams")
 public class FragmentFriends extends Fragment {
+    private View mainView = null;
     private ContactAdapter adapter;
     private ListView listView;
     private boolean hidden;
@@ -39,8 +39,11 @@ public class FragmentFriends extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater
-                .inflate(R.layout.fragment_contactlist, container, false);
+
+        if(mainView == null)
+            mainView = inflater.inflate(R.layout.fragment_contactlist, container, false);
+
+        return mainView;
     }
 
     @Override
@@ -59,10 +62,10 @@ public class FragmentFriends extends Fragment {
         listView.addFooterView(footerView);
         
         tv_total = (TextView) footerView.findViewById(R.id.tv_total);
-        // 设置adapter
-        adapter = new ContactAdapter(getActivity(), R.layout.item_contact_list,
-                AppConstant.friendManager.friends);
+
+        adapter = new ContactAdapter(getActivity(), AppConstant.friendManager.friends);
         listView.setAdapter(adapter);
+
         listView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override

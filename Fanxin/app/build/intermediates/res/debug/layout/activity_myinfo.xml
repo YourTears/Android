@@ -60,7 +60,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
-            android:src="@drawable/default_useravatar" />
+            android:src="@drawable/default_boy_drawable" />
 
         <TextView
             android:layout_width="wrap_content"

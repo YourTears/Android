@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import appLogic.FriendInfo;
-import appLogic.Gender;
+import appLogic.enums.Gender;
 
 public class FriendDetailActivity extends Activity {
 

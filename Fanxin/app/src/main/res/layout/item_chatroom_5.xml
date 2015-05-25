@@ -40,7 +40,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="8dp"
                 android:layout_toLeftOf="@id/view_temp"
-                android:src="@drawable/default_useravatar" />
+                android:src="@drawable/default_boy_drawable" />
 
             <ImageView
                 android:id="@+id/iv_avatar2"
@@ -49,7 +49,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/view_temp"
               
-                android:src="@drawable/default_useravatar" />
+                android:src="@drawable/default_boy_drawable" />
 
             <ImageView
                 android:id="@+id/iv_avatar3"
@@ -59,7 +59,7 @@
                 android:layout_below="@id/iv_avatar1"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="2dp"
-                android:src="@drawable/default_useravatar" />
+                android:src="@drawable/default_boy_drawable" />
 
             <ImageView
                 android:id="@+id/iv_avatar4"
@@ -70,7 +70,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_toRightOf="@id/iv_avatar3"
-                android:src="@drawable/default_useravatar" />
+                android:src="@drawable/default_boy_drawable" />
 
             <ImageView
                 android:id="@+id/iv_avatar5"
@@ -81,7 +81,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_toRightOf="@id/iv_avatar4"
-                android:src="@drawable/default_useravatar" />
+                android:src="@drawable/default_boy_drawable" />
         </RelativeLayout>
         </RelativeLayout>
 

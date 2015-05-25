@@ -10,7 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fanxin.app.db.DbOpenHelper;
+import com.fanxin.database.DbOpenHelper;
 
 public class TopUserDao {
     public static final String TABLE_NAME = "top_user";

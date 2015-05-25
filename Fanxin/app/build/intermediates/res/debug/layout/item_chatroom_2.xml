@@ -31,7 +31,7 @@
                     android:layout_height="22dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/default_useravatar" />
+                    android:src="@drawable/default_boy_drawable" />
 
                 <ImageView
                     android:id="@+id/iv_avatar2"
@@ -41,7 +41,7 @@
                     android:layout_centerVertical="true"
                    
                     android:layout_toRightOf="@id/iv_avatar1"
-                    android:src="@drawable/default_useravatar" />
+                    android:src="@drawable/default_boy_drawable" />
             </RelativeLayout>
         </RelativeLayout>
 

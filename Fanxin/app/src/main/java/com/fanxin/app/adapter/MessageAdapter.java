@@ -1,46 +1,38 @@
 package com.fanxin.app.adapter;
 
 import java.io.File;
-import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.Spannable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.TextView.BufferType;
-import android.widget.Toast;
 
-import com.fanxin.app.Constant;
 import com.fanxin.app.R;
-import com.fanxin.app.activity.FXAlertDialog;
 import com.fanxin.app.activity.ShowBigImage;
-import com.fanxin.app.fx.ChatActivity;
 import com.fanxin.app.utils.ImageCache;
-import com.fanxin.app.utils.ImageUtils;
-import com.fanxin.app.utils.SmileUtils;
 
-import appLogic.MeInfo;
+import appLogic.AppConstant;
+import appLogic.FriendInfo;
+import appLogic.ImageManager;
+import appLogic.Message;
 import common.AsyncImageLoader;
+import common.DateUtils;
+import common.SmileUtils;
 
-@SuppressLint({ "SdCardPath", "InflateParams" })
 public class MessageAdapter extends BaseAdapter {
     private final static String TAG = "msg";
 
@@ -63,7 +55,7 @@ public class MessageAdapter extends BaseAdapter {
     public static final String VOICE_DIR = "chat/audio/";
     public static final String VIDEO_DIR = "chat/video";
 
-    private String username;
+    private FriendInfo friend;
     private LayoutInflater inflater;
     private Activity activity;
 
@@ -71,22 +63,22 @@ public class MessageAdapter extends BaseAdapter {
 
     private Map<String, Timer> timers = new Hashtable<String, Timer>();
 
-    public MessageAdapter(Context context, String username) {
-        this.username = username;
+    public List<Message> messages;
+
+    public MessageAdapter(Context context, String id, List<Message> messages) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         activity = (Activity) context;
-    }
 
-    // public void setUser(String user) {
-    // this.user = user;
-    // }
+        friend = AppConstant.friendManager.getFriend(id);
+        this.messages = messages;
+    }
 
     /**
      * 获取item数
      */
     public int getCount() {
-        return 0;
+        return messages.size();
     }
 
     /**
@@ -100,8 +92,8 @@ public class MessageAdapter extends BaseAdapter {
         return position;
     }
 
-    public View getItem(int position) {
-        return null;
+    public Object getItem(int position) {
+        return messages.get(position);
     }
 
     /**
@@ -115,11 +107,34 @@ public class MessageAdapter extends BaseAdapter {
         return 14;
     }
 
-    private View createViewByMessage(int position) {
-        return null;
+    private View setMessageViewData(View view, Message message) {
+        ImageView headerView = (ImageView)view.findViewById(R.id.iv_userhead);
+        AsyncImageLoader imageLoader = new AsyncImageLoader(headerView, true);
+        imageLoader.execute(friend.imageUrl, ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
+
+        TextView textView = (TextView) view.findViewById(R.id.tv_chatcontent);
+        Spannable span = SmileUtils.getSmiledText(context, message.body);
+        textView.setText(span, TextView.BufferType.SPANNABLE);
+
+        TextView timeView = (TextView) view.findViewById(R.id.tv_timestamp);
+        timeView.setText(DateUtils.getDateTimeString(message.time));
+
+        TextView userNameView =(TextView) view.findViewById(R.id.tv_userid);
+        if(userNameView != null)
+            userNameView.setText(friend.name);
+
+        return view;
     }
 
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Message message = (Message)getItem(position);
+
+        if(convertView == null) {
+            convertView = message.direction == Message.Direction.SEND ?
+                    inflater.inflate(R.layout.row_sent_message, null) : inflater.inflate(R.layout.row_received_message, null);
+        }
+
+        setMessageViewData(convertView, message);
 
         return convertView;
     }
@@ -129,8 +144,7 @@ public class MessageAdapter extends BaseAdapter {
      * @param holder
      * @param position
      */
-    private void handleTextMessage(ViewHolder holder,
-                                   final int position) {
+    private void handleTextMessage(ViewHolder holder, int position) {
 
     }
 
@@ -285,8 +299,7 @@ public class MessageAdapter extends BaseAdapter {
      * @param iv
      * @param thumbnailUrl 远程缩略图路径
      */
-    private void showVideoThumbView(String localThumb, ImageView iv,
-                                    String thumbnailUrl) {
+    private void showVideoThumbView(String localThumb, ImageView iv,String thumbnailUrl) {
         // first check if the thumbnail image already loaded into cache
         Bitmap bitmap = ImageCache.getInstance().get(localThumb);
         if (bitmap != null) {

@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fanxin.app.domain.InviteMessage;
 import com.fanxin.app.domain.InviteMessage.InviteMesageStatus;
+import com.fanxin.database.DbOpenHelper;
 
 public class InviteMessgeDao {
 	public static final String TABLE_NAME = "new_friends_msgs";

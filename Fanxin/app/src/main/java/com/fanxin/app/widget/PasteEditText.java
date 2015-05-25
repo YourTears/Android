@@ -19,14 +19,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.EditText;
-import android.widget.TextView.BufferType;
 
 import com.fanxin.app.activity.FXAlertDialog;
-import com.fanxin.app.fx.ChatActivity;
-import com.fanxin.app.utils.SmileUtils;
+import com.fanxin.app.activity.ChatActivity;
 
 /**
  * 自定义的textview，用来处理复制粘贴的消息

@@ -25,7 +25,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="@dimen/margin_chat_activity"
-            android:src="@drawable/default_useravatar"
+            android:src="@drawable/default_boy_drawable"
             android:onClick="me"
             android:scaleType="fitXY" />
 

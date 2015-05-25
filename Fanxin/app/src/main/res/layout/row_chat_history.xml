@@ -18,7 +18,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/default_useravatar" />
+            android:src="@drawable/default_boy_drawable" />
 
         <TextView
             android:id="@+id/unread_msg_number"

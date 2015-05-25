@@ -18,7 +18,7 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.fanxin.app.db.DbOpenHelper;
+import com.fanxin.database.DbOpenHelper;
 import com.fanxin.app.db.UserDao;
 import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.fx.others.TopUserDao;
@@ -66,12 +66,6 @@ public class DemoHXSDKModel extends DefaultHXSDKModel{
         TopUserDao dao = new TopUserDao(context);
         dao.saveTopUserList(contactList);
         return true;
-    }
-     
-     
-    public void closeDB() {
-        // TODO Auto-generated method stub
-        DbOpenHelper.getInstance(context).closeDB();
     }
     
     @Override

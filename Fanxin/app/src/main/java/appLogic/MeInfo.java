@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 
+import appLogic.enums.Gender;
+
 /**
  * Created by long on 4/21/2015.
  */

@@ -7,7 +7,7 @@
     android:paddingTop="13dp" >
 
     <TextView
-        android:id="@+id/timestamp"
+        android:id="@+id/tv_timestamp"
         style="@style/chat_text_date_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -24,7 +24,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="@dimen/margin_chat_activity"
-            android:src="@drawable/default_useravatar"
+            android:src="@drawable/default_boy_drawable"
             android:scaleType="fitXY" />
 
        <TextView
@@ -36,13 +36,7 @@
             android:layout_toLeftOf="@id/iv_userhead"
             android:autoLink="web"
             android:background="@drawable/chatto_bg"
-            android:gravity="left|center"
-            android:lineSpacingExtra="2dp"
-            android:maxWidth="225.0dip"
-            android:paddingLeft="8dip"
-            android:textSize="15sp" />
-
-     
+            android:gravity="left|center"/>
 
         <ImageView
             android:id="@+id/msg_status"

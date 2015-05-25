@@ -1,20 +1,15 @@
 package com.fanxin.app.fx.others;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Filter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.fanxin.app.R;
@@ -24,67 +19,53 @@ import appLogic.FriendInfo;
 import appLogic.ImageManager;
 import common.AsyncImageLoader;
 
-/**
- * 简单的好友Adapter实现
- * 
- */
-public class ContactAdapter extends ArrayAdapter<FriendInfo>  {
-
-    List<String> list;
-    List<FriendInfo> userList;
+public class ContactAdapter extends BaseAdapter {
+    private List<FriendInfo> friends;
     private LayoutInflater layoutInflater;
-    private SparseIntArray positionOfSection;
-    private SparseIntArray sectionOfPosition;
-    private int res;
+    private Map<String, View> views = null;
 
-    @SuppressLint("SdCardPath")
-	public ContactAdapter(Context context, int resource, List<FriendInfo> objects) {
-        super(context, resource, objects);
-        this.res = resource;
-        this.userList = objects;
+	public ContactAdapter(Context context, List<FriendInfo> objects) {
+        friends = objects;
         layoutInflater = LayoutInflater.from(context);
+        views = new HashMap<String, View>();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(res, null);
-        }
-
-        ImageView iv_avatar = (ImageView) convertView
-                .findViewById(R.id.iv_avatar);
-
-        TextView nameTextview = (TextView) convertView
-                .findViewById(R.id.tv_name);
-        View view_temp = (View) convertView.findViewById(R.id.view_temp);
         FriendInfo friend = getItem(position);
 
-        convertView.setTag(friend.id);
-        // 设置nick，demo里不涉及到完整user，用username代替nick显示
+        if(views.containsKey(friend.id))
+            return views.get(friend.id);
 
-        String header = friend.name;
-        String usernick = friend.name;
-        String useravatar = friend.imageUrl;
+        View view = layoutInflater.inflate(R.layout.item_contact_list, parent, false);
+        view.setTag(friend.id);
 
-        // 显示申请与通知item
+        ImageView imageView = (ImageView) view.findViewById(R.id.iv_avatar);
+        TextView nameTextView = (TextView) view.findViewById(R.id.tv_name);
 
-        nameTextview.setText(usernick);
-        iv_avatar.setImageResource(R.drawable.default_useravatar);
+        nameTextView.setText(friend.name);
 
-        AsyncImageLoader imageLoader = new AsyncImageLoader(iv_avatar, true);
-        imageLoader.execute(friend.imageUrl,
-                ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
+        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, true);
+        imageLoader.execute(friend.imageUrl, ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
 
-        return convertView;
+        views.put(friend.id, view);
+        return view;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
     public FriendInfo getItem(int position) {
-        return super.getItem(position);
+        if(position >= 0 && position < friends.size())
+            return friends.get(position);
+        return null;
     }
 
     @Override
     public int getCount() {
-        return super.getCount();
+        return friends.size();
     }
 }

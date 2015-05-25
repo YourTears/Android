@@ -40,7 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import appLogic.Gender;
+import appLogic.enums.Gender;
 import appLogic.MeInfo;
 
 @SuppressLint("SdCardPath")

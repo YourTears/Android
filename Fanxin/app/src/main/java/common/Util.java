@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-
-import com.fanxin.app.fx.others.HTTPService;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -108,4 +107,12 @@ public class Util {
             return null;
         }
     }
+
+//    private void hideKeyboard(Context context) {
+//        if (context.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+//            if (getCurrentFocus() != null)
+//                manager.hideSoftInputFromWindow(getCurrentFocus()
+//                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//        }
+//    }
 }

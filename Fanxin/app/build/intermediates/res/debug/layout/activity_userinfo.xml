@@ -70,7 +70,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="15dp"
-                android:src="@drawable/default_useravatar" />
+                android:src="@drawable/default_boy_drawable" />
 
             <LinearLayout
                 android:id="@+id/ll_name"

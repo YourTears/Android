@@ -1,5 +1,8 @@
 package appLogic;
 
+import appLogic.enums.FriendStatus;
+import appLogic.enums.Gender;
+
 /**
  * Created by tiazh on 4/21/2015.
  */

@@ -173,7 +173,7 @@ ADDED from AndroidManifest.xml:68:9
 		ADDED from AndroidManifest.xml:71:13
 	android:name
 		ADDED from AndroidManifest.xml:69:13
-activity#com.fanxin.app.fx.ChatActivity
+activity#com.fanxin.app.activity.ChatActivity
 ADDED from AndroidManifest.xml:74:9
 	android:windowSoftInputMode
 		ADDED from AndroidManifest.xml:79:13
@@ -551,7 +551,7 @@ ADDED from AndroidManifest.xml:328:9
 		ADDED from AndroidManifest.xml:331:13
 	android:name
 		ADDED from AndroidManifest.xml:329:13
-activity#com.fanxin.app.fx.UserInfoActivity
+activity#com.fanxin.app.activity.UserInfoActivity
 ADDED from AndroidManifest.xml:334:9
 	android:windowSoftInputMode
 		ADDED from AndroidManifest.xml:338:13

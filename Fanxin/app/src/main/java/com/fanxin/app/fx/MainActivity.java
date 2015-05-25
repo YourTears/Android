@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
@@ -15,7 +14,6 @@ import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.db.UserDao;
 import com.fanxin.app.domain.InviteMessage;
-import com.fanxin.app.domain.InviteMessage.InviteMesageStatus;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 
@@ -25,7 +23,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -33,6 +30,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +38,6 @@ import android.widget.Toast;
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
 import appLogic.FriendManager;
-import appLogic.ImageManager;
 import appLogic.MeInfo;
 import common.Util;
 
@@ -152,6 +149,10 @@ public class MainActivity extends BaseActivity {
 
         Util.createFolder(AppConstant.dataFolder);
         Util.createFolder(AppConstant.imageFolder);
+
+        AppConstant.defaultImageDrawable = getResources().getDrawable(R.drawable.default_boy_drawable);
+
+        AppConstant.inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     private void initView() {

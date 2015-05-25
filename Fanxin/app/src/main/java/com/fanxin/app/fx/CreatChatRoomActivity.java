@@ -38,6 +38,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
+import com.fanxin.app.activity.ChatActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 
@@ -222,7 +223,7 @@ public class CreatChatRoomActivity extends BaseActivity {
         // 设置id，方便后面删除
         view.setTag(glufineid);
         if (bitmap == null) {
-            images.setImageResource(R.drawable.default_useravatar);
+            images.setImageResource(R.drawable.default_boy_drawable);
         } else {
             images.setImageBitmap(bitmap);
         }
@@ -456,7 +457,7 @@ public class CreatChatRoomActivity extends BaseActivity {
             String header = user.name_pinyin;
             final String username = user.sys_id;
             tv_name.setText(name);
-            iv_avatar.setImageResource(R.drawable.default_useravatar);
+            iv_avatar.setImageResource(R.drawable.default_boy_drawable);
             iv_avatar.setTag(avater);
             Bitmap bitmap = null;
             if (avater != null && !avater.equals("")) {

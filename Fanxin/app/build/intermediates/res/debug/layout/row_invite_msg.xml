@@ -22,7 +22,7 @@
                 android:layout_height="@dimen/height_row_weixin"
                 android:layout_marginLeft="10dp"
                 android:padding="5dp"
-                android:src="@drawable/default_useravatar" />
+                android:src="@drawable/default_boy_drawable" />
         </RelativeLayout>
 
         <TextView

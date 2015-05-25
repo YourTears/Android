@@ -72,7 +72,7 @@
         </activity>
         <!-- 聊天页面 -->
         <activity
-            android:name="com.fanxin.app.fx.ChatActivity"
+            android:name="com.fanxin.app.activity.ChatActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
@@ -333,7 +333,7 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.fanxin.app.fx.UserInfoActivity"
+            android:name="com.fanxin.app.activity.UserInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >

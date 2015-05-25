@@ -51,7 +51,6 @@ public class AddPopWindow extends PopupWindow {
 
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context,AddFriendsOneActivity.class));  
                 AddPopWindow.this.dismiss();
           
             }

@@ -6,14 +6,15 @@
     android:paddingTop="13dp" >
 
     <TextView
-        android:id="@+id/timestamp"
+        android:id="@+id/tv_timestamp"
         style="@style/chat_text_date_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_chat_activity" >
 
@@ -24,33 +25,20 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/margin_chat_activity"
-            android:src="@drawable/default_useravatar"
+            android:src="@drawable/default_boy_drawable"
             android:scaleType="fitXY" />
 
-       <TextView
-             android:maxWidth="225.0dip"
+        <TextView
             android:id="@+id/tv_chatcontent"
+            style="@style/chat_content_date_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_chat_activity"
             android:layout_toRightOf="@id/iv_userhead"
             android:background="@drawable/chatfrom_bg"
             android:autoLink="web"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="left|center"
-            android:lineSpacingExtra="2dp"
-            android:minHeight="50dp"
-            android:textColor="#ff000000"
-            android:textSize="15sp" />
-        <TextView
-            android:id="@+id/tv_userid"
-            style="@style/chat_text_name_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/tv_chatcontent"
-            android:layout_below="@id/iv_userhead"/>
-    </RelativeLayout>
+            android:gravity="left|center"/>
+
+    </LinearLayout>
 
 </LinearLayout>

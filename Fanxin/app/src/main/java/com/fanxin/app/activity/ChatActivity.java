@@ -1,24 +1,12 @@
-/**
- * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package com.fanxin.app.fx;
+package com.fanxin.app.activity;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -54,8 +42,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,21 +52,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fanxin.app.R;
-import com.fanxin.app.activity.BaseActivity;
-import com.fanxin.app.activity.ImageGridActivity;
-import com.fanxin.app.adapter.ExpressionAdapter;
 import com.fanxin.app.adapter.ExpressionPagerAdapter;
 import com.fanxin.app.adapter.MessageAdapter;
 import com.fanxin.app.widget.PasteEditText;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
+import appLogic.Message;
+import appLogic.MessageManager;
 
-/**
- * 聊天页面
- * 
- */
-@SuppressWarnings("deprecation")
 public class ChatActivity extends BaseActivity implements OnClickListener {
 
     private static final int REQUEST_CODE_EMPTY_HISTORY = 2;
@@ -135,7 +115,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private View more;
     private ClipboardManager clipboard;
     private ViewPager expressionViewpager;
-    private InputMethodManager manager;
     private List<String> reslist;
     private Drawable[] micImages;
     private NewMessageBroadcastReceiver receiver;
@@ -155,6 +134,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private boolean haveMoreData = true;
     private Button btnMore;
     public String playMsgId;
+
+    private MessageManager messageManager;
 
     // 分享的照片
     String iamge_path = null;
@@ -207,6 +188,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         iv_emoticons_checked.setVisibility(View.INVISIBLE);
         more = findViewById(R.id.more);
         edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_normal);
+
+        messageManager = new MessageManager(friend.id);
 
         // 动画资源文件,用于录制语音时
         micImages = new Drawable[]{
@@ -296,9 +279,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         iv_emoticons_checked.setOnClickListener(this);
         // position = getIntent().getIntExtra("position", -1);
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         ((TextView) findViewById(R.id.name)).setText(friend.name);
 
@@ -307,7 +287,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 //        // 把此会话的未读数置为0
 //        conversation.resetUnreadMsgCount();
 
-        //adapter = new MessageAdapter(this, friend.id);
+        adapter = new MessageAdapter(this, friend.id, messageManager.messages);
         // 显示消息
         listView.setAdapter(adapter);
         //listView.setOnScrollListener(new ListScrollListener());
@@ -321,7 +301,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //hideKeyboard();
+                hideKeyboard();
                 more.setVisibility(View.GONE);
                 iv_emoticons_normal.setVisibility(View.VISIBLE);
                 iv_emoticons_checked.setVisibility(View.INVISIBLE);
@@ -361,15 +341,16 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                startActivity(
-
-                        new Intent(ChatActivity.this,
-                                ChatSingleSettingActivity.class).putExtra("userId",
-                                friend.id));
-
             }
 
         });
+    }
+
+    private void hideKeyboard() {
+        if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getCurrentFocus() != null)
+                AppConstant.inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /**
@@ -528,7 +509,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             iv_emoticons_checked.setVisibility(View.VISIBLE);
             btnContainer.setVisibility(View.GONE);
             emojiIconContainer.setVisibility(View.VISIBLE);
-            //hideKeyboard();
+            hideKeyboard();
         } else if (id == R.id.iv_emoticons_checked) { // 点击隐藏表情框
             iv_emoticons_normal.setVisibility(View.VISIBLE);
             iv_emoticons_checked.setVisibility(View.INVISIBLE);
@@ -593,22 +574,17 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         startActivityForResult(intent, REQUEST_CODE_LOCAL);
     }
 
-    /**
-     * 发送文本消息
-     *
-     * @param content message content
-     *                boolean resend
-     */
     private void sendText(String content) {
-
+        content = content.trim();
         if (content.length() > 0) {
-            // 通知adapter有消息变动，adapter会根据加入的这条message显示消息和调用sdk的发送方法
+            Message message = new Message(UUID.randomUUID(), friend.id, Message.Direction.SEND,
+                    content, (new Date()).getTime(), Message.MessageType.TEXT, false);
+
+            messageManager.messages.add(message);
             adapter.refresh();
             listView.setSelection(listView.getCount() - 1);
             mEditTextContent.setText("");
-
             setResult(RESULT_OK);
-
         }
     }
 
@@ -1044,11 +1020,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
          * 隐藏软键盘
          */
         private void hideKeyboard() {
-            if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-                if (getCurrentFocus() != null)
-                    manager.hideSoftInputFromWindow(getCurrentFocus()
-                            .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         }
 
         /**
