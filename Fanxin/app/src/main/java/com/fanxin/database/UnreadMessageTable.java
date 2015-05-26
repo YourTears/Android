@@ -49,8 +49,7 @@ public class UnreadMessageTable {
         try {
             dbReader = dbHelper.getReadableDatabase();
             if (dbReader.isOpen()) {
-                String query = String.format("SELECT {3} FROM {0} WHERE {1} = {2}",
-                        TableName, FriendId, friendId, UnreadCount);
+                String query = "SELECT " + UnreadCount + " FROM " + TableName + " WHERE FriendId = '" + friendId + "'";
 
                 Cursor cursor = dbReader.rawQuery(query, null);
 

@@ -1,5 +1,8 @@
 package appLogic;
 
+import android.content.Context;
+
+import com.fanxin.database.MessageTable;
 import com.fanxin.database.UnreadMessageTable;
 
 import java.util.ArrayList;
@@ -15,23 +18,22 @@ public class MessageManager {
     public int unreadCount;
     public long endTime;
 
-    UnreadMessageTable unreadMessageTable = null;
+    MessageTable messageTable = null;
 
-    public MessageManager(String friendId)
+    public MessageManager(Context context, String friendId)
     {
         this.friendId = friendId;
         messages = new ArrayList<>();
         endTime = (new Date()).getTime();
+        unreadCount = 0;
 
-        //unreadCount = Mess
+        messageTable = new MessageTable(context);
+        messages = messageTable.getMessages(friendId, (new Date()).getTime());
     }
 
     public void addMessage(Message message)
     {
         messages.add(message);
-        if(message.isRead == false)
-            unreadCount ++;
-
-
+        messageTable.insertMessage(message);
     }
 }

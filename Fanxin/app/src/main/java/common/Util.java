@@ -107,12 +107,4 @@ public class Util {
             return null;
         }
     }
-
-//    private void hideKeyboard(Context context) {
-//        if (context.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-//            if (getCurrentFocus() != null)
-//                manager.hideSoftInputFromWindow(getCurrentFocus()
-//                        .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//        }
-//    }
 }

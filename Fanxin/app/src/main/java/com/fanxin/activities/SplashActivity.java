@@ -1,4 +1,4 @@
-package com.fanxin.app.activity;
+package com.fanxin.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.animation.AlphaAnimation;
 import appLogic.AppConstant;
 
 import com.fanxin.app.R;
+import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.fx.LoginActivity;
 import com.fanxin.app.fx.MainActivity;
 

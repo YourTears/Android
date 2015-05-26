@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,9 +66,8 @@ public class MessageTable {
         try {
             dbReader = dbHelper.getReadableDatabase();
             if (dbReader.isOpen()) {
-                String query = String.format("SELECT TOP {5} {6}, {7}, {8}, {9}, {10}, {11}, {12} FROM {0} WHERE {1} = {2} AND {3} <= {4} ORDER BY {3} DESC",
-                        TableName, FriendId, friendId, Time, endTime,
-                        MessageCount, ID, FriendId, Direction, Body, MessageType, Time, IsSent);
+                String query = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM " + TableName + " WHERE FriendId = '" + friendId + "' AND Time <= " + endTime + " ORDER BY Time DESC LIMIT %d",
+                        ID, FriendId, Direction, Body, MessageType, Time, IsSent, MessageCount);
 
                 Cursor cursor = dbReader.rawQuery(query, null);
 
@@ -75,21 +75,21 @@ public class MessageTable {
                     Message message = new Message();
 
                     message.id = UUID.fromString(cursor.getString(cursor.getColumnIndex(ID)));
-                    message.friendId = cursor.getString(cursor.getColumnIndex(friendId));
+                    message.friendId = cursor.getString(cursor.getColumnIndex(FriendId));
                     message.direction = restoreDirection(cursor.getInt(cursor.getColumnIndex(Direction)));
                     message.body = cursor.getString(cursor.getColumnIndex(Body));
                     message.type = restoreType(cursor.getInt(cursor.getColumnIndex(MessageType)));
                     message.time = cursor.getLong(cursor.getColumnIndex(Time));
                     message.isSent = cursor.getInt(cursor.getColumnIndex(IsSent)) == 0 ? false : true;
 
-                    messages.add(message);
+                    messages.add(0, message);
                 }
 
                 cursor.close();
             }
         }
         catch (Exception e){
-
+            Log.e("MessageTable", e.getMessage());
         }finally {
             dbReader.close();
             dbReader = null;

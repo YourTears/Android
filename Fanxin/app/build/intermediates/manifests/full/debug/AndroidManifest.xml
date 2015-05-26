@@ -47,7 +47,7 @@
 
         <!-- 开屏页 -->
         <activity
-            android:name="com.fanxin.app.activity.SplashActivity"
+            android:name="com.fanxin.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
             <intent-filter>
@@ -72,7 +72,7 @@
         </activity>
         <!-- 聊天页面 -->
         <activity
-            android:name="com.fanxin.app.activity.ChatActivity"
+            android:name="com.fanxin.activities.ChatActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"

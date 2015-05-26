@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
-import com.fanxin.app.activity.ChatActivity;
+import com.fanxin.activities.ChatActivity;
 import com.fanxin.app.fx.MainActivity;
 
 import android.annotation.SuppressLint;

@@ -1,5 +1,6 @@
 package appLogic;
 
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.drawable.Drawable;
 import android.view.inputmethod.InputMethodManager;
 

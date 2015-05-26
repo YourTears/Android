@@ -1,4 +1,4 @@
-package com.fanxin.app.activity;
+package com.fanxin.activities;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,6 +52,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fanxin.app.R;
+import com.fanxin.app.activity.BaseActivity;
+import com.fanxin.app.activity.ImageGridActivity;
 import com.fanxin.app.adapter.ExpressionPagerAdapter;
 import com.fanxin.app.adapter.MessageAdapter;
 import com.fanxin.app.widget.PasteEditText;
@@ -189,7 +191,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         more = findViewById(R.id.more);
         edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_normal);
 
-        messageManager = new MessageManager(friend.id);
+        messageManager = new MessageManager(this, friend.id);
 
         // 动画资源文件,用于录制语音时
         micImages = new Drawable[]{
@@ -397,8 +399,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                 adapter.refresh();
             } else if (requestCode == REQUEST_CODE_CAMERA) { // 发送照片
                 if (cameraFile != null && cameraFile.exists())
-                    Log.e("cameraFile.getAbsolutePath()------>>>>",
-                            cameraFile.getAbsolutePath());
+                    Log.e("cameraFile.getAbsolutePath()------>>>>", cameraFile.getAbsolutePath());
                 sendPicture(cameraFile.getAbsolutePath(), false);
             } else if (requestCode == REQUEST_CODE_SELECT_VIDEO) { // 发送本地选择的视频
 
@@ -580,7 +581,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             Message message = new Message(UUID.randomUUID(), friend.id, Message.Direction.SEND,
                     content, (new Date()).getTime(), Message.MessageType.TEXT, false);
 
-            messageManager.messages.add(message);
+            messageManager.addMessage(message);
             adapter.refresh();
             listView.setSelection(listView.getCount() - 1);
             mEditTextContent.setText("");

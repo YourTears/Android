@@ -20,22 +20,26 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbOpenHelper extends SQLiteOpenHelper{
 	private static final int DATABASE_VERSION = 1;
 	private static DbOpenHelper instance = null;
+    private static final String DatabaseName = "WeLove.db";
 	 
 	private static final String Messages_Table_Create =
-            String.format("CREATE TABLE IF NOT EXISTS {0} " +
-                    "({1} TEXT PRIMARY KEY, {2} TEXT, {3} INTEGER, {4} TEXT, {5} INTEGER, {6} BIGINT, {7} INTEGER, {8} INTEGER)",
+            String.format("CREATE TABLE IF NOT EXISTS %s " +
+                    "(%s TEXT PRIMARY KEY, %s TEXT, %s INTEGER, %s TEXT, %s BIGINT, %s INTEGER, %s INTEGER)",
                     MessageTable.TableName, MessageTable.ID, MessageTable.FriendId, MessageTable.Direction,
                     MessageTable.Body, MessageTable.Time, MessageTable.MessageType, MessageTable.IsSent);
 	private static final String Messages_Index_Create =
-            String.format("CREATE INDEX IF NOT EXISTS MESSAGEINDEX ON {0}({1}, {2})",
+            String.format("CREATE INDEX IF NOT EXISTS MESSAGEINDEX ON %s(%s, %s)",
                     MessageTable.TableName, MessageTable.FriendId, MessageTable.Time);
 
     private static final String UnreadMessageCount_Table_Create =
-            String.format("CREATE TABLE IF NOT EXISTS {0} ({1} TEXT PRIMARY KEY, {2} INTEGER)",
+            String.format("CREATE TABLE IF NOT EXISTS %s (%s TEXT PRIMARY KEY, %s INTEGER)",
                     UnreadMessageTable.TableName, UnreadMessageTable.FriendId, UnreadMessageTable.UnreadCount);
 
 	private DbOpenHelper(Context context) {
-		super(context, getUserDatabaseName(), null, DATABASE_VERSION);
+		super(context, DatabaseName, null, DATABASE_VERSION);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.close();
 	}
 	
 	public static DbOpenHelper getInstance(Context context) {
@@ -44,10 +48,6 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 		}
 		return instance;
 	}
-	
-	private static String getUserDatabaseName() {
-        return null;
-    }
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
