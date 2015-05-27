@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 /**
- * Created by tiazh on 5/10/2015.
+ * Created by Long on 5/10/2015.
  */
 public class AsyncImageLoader extends AsyncTask<String, Integer, Bitmap> {
     private ImageView m_imageView;

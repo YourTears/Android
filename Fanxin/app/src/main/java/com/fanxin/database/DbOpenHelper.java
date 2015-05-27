@@ -17,6 +17,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import appLogic.AppConstant;
+import common.Util;
+
 public class DbOpenHelper extends SQLiteOpenHelper{
 	private static final int DATABASE_VERSION = 1;
 	private static DbOpenHelper instance = null;
@@ -40,7 +43,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
                     ConversationTable.TableName, ConversationTable.FriendId, ConversationTable.Body, ConversationTable.Time, ConversationTable.UnreadCount);
 
 	private DbOpenHelper(Context context) {
-		super(context, DatabaseName, null, DATABASE_VERSION);
+		super(context, getDatabasePath(), null, DATABASE_VERSION);
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.close();
@@ -67,6 +70,13 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	}
 
     public boolean deleteDatabase(Context context) {
-        return context.deleteDatabase(DatabaseName);
+        return context.deleteDatabase(getDatabasePath());
+    }
+
+    private static String getDatabasePath(){
+        String databaseFolder = AppConstant.dataFolder + "/database";
+        Util.createFolder(databaseFolder);
+
+        return databaseFolder + "/" + DatabaseName;
     }
 }

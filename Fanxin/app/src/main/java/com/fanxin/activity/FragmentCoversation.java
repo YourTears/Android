@@ -28,6 +28,8 @@ public class FragmentCoversation extends Fragment {
     public RelativeLayout errorItem;
     public TextView errorText;
 
+    private boolean inited = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class FragmentCoversation extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        inited = true;
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null
                 && savedInstanceState.getBoolean("isConflict", false))
@@ -82,23 +85,6 @@ public class FragmentCoversation extends Fragment {
      */
     private void sortConversationByLastChatTime(
             List<Object> conversationList) {
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        this.hidden = hidden;
-        if (!hidden) {
-            refresh();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!hidden && !((MainActivity) getActivity()).isConflict) {
-            refresh();
-        }
     }
 
     @Override

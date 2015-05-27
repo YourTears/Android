@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import appLogic.AppConstant;
+import appLogic.ConversationManager;
 import appLogic.FriendInfo;
 import appLogic.FriendManager;
 import appLogic.MeInfo;
@@ -157,6 +158,9 @@ public class MainActivity extends BaseActivity {
         AppConstant.defaultImageDrawable = getResources().getDrawable(R.drawable.default_boy_drawable);
 
         AppConstant.inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        //DbOpenHelper.getInstance(this).deleteDatabase(this);
+        AppConstant.conversationManager = new ConversationManager(this);
     }
 
     private void initView() {

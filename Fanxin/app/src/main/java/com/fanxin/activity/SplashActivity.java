@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 
 import appLogic.AppConstant;
-import appLogic.ConversationManager;
 
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
@@ -14,7 +13,6 @@ import com.fanxin.app.fx.LoginActivity;
 
 /**
  * 开屏页
- *
  */
 public class SplashActivity extends BaseActivity {
 
@@ -25,9 +23,6 @@ public class SplashActivity extends BaseActivity {
 	    final View view = View.inflate(this, R.layout.activity_splash, null);
 		setContentView(view);
 		super.onCreate(arg0);
-
-        //DbOpenHelper.getInstance(this).deleteDatabase(this);
-        AppConstant.conversationManager = new ConversationManager(this);
 
 		AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
 		animation.setDuration(1500);
