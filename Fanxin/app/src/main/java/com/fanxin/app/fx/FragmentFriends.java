@@ -14,10 +14,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fanxin.activity.MainActivity;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.UserInfoActivity;
-import com.fanxin.app.fx.others.ContactAdapter;
+import com.fanxin.adapter.ContactAdapter;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;

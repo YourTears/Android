@@ -25,7 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fanxin.activities.ChatActivity;
+import com.fanxin.activity.ChatActivity;
 import com.fanxin.app.R;
 import com.fanxin.app.task.DownloadImageTask;
 import com.fanxin.app.utils.ImageCache;

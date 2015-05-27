@@ -1,43 +1,27 @@
  
 package com.fanxin.app.fx;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
- 
 
-
-
-
-
-
-
-
-
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.fanxin.activity.MainActivity;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
-import com.fanxin.app.db.UserDao;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 

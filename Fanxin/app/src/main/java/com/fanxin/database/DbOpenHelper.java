@@ -35,6 +35,10 @@ public class DbOpenHelper extends SQLiteOpenHelper{
             String.format("CREATE TABLE IF NOT EXISTS %s (%s TEXT PRIMARY KEY, %s INTEGER)",
                     UnreadMessageTable.TableName, UnreadMessageTable.FriendId, UnreadMessageTable.UnreadCount);
 
+    private static final String Conversations_Table_Create =
+            String.format("CREATE TABLE IF NOT EXISTS %s (%s TEXT PRIMARY KEY, %s TEXT, %s BIGINT, %s INTEGER)",
+                    ConversationTable.TableName, ConversationTable.FriendId, ConversationTable.Body, ConversationTable.Time, ConversationTable.UnreadCount);
+
 	private DbOpenHelper(Context context) {
 		super(context, DatabaseName, null, DATABASE_VERSION);
 
@@ -54,10 +58,15 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 		db.execSQL(Messages_Table_Create);
         db.execSQL(Messages_Index_Create);
         db.execSQL(UnreadMessageCount_Table_Create);
+        db.execSQL(Conversations_Table_Create);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
 	}
+
+    public boolean deleteDatabase(Context context) {
+        return context.deleteDatabase(DatabaseName);
+    }
 }

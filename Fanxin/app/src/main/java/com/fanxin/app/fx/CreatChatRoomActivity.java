@@ -38,7 +38,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
-import com.fanxin.activities.ChatActivity;
+import com.fanxin.activity.ChatActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 

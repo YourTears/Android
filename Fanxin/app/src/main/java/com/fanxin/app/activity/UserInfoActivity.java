@@ -16,7 +16,7 @@ import appLogic.enums.Gender;
 import appLogic.ImageManager;
 import common.AsyncImageLoader;
 
-import com.fanxin.activities.ChatActivity;
+import com.fanxin.activity.ChatActivity;
 import com.fanxin.app.R;
 
 public class UserInfoActivity extends Activity {

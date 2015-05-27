@@ -51,9 +51,9 @@ public class MessageTable {
                 if (dbWriter.insert(TableName, null, content) != -1)
                     return true;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
 
-        }finally {
+        } finally {
             dbWriter.close();
             dbWriter = null;
         }
@@ -87,10 +87,9 @@ public class MessageTable {
 
                 cursor.close();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Log.e("MessageTable", e.getMessage());
-        }finally {
+        } finally {
             dbReader.close();
             dbReader = null;
         }
@@ -98,42 +97,38 @@ public class MessageTable {
         return messages;
     }
 
-    private int convertDirection(Message.Direction direction)
-    {
-        if(direction == Message.Direction.SEND)
+    private int convertDirection(Message.Direction direction) {
+        if (direction == Message.Direction.SEND)
             return 0;
         return 1;
     }
 
-    private int convertType(Message.MessageType type)
-    {
-        if(type == Message.MessageType.TEXT)
+    private int convertType(Message.MessageType type) {
+        if (type == Message.MessageType.TEXT)
             return 0;
-        else if(type == Message.MessageType.IMAGE)
+        else if (type == Message.MessageType.IMAGE)
             return 1;
-        else if(type == Message.MessageType.AUDIO)
+        else if (type == Message.MessageType.AUDIO)
             return 2;
-        else if(type == Message.MessageType.VIDEO)
+        else if (type == Message.MessageType.VIDEO)
             return 3;
         return 4;
     }
 
-    private Message.Direction restoreDirection(int direction)
-    {
-        if(direction == 0)
+    private Message.Direction restoreDirection(int direction) {
+        if (direction == 0)
             return Message.Direction.SEND;
         return Message.Direction.RECEIVE;
     }
 
-    private Message.MessageType restoreType(int type)
-    {
-        if(type == 0)
+    private Message.MessageType restoreType(int type) {
+        if (type == 0)
             return Message.MessageType.TEXT;
-        else if(type == 1)
+        else if (type == 1)
             return Message.MessageType.IMAGE;
-        else if(type == 2)
+        else if (type == 2)
             return Message.MessageType.AUDIO;
-        else if(type == 3)
+        else if (type == 3)
             return Message.MessageType.VIDEO;
         return Message.MessageType.TEXT;
     }

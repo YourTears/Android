@@ -23,7 +23,7 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 import com.fanxin.app.activity.FXAlertDialog;
-import com.fanxin.activities.ChatActivity;
+import com.fanxin.activity.ChatActivity;
 
 /**
  * 自定义的textview，用来处理复制粘贴的消息
