@@ -582,7 +582,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                     content, (new Date()).getTime(), Message.MessageType.TEXT, false);
 
             messageManager.addMessage(message);
-            adapter.refresh();
+            adapter.notifyDataSetChanged();
+
             listView.setSelection(listView.getCount() - 1);
             mEditTextContent.setText("");
             setResult(RESULT_OK);

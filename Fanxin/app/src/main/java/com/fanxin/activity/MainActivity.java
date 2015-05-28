@@ -44,6 +44,7 @@ import appLogic.ConversationManager;
 import appLogic.FriendInfo;
 import appLogic.FriendManager;
 import appLogic.MeInfo;
+import common.ImageLoaderManager;
 import common.Util;
 
 @SuppressLint("DefaultLocale")
@@ -161,6 +162,8 @@ public class MainActivity extends BaseActivity {
 
         //DbOpenHelper.getInstance(this).deleteDatabase(this);
         AppConstant.conversationManager = new ConversationManager(this);
+
+        AppConstant.imageLoaderManager = new ImageLoaderManager();
     }
 
     private void initView() {

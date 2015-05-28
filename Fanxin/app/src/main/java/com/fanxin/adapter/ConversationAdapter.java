@@ -28,13 +28,11 @@ import appLogic.ImageManager;
 import common.AsyncImageLoader;
 import common.DateUtils;
 
-@SuppressLint("InflateParams")
 public class ConversationAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private List<Conversation> conversations;
 
-    @SuppressLint("SdCardPath")
     public ConversationAdapter(Context context, List<Conversation> conversations) {
         this.context = context;
         inflater = LayoutInflater.from(context);

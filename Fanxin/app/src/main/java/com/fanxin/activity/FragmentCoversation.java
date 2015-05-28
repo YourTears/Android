@@ -28,8 +28,6 @@ public class FragmentCoversation extends Fragment {
     public RelativeLayout errorItem;
     public TextView errorText;
 
-    private boolean inited = false;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -41,7 +39,6 @@ public class FragmentCoversation extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        inited = true;
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null
                 && savedInstanceState.getBoolean("isConflict", false))
@@ -59,9 +56,7 @@ public class FragmentCoversation extends Fragment {
      */
     public void refresh() {
         AppConstant.conversationManager.refresh();
-
-        adapter = new ConversationAdapter(getActivity(), AppConstant.conversationManager.conversations);
-        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     /**

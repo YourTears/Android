@@ -45,8 +45,9 @@ public class ContactAdapter extends BaseAdapter {
 
         nameTextView.setText(friend.name);
 
-        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, true);
-        imageLoader.execute(friend.imageUrl, ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
+//        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, true);
+//        imageLoader.execute(friend.imageUrl, ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
+        AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl);
 
         views.put(friend.id, view);
         return view;
