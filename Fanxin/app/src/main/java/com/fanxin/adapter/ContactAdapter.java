@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,6 @@ import com.fanxin.app.R;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
-import appLogic.ImageManager;
-import common.AsyncImageLoader;
 
 public class ContactAdapter extends BaseAdapter {
     private List<FriendInfo> friends;

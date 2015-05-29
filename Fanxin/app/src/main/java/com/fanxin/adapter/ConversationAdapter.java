@@ -19,13 +19,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import appLogic.AppConstant;
 import appLogic.Conversation;
 import appLogic.FriendInfo;
 import appLogic.ImageManager;
-import common.AsyncImageLoader;
 import common.DateUtils;
 
 public class ConversationAdapter extends BaseAdapter {
@@ -85,8 +82,7 @@ public class ConversationAdapter extends BaseAdapter {
         if (friend != null) {
             nameView.setText(friend.name);
 
-            AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, true);
-            imageLoader.execute(friend.imageUrl, ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
+            AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl);
         }
 
         RelativeLayout re_parent = (RelativeLayout) convertView

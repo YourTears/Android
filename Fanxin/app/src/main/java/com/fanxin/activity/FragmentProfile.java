@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import appLogic.AppConstant;
 import appLogic.ImageManager;
-import common.AsyncImageLoader;
 
 public class FragmentProfile extends Fragment {
     @Override
@@ -57,8 +56,6 @@ public class FragmentProfile extends Fragment {
         nameTextView.setText(AppConstant.meInfo.name);
         idTextView.setText("ID:" + AppConstant.meInfo.id);
 
-        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, true);
-        imageLoader.execute(AppConstant.meInfo.imageUrl,
-                ImageManager.getImageLocalPath(AppConstant.meInfo.imageUrl, AppConstant.meInfo.id));
+        AppConstant.imageLoaderManager.loadImage(imageView, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl);
     }
 }

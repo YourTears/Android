@@ -16,9 +16,6 @@ public class BitmapMemoryCache {
 
     public synchronized void addBitmap(String key, Bitmap bitmap) {
         if(key != null && bitmap != null){
-            if(getBitmap(key) != null)
-                removeBitmap(key);
-
             bitmapCache.put(key, bitmap);
         }
     }

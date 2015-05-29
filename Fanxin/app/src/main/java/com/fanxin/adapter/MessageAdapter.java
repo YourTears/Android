@@ -29,7 +29,6 @@ import appLogic.AppConstant;
 import appLogic.FriendInfo;
 import appLogic.ImageManager;
 import appLogic.Message;
-import common.AsyncImageLoader;
 import common.DateUtils;
 import common.SmileUtils;
 
@@ -109,8 +108,7 @@ public class MessageAdapter extends BaseAdapter {
 
     private View setMessageViewData(View view, Message message) {
         ImageView headerView = (ImageView)view.findViewById(R.id.iv_userhead);
-        AsyncImageLoader imageLoader = new AsyncImageLoader(headerView, true);
-        imageLoader.execute(friend.imageUrl, ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
+        AppConstant.imageLoaderManager.loadImage(headerView, friend.id, friend.imageUrl);
 
         TextView textView = (TextView) view.findViewById(R.id.tv_chatcontent);
         Spannable span = SmileUtils.getSmiledText(context, message.body);

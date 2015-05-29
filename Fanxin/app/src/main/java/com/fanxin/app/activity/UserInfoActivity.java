@@ -14,7 +14,6 @@ import appLogic.FriendInfo;
 import appLogic.enums.FriendStatus;
 import appLogic.enums.Gender;
 import appLogic.ImageManager;
-import common.AsyncImageLoader;
 
 import com.fanxin.activity.ChatActivity;
 import com.fanxin.app.R;
@@ -62,8 +61,7 @@ public class UserInfoActivity extends Activity {
 
         imageView.setImageDrawable(AppConstant.defaultImageDrawable);
 
-        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, true);
-        imageLoader.execute(friend.imageUrl, ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
+        AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl);
     }
 
     public void back(View view) {

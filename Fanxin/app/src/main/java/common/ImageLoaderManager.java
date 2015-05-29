@@ -20,17 +20,25 @@ public class ImageLoaderManager {
     private ExecutorService threadPools = null;
     private BitmapMemoryCache bitmapMemoryCache;
 
-    public ImageLoaderManager(){
+    public ImageLoaderManager() {
         threadPools = Executors.newFixedThreadPool(MaxThreadCount);
         bitmapMemoryCache = new BitmapMemoryCache();
     }
 
-    public void loadImage(ImageView imageView, String cacheId, String imageUrl){
+    public void loadImage(ImageView imageView, String cacheId, String imageUrl) {
         loadImage(imageView, cacheId, imageUrl, CacheMode.No);
     }
 
-    public void loadImage(ImageView imageView, String cacheId, String imageUrl, CacheMode cacheMode){
-        loadImage(imageView, cacheId, imageUrl, cacheMode, new ImageDownloadedCallBack() {
+    public void loadImage(ImageView imageView, String cacheId, String imageUrl, boolean forceRefresh) {
+        loadImage(imageView, cacheId, imageUrl, CacheMode.No, forceRefresh);
+    }
+
+    public void loadImage(ImageView imageView, String cacheId, String imageUrl, CacheMode cacheMode) {
+        loadImage(imageView, cacheId, imageUrl, cacheMode, false);
+    }
+
+    private void loadImage(ImageView imageView, String cacheId, String imageUrl, CacheMode cacheMode, boolean forceRefresh) {
+        loadImage(imageView, cacheId, imageUrl, cacheMode, forceRefresh, new ImageDownloadedCallBack() {
 
             @Override
             public void onImageDownloaded(ImageView imageView, Bitmap bitmap) {
@@ -40,20 +48,22 @@ public class ImageLoaderManager {
         });
     }
 
-    private void loadImage(final ImageView imageView, final String cacheId, final String imageUrl, final CacheMode cacheMode,
-                             final ImageDownloadedCallBack imageDownloadedCallBack){
+    private void loadImage(final ImageView imageView, final String cacheId, final String imageUrl, final CacheMode cacheMode, final boolean forceRefresh,
+                          final ImageDownloadedCallBack imageDownloadedCallBack) {
         Bitmap bitmap = null;
 
-        if(cacheMode == CacheMode.MEMORY){
-            bitmap = bitmapMemoryCache.getBitmap(cacheId);
+        if(!forceRefresh) {
+            if (cacheMode == CacheMode.MEMORY) {
+                bitmap = bitmapMemoryCache.getBitmap(cacheId);
 
-            if(bitmap != null){
-                imageDownloadedCallBack.onImageDownloaded(imageView, bitmap);
-                return;
+                if (bitmap != null) {
+                    imageDownloadedCallBack.onImageDownloaded(imageView, bitmap);
+                    return;
+                }
             }
         }
 
-        if(imageUrl != null && !imageUrl.isEmpty()){
+        if (imageUrl != null && !imageUrl.isEmpty()) {
             final Handler handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
@@ -67,12 +77,13 @@ public class ImageLoaderManager {
                     InputStream inputStream = HTTPService.getInstance().getStream(imageUrl);
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = false;
-                    options.inSampleSize = 5;
 
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
                     bitmapMemoryCache.addBitmap(cacheId, bitmap);
 
-                    imageDownloadedCallBack.onImageDownloaded(imageView, bitmap);
+                    Message msg = new Message();
+                    msg.obj = bitmap;
+                    handler.sendMessage(msg);
                 }
             };
 
@@ -86,7 +97,7 @@ public class ImageLoaderManager {
         void onImageDownloaded(ImageView imageView, Bitmap bitmap);
     }
 
-    public enum CacheMode{
+    public enum CacheMode {
         MEMORY,
         File,
         No
