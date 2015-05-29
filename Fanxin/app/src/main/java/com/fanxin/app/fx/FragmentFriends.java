@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.fanxin.activity.MainActivity;
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
-import com.fanxin.app.activity.UserInfoActivity;
+import com.fanxin.activity.UserInfoActivity;
 import com.fanxin.adapter.ContactAdapter;
 
 import appLogic.AppConstant;

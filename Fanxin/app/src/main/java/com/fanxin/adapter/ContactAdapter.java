@@ -17,6 +17,7 @@ import com.fanxin.app.R;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
+import common.ImageLoaderManager;
 
 public class ContactAdapter extends BaseAdapter {
     private List<FriendInfo> friends;
@@ -44,9 +45,7 @@ public class ContactAdapter extends BaseAdapter {
 
         nameTextView.setText(friend.name);
 
-//        AsyncImageLoader imageLoader = new AsyncImageLoader(imageView, true);
-//        imageLoader.execute(friend.imageUrl, ImageManager.getImageLocalPath(friend.imageUrl, friend.id));
-        AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl);
+        AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.MEMORY);
 
         views.put(friend.id, view);
         return view;

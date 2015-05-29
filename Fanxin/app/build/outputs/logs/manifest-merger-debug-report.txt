@@ -551,7 +551,7 @@ ADDED from AndroidManifest.xml:328:9
 		ADDED from AndroidManifest.xml:331:13
 	android:name
 		ADDED from AndroidManifest.xml:329:13
-activity#com.fanxin.app.activity.UserInfoActivity
+activity#com.fanxin.activity.UserInfoActivity
 ADDED from AndroidManifest.xml:334:9
 	android:windowSoftInputMode
 		ADDED from AndroidManifest.xml:338:13

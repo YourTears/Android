@@ -24,6 +24,7 @@ import appLogic.Conversation;
 import appLogic.FriendInfo;
 import appLogic.ImageManager;
 import common.DateUtils;
+import common.ImageLoaderManager;
 
 public class ConversationAdapter extends BaseAdapter {
     private LayoutInflater inflater;
@@ -82,7 +83,7 @@ public class ConversationAdapter extends BaseAdapter {
         if (friend != null) {
             nameView.setText(friend.name);
 
-            AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl);
+            AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.MEMORY);
         }
 
         RelativeLayout re_parent = (RelativeLayout) convertView

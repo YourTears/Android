@@ -333,7 +333,7 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.fanxin.app.activity.UserInfoActivity"
+            android:name="com.fanxin.activity.UserInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >
