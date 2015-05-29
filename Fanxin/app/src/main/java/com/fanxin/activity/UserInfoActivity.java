@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
-import appLogic.enums.FriendStatus;
 import appLogic.enums.Gender;
 import common.ImageLoaderManager;
 
@@ -30,7 +29,7 @@ public class UserInfoActivity extends Activity {
 
         ImageView imageView = (ImageView) this.findViewById(R.id.iv_avatar);
         imageView.setImageDrawable(AppConstant.defaultImageDrawable);
-        AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.MEMORY);
+        AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
 
         Button btn_sendmsg = (Button) this.findViewById(R.id.btn_sendmsg);
         ImageView iv_sex = (ImageView) this.findViewById(R.id.iv_sex);

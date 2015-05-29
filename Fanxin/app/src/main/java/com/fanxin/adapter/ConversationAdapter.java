@@ -2,11 +2,9 @@ package com.fanxin.adapter;
 
 import java.util.List;
 
-import com.fanxin.app.Constant;
 import com.fanxin.app.R;
 import com.fanxin.activity.ChatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import appLogic.AppConstant;
 import appLogic.Conversation;
 import appLogic.FriendInfo;
-import appLogic.ImageManager;
 import common.DateUtils;
 import common.ImageLoaderManager;
 
@@ -83,7 +80,7 @@ public class ConversationAdapter extends BaseAdapter {
         if (friend != null) {
             nameView.setText(friend.name);
 
-            AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.MEMORY);
+            AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
         }
 
         RelativeLayout re_parent = (RelativeLayout) convertView

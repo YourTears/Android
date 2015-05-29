@@ -27,7 +27,6 @@ import com.fanxin.app.utils.ImageCache;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
-import appLogic.ImageManager;
 import appLogic.Message;
 import common.DateUtils;
 import common.ImageLoaderManager;
@@ -109,7 +108,12 @@ public class MessageAdapter extends BaseAdapter {
 
     private View setMessageViewData(View view, Message message) {
         ImageView headerView = (ImageView)view.findViewById(R.id.iv_userhead);
-        AppConstant.imageLoaderManager.loadImage(headerView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.MEMORY);
+
+        String ownerId = AppConstant.meInfo.id;
+        if(message.direction == Message.Direction.RECEIVE)
+            ownerId = friend.id;
+
+        AppConstant.imageLoaderManager.loadImage(headerView, ownerId, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
 
         TextView textView = (TextView) view.findViewById(R.id.tv_chatcontent);
         Spannable span = SmileUtils.getSmiledText(context, message.body);

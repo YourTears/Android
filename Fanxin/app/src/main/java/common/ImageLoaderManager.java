@@ -6,11 +6,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.ImageView;
 
-import com.fanxin.app.fx.others.HTTPService;
-
-import java.io.InputStream;
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import appLogic.AppConstant;
 
 /**
  * Created by Long on 5/28/2015.
@@ -53,13 +53,20 @@ public class ImageLoaderManager {
         Bitmap bitmap = null;
 
         if(!forceRefresh) {
-            if (cacheMode == CacheMode.MEMORY) {
+            if (cacheMode == CacheMode.Memory) {
                 bitmap = bitmapMemoryCache.getBitmap(cacheId);
+            }
 
-                if (bitmap != null) {
-                    imageDownloadedCallBack.onImageDownloaded(imageView, bitmap);
-                    return;
+            if(bitmap == null && (cacheMode == CacheMode.Memory || cacheMode == CacheMode.File)) {
+                File file = new File(AppConstant.imageFolder + cacheId + AppConstant.imageExtension);
+                if (file.exists()) {
+                    bitmap = BitmapFactory.decodeFile(file.getPath());
                 }
+            }
+
+            if (bitmap != null) {
+                imageDownloadedCallBack.onImageDownloaded(imageView, bitmap);
+                return;
             }
         }
 
@@ -74,16 +81,19 @@ public class ImageLoaderManager {
             Thread thread = new Thread() {
                 @Override
                 public void run() {
-                    InputStream inputStream = HTTPService.getInstance().getStream(imageUrl);
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = false;
-
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
-                    bitmapMemoryCache.addBitmap(cacheId, bitmap);
-
+                    Bitmap bitmap = Util.downloadImage(imageUrl);
                     Message msg = new Message();
                     msg.obj = bitmap;
                     handler.sendMessage(msg);
+
+                    if(cacheMode == CacheMode.Memory) {
+                        bitmapMemoryCache.addBitmap(cacheId, bitmap);
+                    }
+
+                    if(cacheMode == CacheMode.Memory || cacheMode == CacheMode.File) {
+                        String filePath = AppConstant.imageFolder + cacheId + AppConstant.imageExtension;
+                        Util.saveBitmapToFile(bitmap, filePath);
+                    }
                 }
             };
 
@@ -98,7 +108,7 @@ public class ImageLoaderManager {
     }
 
     public enum CacheMode {
-        MEMORY,
+        Memory,
         File,
         No
     }

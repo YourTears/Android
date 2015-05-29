@@ -28,4 +28,6 @@ public class AppConstant {
     public static View conversationView = null;
 
     public static ImageLoaderManager imageLoaderManager = null;
+
+    public static String imageExtension = ".PNG";
 }

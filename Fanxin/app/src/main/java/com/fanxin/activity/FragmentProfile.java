@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import appLogic.AppConstant;
-import appLogic.ImageManager;
 import common.ImageLoaderManager;
 
 public class FragmentProfile extends Fragment {
@@ -56,6 +55,6 @@ public class FragmentProfile extends Fragment {
         nameTextView.setText(AppConstant.meInfo.name);
         idTextView.setText("ID:" + AppConstant.meInfo.id);
 
-        AppConstant.imageLoaderManager.loadImage(imageView, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.MEMORY);
+        AppConstant.imageLoaderManager.loadImage(imageView, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.Memory);
     }
 }

@@ -11,9 +11,11 @@ import android.view.inputmethod.InputMethodManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -53,11 +55,27 @@ public class Util {
         }
     }
 
-    public static void createFolder(String folderPath)
-    {
+    public static void createFolder(String folderPath) {
         File file = new File(folderPath);
-        if(!file.exists())
+        if (!file.exists())
             file.mkdir();
+    }
+
+    public static void createFile(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    public static void deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     public static String getAppFilePath(Context context) {
@@ -73,38 +91,39 @@ public class Util {
         return appFilePath;
     }
 
-    public static Bitmap downloadImage(String imageUrl, String imageLocalPath, boolean forceRefresh) {
-        File file = new File(imageLocalPath);
-
-        if (forceRefresh || !file.exists()) {
-            try {
-                URL url = new URL(imageUrl);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(5000);
-                conn.setRequestMethod("GET");
-
-                if (conn.getResponseCode() == 200) {
-                    InputStream is = conn.getInputStream();
-                    FileOutputStream fos = new FileOutputStream(file);
-                    byte[] buffer = new byte[1024];
-                    int len = 0;
-                    while ((len = is.read(buffer)) != -1) {
-                        fos.write(buffer, 0, len);
-                    }
-                    is.close();
-                    fos.close();
-                }
-            } catch (Exception e) {
-                Log.i("DownloadImage", e.getMessage());
-                return null;
-            }
-        }
-
+    public static Bitmap downloadImage(String imageUrl) {
         try {
-            return BitmapFactory.decodeFile(imageLocalPath);
+            URL url = new URL(imageUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setRequestMethod("GET");
+
+            if (conn.getResponseCode() == 200) {
+                InputStream is = conn.getInputStream();
+
+                return BitmapFactory.decodeStream(is);
+            }
         } catch (Exception e) {
             Log.i("DownloadImage", e.getMessage());
             return null;
         }
+
+        return null;
+    }
+
+    public static boolean saveBitmapToFile(Bitmap bitmap, String filePath) {
+        createFile(filePath);
+
+        OutputStream stream = null;
+        try {
+            stream = new FileOutputStream(filePath);
+            if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream))
+                return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        deleteFile(filePath);
+        return false;
     }
 }

@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity {
         AppConstant.friendManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
 
         AppConstant.dataFolder = Util.getAppFilePath(this);
-        AppConstant.imageFolder = AppConstant.dataFolder + "/images";
+        AppConstant.imageFolder = AppConstant.dataFolder + "/images/";
 
         Util.createFolder(AppConstant.dataFolder);
         Util.createFolder(AppConstant.imageFolder);
