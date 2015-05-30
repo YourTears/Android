@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -91,6 +92,19 @@ public class Util {
         return appFilePath;
     }
 
+    public static String getAppCachePath(Context context) {
+        String appCachePath = null;
+
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            appCachePath = context.getExternalCacheDir().getPath();
+        } else {
+            appCachePath = context.getCacheDir().getPath();
+        }
+
+        return appCachePath;
+    }
+
     public static Bitmap downloadImage(String imageUrl) {
         try {
             URL url = new URL(imageUrl);
@@ -125,5 +139,19 @@ public class Util {
 
         deleteFile(filePath);
         return false;
+    }
+
+    public static Bitmap compressBitmap(Bitmap image) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        int options = 100;
+        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        while (stream.toByteArray().length / 1024 > 100) {
+            stream.reset();
+            options -= 10;
+            image.compress(Bitmap.CompressFormat.JPEG, options, stream);
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(stream.toByteArray());
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
+        return bitmap;
     }
 }

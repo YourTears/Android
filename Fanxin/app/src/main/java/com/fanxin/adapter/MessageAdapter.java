@@ -21,8 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.fanxin.activity.BigImageActivity;
 import com.fanxin.app.R;
-import com.fanxin.app.activity.ShowBigImage;
 import com.fanxin.app.utils.ImageCache;
 
 import appLogic.AppConstant;
@@ -275,7 +275,7 @@ public class MessageAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     System.err.println("image view on click");
-                    Intent intent = new Intent(activity, ShowBigImage.class);
+                    Intent intent = new Intent(activity, BigImageActivity.class);
                     File file = new File(localFullSizePath);
                     if (file.exists()) {
                         Uri uri = Uri.fromFile(file);

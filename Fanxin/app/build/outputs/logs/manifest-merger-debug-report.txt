@@ -273,7 +273,7 @@ ADDED from AndroidManifest.xml:142:9
 		ADDED from AndroidManifest.xml:145:13
 	android:name
 		ADDED from AndroidManifest.xml:143:13
-activity#com.fanxin.app.activity.ShowBigImage
+activity#com.fanxin.activity.BigImageActivity
 ADDED from AndroidManifest.xml:148:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:150:13

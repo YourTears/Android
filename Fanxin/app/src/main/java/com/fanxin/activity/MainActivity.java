@@ -151,10 +151,12 @@ public class MainActivity extends BaseActivity {
         AppConstant.friendManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
 
         AppConstant.dataFolder = Util.getAppFilePath(this);
+        AppConstant.cacheFolder = Util.getAppCachePath(this);
         AppConstant.imageFolder = AppConstant.dataFolder + "/images/";
 
         Util.createFolder(AppConstant.dataFolder);
         Util.createFolder(AppConstant.imageFolder);
+        Util.createFolder(AppConstant.cacheFolder + "/images");
 
         AppConstant.defaultImageDrawable = getResources().getDrawable(R.drawable.default_boy_drawable);
 

@@ -146,7 +146,7 @@
         </activity>
         <!-- 显示下载大图页面 -->
         <activity
-            android:name=".activity.ShowBigImage"
+            android:name="com.fanxin.activity.BigImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>

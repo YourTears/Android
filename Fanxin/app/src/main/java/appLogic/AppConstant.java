@@ -17,6 +17,7 @@ public class AppConstant {
     public static MeInfo meInfo = null;
 
     public static String dataFolder = null;
+    public static String cacheFolder = null;
     public static String imageFolder = null;
 
     public static Drawable defaultImageDrawable = null;

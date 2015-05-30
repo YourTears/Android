@@ -54,6 +54,17 @@ public class UserInfoActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("cacheId", friend.id);
+                intent.putExtra("imageUrl", friend.imageUrl);
+                intent.setClass(UserInfoActivity.this, BigImageActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void back(View view) {

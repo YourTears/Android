@@ -19,10 +19,12 @@ public class ImageLoaderManager {
     private final int MaxThreadCount = 10;
     private ExecutorService threadPools = null;
     private BitmapMemoryCache bitmapMemoryCache;
+    private String imageCacheFolder = null;
 
     public ImageLoaderManager() {
         threadPools = Executors.newFixedThreadPool(MaxThreadCount);
         bitmapMemoryCache = new BitmapMemoryCache();
+        imageCacheFolder = AppConstant.cacheFolder + "/images/";
     }
 
     public void loadImage(ImageView imageView, String cacheId, String imageUrl) {
@@ -37,7 +39,7 @@ public class ImageLoaderManager {
         loadImage(imageView, cacheId, imageUrl, cacheMode, false);
     }
 
-    private void loadImage(ImageView imageView, String cacheId, String imageUrl, CacheMode cacheMode, boolean forceRefresh) {
+    public void loadImage(ImageView imageView, String cacheId, String imageUrl, CacheMode cacheMode, boolean forceRefresh) {
         loadImage(imageView, cacheId, imageUrl, cacheMode, forceRefresh, new ImageDownloadedCallBack() {
 
             @Override
@@ -64,6 +66,13 @@ public class ImageLoaderManager {
                 }
             }
 
+            if(cacheMode == CacheMode.Cache){
+                File file = new File(imageCacheFolder + cacheId + AppConstant.imageExtension);
+                if (file.exists()) {
+                    bitmap = BitmapFactory.decodeFile(file.getPath());
+                }
+            }
+
             if (bitmap != null) {
                 imageDownloadedCallBack.onImageDownloaded(imageView, bitmap);
                 return;
@@ -82,16 +91,22 @@ public class ImageLoaderManager {
                 @Override
                 public void run() {
                     Bitmap bitmap = Util.downloadImage(imageUrl);
+                    Bitmap compressedBitmap = Util.compressBitmap(bitmap);
                     Message msg = new Message();
-                    msg.obj = bitmap;
+                    msg.obj = compressedBitmap;
                     handler.sendMessage(msg);
 
-                    if(cacheMode == CacheMode.Memory) {
-                        bitmapMemoryCache.addBitmap(cacheId, bitmap);
+                    if(cacheMode == CacheMode.Memory || cacheMode == CacheMode.CacheAndSave) {
+                        bitmapMemoryCache.addBitmap(cacheId, compressedBitmap);
                     }
 
-                    if(cacheMode == CacheMode.Memory || cacheMode == CacheMode.File) {
+                    if(cacheMode == CacheMode.Memory || cacheMode == CacheMode.File || cacheMode == CacheMode.CacheAndSave) {
                         String filePath = AppConstant.imageFolder + cacheId + AppConstant.imageExtension;
+                        Util.saveBitmapToFile(compressedBitmap, filePath);
+                    }
+
+                    if(cacheMode == CacheMode.Cache || cacheMode == CacheMode.CacheAndSave){
+                        String filePath = imageCacheFolder + cacheId + AppConstant.imageExtension;
                         Util.saveBitmapToFile(bitmap, filePath);
                     }
                 }
@@ -110,6 +125,8 @@ public class ImageLoaderManager {
     public enum CacheMode {
         Memory,
         File,
+        Cache,
+        CacheAndSave,
         No
     }
 }
