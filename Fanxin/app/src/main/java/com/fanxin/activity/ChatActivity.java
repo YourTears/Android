@@ -109,19 +109,19 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private View recordingContainer;
     private ImageView micImage;
     private TextView recordingHint;
-    private ListView listView;
-    private PasteEditText mEditTextContent;
-    private View buttonSetModeKeyboard;
-    private View buttonSetModeVoice;
-    private View buttonSend;
-    private View buttonPressToSpeak;
-    // private ViewPager expressionViewpager;
-    private LinearLayout emojiIconContainer;
-    private LinearLayout btnContainer;
+    private ListView conversationListView;
+    private PasteEditText messageEditText;
+    private View keyboardModeButton;
+    private View voiceModeButton;
+    private View sendMessageButton;
+    private View pressToSpeakButton;
+    // private ViewPager expressionView;
+    private LinearLayout expressionLayout;
+    private LinearLayout moreButtonsLayout;
 
-    private View more;
+    private View textModeLayout;
     private ClipboardManager clipboard;
-    private ViewPager expressionViewpager;
+    private ViewPager expressionView;
     private Drawable[] micImages;
     private NewMessageBroadcastReceiver receiver;
     public static ChatActivity activityInstance = null;
@@ -131,14 +131,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private File cameraFile;
     public static int resendPos;
 
-    private ImageView iv_emoticons_normal;
-    private ImageView iv_emoticons_checked;
-    private RelativeLayout edittext_layout;
-    private ProgressBar loadmorePB;
+    private ImageView normalExpressionView;
+    private ImageView checkedExpressionView;
+    private RelativeLayout messageLayout;
+    private ProgressBar loadingMessageProcessBar;
     private boolean isloading;
     private final int pagesize = 20;
     private boolean haveMoreData = true;
-    private Button btnMore;
+    private Button moreButton;
     public String playMsgId;
 
     private MessageManager messageManager;
@@ -170,34 +170,40 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         initView();
         setUpView();
 
-        listView.requestFocus();
+        readingMessageMode();
+        conversationListView.requestFocus();
     }
 
     /**
      * initView
      */
     protected void initView() {
+        loadingMessageProcessBar = (ProgressBar) findViewById(R.id.pb_loading_message);
         recordingContainer = findViewById(R.id.recording_container);
         micImage = (ImageView) findViewById(R.id.mic_image);
         recordingHint = (TextView) findViewById(R.id.recording_hint);
-        listView = (ListView) findViewById(R.id.list);
-        mEditTextContent = (PasteEditText) findViewById(R.id.et_sendmessage);
-        buttonSetModeKeyboard = findViewById(R.id.btn_set_mode_keyboard);
-        edittext_layout = (RelativeLayout) findViewById(R.id.edittext_layout);
-        buttonSetModeVoice = findViewById(R.id.btn_set_mode_voice);
-        buttonSend = findViewById(R.id.btn_send);
-        buttonPressToSpeak = findViewById(R.id.btn_press_to_speak);
-        expressionViewpager = (ViewPager) findViewById(R.id.vPager);
-        emojiIconContainer = (LinearLayout) findViewById(R.id.ll_face_container);
-        btnContainer = (LinearLayout) findViewById(R.id.ll_btn_container);
-        iv_emoticons_normal = (ImageView) findViewById(R.id.iv_emoticons_normal);
-        iv_emoticons_checked = (ImageView) findViewById(R.id.iv_emoticons_checked);
-        loadmorePB = (ProgressBar) findViewById(R.id.pb_load_more);
-        btnMore = (Button) findViewById(R.id.btn_more);
-        iv_emoticons_normal.setVisibility(View.VISIBLE);
-        iv_emoticons_checked.setVisibility(View.INVISIBLE);
-        more = findViewById(R.id.more);
-        edittext_layout.setBackgroundResource(R.drawable.input_bar_bg_normal);
+        conversationListView = (ListView) findViewById(R.id.listview_conversations);
+
+        voiceModeButton = findViewById(R.id.button_voice_mode);
+        keyboardModeButton = findViewById(R.id.button_keyboard_mode);
+
+        messageLayout = (RelativeLayout) findViewById(R.id.layout_message);
+        messageEditText = (PasteEditText) findViewById(R.id.et_message);
+
+        sendMessageButton = findViewById(R.id.button_send_message);
+        pressToSpeakButton = findViewById(R.id.button_press_to_speak);
+
+        expressionLayout = (LinearLayout) findViewById(R.id.layout_expressions);
+        expressionView = (ViewPager) findViewById(R.id.view_expressions);
+
+        normalExpressionView = (ImageView) findViewById(R.id.iv_expression_normal);
+        checkedExpressionView = (ImageView) findViewById(R.id.iv_expression_checked);
+
+        moreButtonsLayout = (LinearLayout) findViewById(R.id.layout_more_buttons);
+        moreButton = (Button) findViewById(R.id.button_more);
+
+        textModeLayout = findViewById(R.id.layout_text_mode);
+        messageLayout.setBackgroundResource(R.drawable.input_bar_bg_normal);
 
         messageManager = new MessageManager(this, friend.id);
 
@@ -219,48 +225,33 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                 getResources().getDrawable(R.drawable.record_animate_14),};
 
         // 初始化表情viewpager
-        List<View> views = getGridChildView();
+        List<View> views = getExpressionViews();
 
-        expressionViewpager.setAdapter(new ExpressionPagerAdapter(views));
-        mEditTextContent.setOnFocusChangeListener(new OnFocusChangeListener() {
+        expressionView.setAdapter(new ExpressionPagerAdapter(views));
+        messageEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    edittext_layout
-                            .setBackgroundResource(R.drawable.input_bar_bg_active);
+                    editTextMode();
                 } else {
-                    edittext_layout
-                            .setBackgroundResource(R.drawable.input_bar_bg_normal);
+                    messageLayout.setBackgroundResource(R.drawable.input_bar_bg_normal);
                 }
-
             }
         });
-        mEditTextContent.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                edittext_layout
-                        .setBackgroundResource(R.drawable.input_bar_bg_active);
-                more.setVisibility(View.GONE);
-                iv_emoticons_normal.setVisibility(View.VISIBLE);
-                iv_emoticons_checked.setVisibility(View.INVISIBLE);
-                emojiIconContainer.setVisibility(View.GONE);
-                btnContainer.setVisibility(View.GONE);
-            }
-        });
         // 监听文字框
-        mEditTextContent.addTextChangedListener(new TextWatcher() {
+        messageEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
                 if (!TextUtils.isEmpty(s)) {
-                    btnMore.setVisibility(View.GONE);
-                    buttonSend.setVisibility(View.VISIBLE);
+                    moreButton.setVisibility(View.GONE);
+                    sendMessageButton.setVisibility(View.VISIBLE);
                 } else {
-                    btnMore.setVisibility(View.VISIBLE);
-                    buttonSend.setVisibility(View.GONE);
+                    moreButton.setVisibility(View.VISIBLE);
+                    sendMessageButton.setVisibility(View.GONE);
                 }
             }
 
@@ -276,35 +267,131 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         });
     }
 
+    private void readingMessageMode(){
+        hideKeyboard();
+        textModeLayout.setVisibility(View.GONE);
+    }
+
+    private void editTextMode(){
+        keyboardMode();
+
+        messageLayout.setBackgroundResource(R.drawable.input_bar_bg_active);
+
+        textModeLayout.setVisibility(View.GONE);
+
+        normalExpressionView.setVisibility(View.VISIBLE);
+        checkedExpressionView.setVisibility(View.INVISIBLE);
+
+        if (TextUtils.isEmpty(messageEditText.getText())) {
+            moreButton.setVisibility(View.VISIBLE);
+            sendMessageButton.setVisibility(View.GONE);
+        } else {
+            moreButton.setVisibility(View.GONE);
+            sendMessageButton.setVisibility(View.VISIBLE);
+        }
+
+        moreButtonsLayout.setVisibility(View.GONE);
+        expressionLayout.setVisibility(View.GONE);
+    }
+
+    private void expressionMode(){
+        hideKeyboard();
+        keyboardMode();
+
+        messageLayout.setBackgroundResource(R.drawable.input_bar_bg_active);
+
+        moreButtonsLayout.setVisibility(View.GONE);
+
+        textModeLayout.setVisibility(View.VISIBLE);
+
+        normalExpressionView.setVisibility(View.INVISIBLE);
+        checkedExpressionView.setVisibility(View.VISIBLE);
+
+        expressionLayout.setVisibility(View.VISIBLE);
+
+        if (TextUtils.isEmpty(messageEditText.getText())) {
+            moreButton.setVisibility(View.VISIBLE);
+            sendMessageButton.setVisibility(View.GONE);
+        } else {
+            moreButton.setVisibility(View.GONE);
+            sendMessageButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void moreButtonsMode(){
+        hideKeyboard();
+        keyboardMode();
+
+        expressionLayout.setVisibility(View.GONE);
+
+        messageLayout.setBackgroundResource(R.drawable.input_bar_bg_normal);
+        pressToSpeakButton.setVisibility(View.GONE);
+
+        voiceModeButton.setVisibility(View.VISIBLE);
+        keyboardModeButton.setVisibility(View.GONE);
+
+        textModeLayout.setVisibility(View.VISIBLE);
+
+        normalExpressionView.setVisibility(View.VISIBLE);
+        checkedExpressionView.setVisibility(View.INVISIBLE);
+
+        moreButtonsLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void keyboardMode(){
+        voiceModeButton.setVisibility(View.VISIBLE);
+        keyboardModeButton.setVisibility(View.GONE);
+
+        messageLayout.setVisibility(View.VISIBLE);
+        pressToSpeakButton.setVisibility(View.GONE);
+    }
+
+    private void speakMode(){
+        hideKeyboard();
+        messageLayout.setVisibility(View.GONE);
+
+        textModeLayout.setVisibility(View.GONE);
+
+        voiceModeButton.setVisibility(View.GONE);
+        keyboardModeButton.setVisibility(View.VISIBLE);
+
+        pressToSpeakButton.setVisibility(View.VISIBLE);
+
+        sendMessageButton.setVisibility(View.GONE);
+        moreButton.setVisibility(View.VISIBLE);
+
+        moreButtonsLayout.setVisibility(View.GONE);
+        expressionLayout.setVisibility(View.GONE);
+    }
+
     private void setUpView() {
         activityInstance = this;
-        iv_emoticons_normal.setOnClickListener(this);
-        iv_emoticons_checked.setOnClickListener(this);
+        normalExpressionView.setOnClickListener(this);
+        checkedExpressionView.setOnClickListener(this);
+        voiceModeButton.setOnClickListener(this);
+        keyboardModeButton.setOnClickListener(this);
+        moreButton.setOnClickListener(this);
+
         // position = getIntent().getIntExtra("position", -1);
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
-        ((TextView) findViewById(R.id.name)).setText(friend.name);
+        ((TextView) findViewById(R.id.textview_name)).setText(friend.name);
 
         adapter = new MessageAdapter(this, friend.id, messageManager.messages);
         // 显示消息
-        listView.setAdapter(adapter);
-        //listView.setOnScrollListener(new ListScrollListener());
-        int count = listView.getCount();
+        conversationListView.setAdapter(adapter);
+        //conversationListView.setOnScrollListener(new ListScrollListener());
+        int count = conversationListView.getCount();
         if (count > 0) {
-            listView.setSelection(count - 1);
+            conversationListView.setSelection(count - 1);
         }
 
-        listView.setOnTouchListener(new OnTouchListener() {
+        conversationListView.setOnTouchListener(new OnTouchListener() {
 
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard();
-                more.setVisibility(View.GONE);
-                iv_emoticons_normal.setVisibility(View.VISIBLE);
-                iv_emoticons_checked.setVisibility(View.INVISIBLE);
-                emojiIconContainer.setVisibility(View.GONE);
-                btnContainer.setVisibility(View.GONE);
+                readingMessageMode();
                 return false;
             }
         });
@@ -371,7 +458,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                     break;
                 case RESULT_CODE_DELETE: // 删除消息
                     adapter.refresh();
-                    listView.setSelection(data.getIntExtra("position",
+                    conversationListView.setSelection(data.getIntExtra("position",
                             adapter.getCount()) - 1);
                     break;
 
@@ -444,7 +531,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                 double longitude = data.getDoubleExtra("longitude", 0);
                 String locationAddress = data.getStringExtra("address");
                 if (locationAddress != null && !locationAddress.equals("")) {
-                    more(more);
+                    //more(textModeLayout);
                     sendLocationMsg(latitude, longitude, "", locationAddress);
                 } else {
                     Toast.makeText(this, "无法获取到您的位置信息！", Toast.LENGTH_SHORT)
@@ -485,8 +572,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     public void onClick(View view) {
 
         int id = view.getId();
-        if (id == R.id.btn_send) {// 点击发送按钮(发文字和表情)
-            String content = mEditTextContent.getText().toString().trim();
+        if (id == R.id.button_send_message) {// 点击发送按钮(发文字和表情)
+            String content = messageEditText.getText().toString().trim();
             if(!content.isEmpty()) {
                 sendText(content);
                 sentMessage = true;
@@ -495,26 +582,24 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             selectPicFromCamera();// 点击照相图标
         } else if (id == R.id.btn_picture) {
             selectPicFromLocal(); // 点击图片图标
-        } else if (id == R.id.iv_emoticons_normal) { // 点击显示表情框
-            more.setVisibility(View.VISIBLE);
-            iv_emoticons_normal.setVisibility(View.INVISIBLE);
-            iv_emoticons_checked.setVisibility(View.VISIBLE);
-            btnContainer.setVisibility(View.GONE);
-            emojiIconContainer.setVisibility(View.VISIBLE);
-            hideKeyboard();
-        } else if (id == R.id.iv_emoticons_checked) { // 点击隐藏表情框
-            iv_emoticons_normal.setVisibility(View.VISIBLE);
-            iv_emoticons_checked.setVisibility(View.INVISIBLE);
-            btnContainer.setVisibility(View.VISIBLE);
-            emojiIconContainer.setVisibility(View.GONE);
-            more.setVisibility(View.GONE);
-
+        } else if (id == R.id.iv_expression_normal) { // 点击显示表情框
+            expressionMode();
+        } else if (id == R.id.iv_expression_checked) { // 点击隐藏表情框
+            editTextMode();
         } else if (id == R.id.btn_video) {
             // 点击摄像图标
             Intent intent = new Intent(ChatActivity.this,
                     ImageGridActivity.class);
             startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
         } else if (id == R.id.btn_voice_call) { // 点击语音电话图标
+        } else if(id == R.id.button_voice_mode){
+            speakMode();
+        } else if(id == R.id.button_keyboard_mode){
+            editTextMode();
+        } else if(id == R.id.button_more){
+            moreButtonsMode();
+        } else if(id == R.id.et_message){
+            editTextMode();
         }
     }
 
@@ -558,8 +643,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             messageManager.addMessage(message);
             adapter.notifyDataSetChanged();
 
-            listView.setSelection(listView.getCount() - 1);
-            mEditTextContent.setText("");
+            conversationListView.setSelection(conversationListView.getCount() - 1);
+            messageEditText.setText("");
             setResult(RESULT_OK);
         }
     }
@@ -579,7 +664,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         }
         try {
             adapter.refresh();
-            listView.setSelection(listView.getCount() - 1);
+            conversationListView.setSelection(conversationListView.getCount() - 1);
             setResult(RESULT_OK);
             // send file
             // sendVoiceSub(filePath, fileName, message);
@@ -597,11 +682,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         Log.e("filePath------>>>>", filePath);
         String to = friend.name;
 
-        listView.setAdapter(adapter);
+        conversationListView.setAdapter(adapter);
         adapter.refresh();
-        listView.setSelection(listView.getCount() - 1);
+        conversationListView.setSelection(conversationListView.getCount() - 1);
         setResult(RESULT_OK);
-        // more(more);
+        // textModeLayout(textModeLayout);
     }
 
     /**
@@ -614,9 +699,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             return;
         }
         try {
-            listView.setAdapter(adapter);
+            conversationListView.setAdapter(adapter);
             adapter.refresh();
-            listView.setSelection(listView.getCount() - 1);
+            conversationListView.setSelection(conversationListView.getCount() - 1);
             setResult(RESULT_OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -671,9 +756,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
      */
     private void sendLocationMsg(double latitude, double longitude,
                                  String imagePath, String locationAddress) {
-        listView.setAdapter(adapter);
+        conversationListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        listView.setSelection(listView.getCount() - 1);
+        conversationListView.setSelection(conversationListView.getCount() - 1);
         setResult(RESULT_OK);
 
     }
@@ -683,107 +768,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
      */
     private void resendMessage() {
         adapter.refresh();
-        listView.setSelection(resendPos);
-    }
-
-    /**
-     * 显示语音图标按钮
-     *
-     * @param view
-     */
-    public void setModeVoice(View view) {
-        //hideKeyboard();
-        edittext_layout.setVisibility(View.GONE);
-        more.setVisibility(View.GONE);
-        view.setVisibility(View.GONE);
-        buttonSetModeKeyboard.setVisibility(View.VISIBLE);
-        buttonSend.setVisibility(View.GONE);
-        btnMore.setVisibility(View.VISIBLE);
-        buttonPressToSpeak.setVisibility(View.VISIBLE);
-        iv_emoticons_normal.setVisibility(View.VISIBLE);
-        iv_emoticons_checked.setVisibility(View.INVISIBLE);
-        btnContainer.setVisibility(View.VISIBLE);
-        emojiIconContainer.setVisibility(View.GONE);
-
-    }
-
-    /**
-     * 显示键盘图标
-     *
-     * @param view
-     */
-    public void setModeKeyboard(View view) {
-        // mEditTextContent.setOnFocusChangeListener(new OnFocusChangeListener()
-        // {
-        // @Override
-        // public void onFocusChange(View v, boolean hasFocus) {
-        // if(hasFocus){
-        // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        // }
-        // }
-        // });
-        edittext_layout.setVisibility(View.VISIBLE);
-        more.setVisibility(View.GONE);
-        view.setVisibility(View.GONE);
-        buttonSetModeVoice.setVisibility(View.VISIBLE);
-        // mEditTextContent.setVisibility(View.VISIBLE);
-        // buttonSend.setVisibility(View.VISIBLE);
-        buttonPressToSpeak.setVisibility(View.GONE);
-        if (TextUtils.isEmpty(mEditTextContent.getText())) {
-            btnMore.setVisibility(View.VISIBLE);
-            buttonSend.setVisibility(View.GONE);
-        } else {
-            btnMore.setVisibility(View.GONE);
-            buttonSend.setVisibility(View.VISIBLE);
-        }
-
-    }
-
-    /**
-     * 显示或隐藏图标按钮页
-     *
-     * @param view
-     */
-    public void more(View view) {
-        if (more.getVisibility() == View.GONE) {
-            System.out.println("more gone");
-            //hideKeyboard();
-            more.setVisibility(View.VISIBLE);
-            btnContainer.setVisibility(View.VISIBLE);
-            emojiIconContainer.setVisibility(View.GONE);
-        } else {
-            if (emojiIconContainer.getVisibility() == View.VISIBLE) {
-                emojiIconContainer.setVisibility(View.GONE);
-                btnContainer.setVisibility(View.VISIBLE);
-                iv_emoticons_normal.setVisibility(View.VISIBLE);
-                iv_emoticons_checked.setVisibility(View.INVISIBLE);
-            } else {
-                more.setVisibility(View.GONE);
-            }
-
-        }
-
-    }
-
-    /**
-     * 点击文字输入框
-     *
-     * @param v
-     */
-    public void editClick(View v) {
-        listView.setSelection(listView.getCount() - 1);
-        if (more.getVisibility() == View.VISIBLE) {
-            more.setVisibility(View.GONE);
-            iv_emoticons_normal.setVisibility(View.VISIBLE);
-            iv_emoticons_checked.setVisibility(View.INVISIBLE);
-        }
-
+        conversationListView.setSelection(resendPos);
     }
 
     /**
      * 获取表情的gridview的子view
      */
-    private List<View> getGridChildView() {
+    private List<View> getExpressionViews() {
         List<String> expressionNames = ExpressionUtils.getExpressionNames();
         List<View> views = new ArrayList<>();
 
@@ -806,22 +797,22 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                     try {
                         // 文字输入框可见时，才可输入表情
                         // 按住说话可见，不让输入表情
-                        if (buttonSetModeKeyboard.getVisibility() != View.VISIBLE) {
+                        if (keyboardModeButton.getVisibility() != View.VISIBLE) {
 
                             if (filename != "delete_expression") { // 不是删除键，显示表情
                                 // 这里用的反射，所以混淆的时候不要混淆SmileUtils这个类
 
                                 Class expressionClass = Class.forName(ExpressionUtils.class.getName());
                                 Field field = expressionClass.getField(filename);
-                                mEditTextContent.append(ExpressionUtils.getSmiledText(
+                                messageEditText.append(ExpressionUtils.getSmiledText(
                                         ChatActivity.this, (String) field.get(null)));
                             } else { // 删除文字或者表情
-                                if (!TextUtils.isEmpty(mEditTextContent.getText())) {
+                                if (!TextUtils.isEmpty(messageEditText.getText())) {
 
-                                    int selectionStart = mEditTextContent
+                                    int selectionStart = messageEditText
                                             .getSelectionStart();// 获取光标的位置
                                     if (selectionStart > 0) {
-                                        String body = mEditTextContent.getText()
+                                        String body = messageEditText.getText()
                                                 .toString();
                                         String tempStr = body.substring(0,
                                                 selectionStart);
@@ -831,14 +822,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                                                     selectionStart);
                                             if (ExpressionUtils.containsKey(cs
                                                     .toString()))
-                                                mEditTextContent.getEditableText()
+                                                messageEditText.getEditableText()
                                                         .delete(i, selectionStart);
                                             else
-                                                mEditTextContent.getEditableText()
+                                                messageEditText.getEditableText()
                                                         .delete(selectionStart - 1,
                                                                 selectionStart);
                                         } else {
-                                            mEditTextContent.getEditableText()
+                                            messageEditText.getEditableText()
                                                     .delete(selectionStart - 1,
                                                             selectionStart);
                                         }
@@ -1048,10 +1039,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
          * 覆盖手机返回键
          */
         public void onBackPressed() {
-            if (more.getVisibility() == View.VISIBLE) {
-                more.setVisibility(View.GONE);
-                iv_emoticons_normal.setVisibility(View.VISIBLE);
-                iv_emoticons_checked.setVisibility(View.INVISIBLE);
+            if (textModeLayout.getVisibility() == View.VISIBLE) {
+                textModeLayout.setVisibility(View.GONE);
+                normalExpressionView.setVisibility(View.VISIBLE);
+                checkedExpressionView.setVisibility(View.INVISIBLE);
             } else {
                 // if(type==3){
                 // startActivity(new
@@ -1082,12 +1073,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                     case OnScrollListener.SCROLL_STATE_IDLE:
                         if (view.getFirstVisiblePosition() == 0 && !isloading
                                 && haveMoreData) {
-                            loadmorePB.setVisibility(View.VISIBLE);
+                            loadingMessageProcessBar.setVisibility(View.VISIBLE);
                             // sdk初始化加载的聊天记录为20条，到顶时去db里获取更多
                             List<Object> messages;
                             try {
                             } catch (Exception e1) {
-                                loadmorePB.setVisibility(View.GONE);
+                                loadingMessageProcessBar.setVisibility(View.GONE);
                                 return;
                             }
                             try {
@@ -1095,7 +1086,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                             } catch (InterruptedException e) {
                             }
 
-                            loadmorePB.setVisibility(View.GONE);
+                            loadingMessageProcessBar.setVisibility(View.GONE);
                             isloading = false;
 
                         }
