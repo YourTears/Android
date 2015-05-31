@@ -62,7 +62,7 @@ public class ConversationTable {
         try {
             dbReader = dbHelper.getReadableDatabase();
             if (dbReader.isOpen()) {
-                String query = String.format("SELECT * FROM " + TableName);
+                String query = String.format("SELECT * FROM " + TableName + " ORDER BY Time DESC");
 
                 Cursor cursor = dbReader.rawQuery(query, null);
 

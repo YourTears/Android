@@ -1,6 +1,8 @@
 package com.fanxin.adapter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fanxin.app.R;
 import com.fanxin.activity.ChatActivity;
@@ -27,11 +29,13 @@ public class ConversationAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private List<Conversation> conversations;
+    private Map<String, View> views = null;
 
     public ConversationAdapter(Context context, List<Conversation> conversations) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.conversations = conversations;
+        views = new HashMap<>();
     }
 
     @Override
@@ -41,71 +45,74 @@ public class ConversationAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        int count = getCount();
-        return conversations.get(count - 1 - position);
+        return conversations.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        int count = getCount();
-        return count - 1 - position;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final Conversation conversation = (Conversation) getItem(position);
+        FriendInfo friend = AppConstant.friendManager.getFriend(conversation.friendId);
 
-        convertView = inflater.inflate(R.layout.item_conversation_single, null, false);
+        View view = null;
+        if(views.containsKey(conversation.friendId)){
+            view = views.get(conversation.friendId);
+        }else{
+            view = inflater.inflate(R.layout.item_conversation_single, parent, false);
+            view.setTag(conversation.friendId);
+            views.put(conversation.friendId, view);
 
-        TextView nameView = (TextView) convertView.findViewById(R.id.tv_name);
-        TextView unreadView = (TextView) convertView.findViewById(R.id.tv_unread);
-        TextView contentView = (TextView) convertView.findViewById(R.id.tv_content);
-        TextView timeView = (TextView) convertView.findViewById(R.id.tv_time);
-        ImageView statusView = (ImageView) convertView.findViewById(R.id.msg_state);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.iv_avatar);
+            TextView nameView = (TextView) view.findViewById(R.id.tv_name);
+            ImageView imageView = (ImageView) view.findViewById(R.id.iv_avatar);
+
+            if (friend != null) {
+                nameView.setText(friend.name);
+
+                AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
+            }
+
+            RelativeLayout re_parent = (RelativeLayout) view.findViewById(R.id.re_parent);
+
+            re_parent.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ChatActivity.class);
+                    intent.putExtra("id", conversation.friendId);
+                    context.startActivity(intent);
+                }
+            });
+
+            re_parent.setOnLongClickListener(new OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+                    return true;
+                }
+            });
+        }
+
+        TextView unreadView = (TextView) view.findViewById(R.id.tv_unread);
+        TextView contentView = (TextView) view.findViewById(R.id.tv_content);
+        TextView timeView = (TextView) view.findViewById(R.id.tv_time);
+        ImageView statusView = (ImageView) view.findViewById(R.id.msg_state);
 
         contentView.setText(conversation.body);
         timeView.setText(DateUtils.getDateTimeString(conversation.time));
 
         if (conversation.unreadCount > 0) {
-            // 显示与此用户的消息未读数
             unreadView.setText(String.valueOf(conversation.unreadCount));
             unreadView.setVisibility(View.VISIBLE);
         } else {
             unreadView.setVisibility(View.INVISIBLE);
         }
 
-        FriendInfo friend = AppConstant.friendManager.getFriend(conversation.friendId);
-        if (friend != null) {
-            nameView.setText(friend.name);
-
-            AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
-        }
-
-        RelativeLayout re_parent = (RelativeLayout) convertView
-                .findViewById(R.id.re_parent);
-
-        re_parent.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("id", conversation.friendId);
-                context.startActivity(intent);
-            }
-        });
-
-        re_parent.setOnLongClickListener(new OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-
-                return false;
-            }
-        });
-
-        return convertView;
+        return view;
     }
 
     /**

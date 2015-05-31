@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
     protected static final String TAG = "MainActivity";
 
     private Fragment[] fragments;
-    public FragmentCoversation conversationfragment;
+    public FragmentConversation conversationfragment;
     private FragmentFriends contactlistfragment;
     private FragmentFind findfragment;
     private FragmentProfile profilefragment;
@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity {
             startActivity(new Intent(this, LoginActivity.class));
             return;
         }
-        setContentView(R.layout.activity_mian_temp);
+        setContentView(R.layout.activity_main);
         initView();
 
         if (getIntent().getBooleanExtra("conflict", false)
@@ -172,7 +172,7 @@ public class MainActivity extends BaseActivity {
         unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
         unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
 
-        conversationfragment = new FragmentCoversation();
+        conversationfragment = new FragmentConversation();
         contactlistfragment = new FragmentFriends();
         findfragment = new FragmentFind();
         profilefragment = new FragmentProfile();
@@ -453,7 +453,7 @@ public class MainActivity extends BaseActivity {
      * 刷新未读消息数
      */
     public void updateUnreadLabel() {
-        int count = getUnreadMsgCountTotal();
+        int count = AppConstant.conversationManager.totalUnreadCount;
         if (count > 0) {
             unreadLabel.setText(String.valueOf(count));
             unreadLabel.setVisibility(View.VISIBLE);
@@ -464,7 +464,7 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 获取未读申请与通知消息
-     * 
+     *
      * @return
      */
     public int getUnreadAddressCountTotal() {
@@ -493,17 +493,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-    }
-
-    /**
-     * 获取未读消息数
-     * 
-     * @return
-     */
-    public int getUnreadMsgCountTotal() {
-        int unreadMsgCountTotal = 0;
-        unreadMsgCountTotal = 1;
-        return unreadMsgCountTotal;
     }
 
     public void refreshFriendsList() {

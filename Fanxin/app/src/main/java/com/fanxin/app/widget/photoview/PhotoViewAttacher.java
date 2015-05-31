@@ -455,7 +455,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 					RectF rect = getDisplayRect();
 					if (null != rect) {
 						v.post(new AnimatedZoomRunnable(getScale(), mMinScale, rect.centerX(), rect.centerY()));
-						handled = true;
+						handled = false;
 					}
 				}
 				break;

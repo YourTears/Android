@@ -2,6 +2,7 @@ package appLogic;
 
 import android.content.Context;
 
+import com.fanxin.adapter.ConversationAdapter;
 import com.fanxin.database.ConversationTable;
 
 import java.util.HashMap;
@@ -11,19 +12,19 @@ import java.util.List;
  * Created by Long on 5/26/2015.
  */
 public class ConversationManager {
-    public List<Conversation> conversations;
-
+    private List<Conversation> conversations;
     private HashMap<String, Integer> indexMap;
+    public ConversationAdapter adapter;
 
-    private int totalUnreadCount = 0;
+    public int totalUnreadCount = 0;
 
     ConversationTable conversationTable = null;
 
     public ConversationManager(Context context) {
         conversationTable = new ConversationTable(context);
         indexMap = new HashMap<>();
-
         refresh();
+        adapter = new ConversationAdapter(context, conversations);
     }
 
     public void addOrReplaceConversation(Message message) {
@@ -35,10 +36,12 @@ public class ConversationManager {
 
         deleteConversation(conversation.friendId);
 
-        conversations.add(conversation);
-        indexMap.put(conversation.friendId, conversations.size() - 1);
+        conversations.add(0, conversation);
+        indexMap.put(conversation.friendId, 0);
 
         conversationTable.replaceConversation(conversation);
+
+        adapter.notifyDataSetChanged();
     }
 
     public void refresh() {
@@ -54,6 +57,12 @@ public class ConversationManager {
             int idx = indexMap.get(friendId);
             conversations.remove(idx);
             indexMap.remove(friendId);
+        }
+    }
+
+    public void saveConversations(){
+        for(Conversation conversation : conversations){
+            conversationTable.replaceConversation(conversation);
         }
     }
 }

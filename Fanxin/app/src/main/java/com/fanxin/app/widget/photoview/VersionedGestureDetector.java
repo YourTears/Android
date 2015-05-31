@@ -102,6 +102,8 @@ public abstract class VersionedGestureDetector {
 
 		@Override
 		public boolean onTouchEvent(MotionEvent ev) {
+            boolean handled = true;
+
 			switch (ev.getAction()) {
 				case MotionEvent.ACTION_DOWN: {
 					mVelocityTracker = VelocityTracker.obtain();
@@ -164,6 +166,9 @@ public abstract class VersionedGestureDetector {
 							}
 						}
 					}
+                    else{
+                        handled = false;
+                    }
 
 					// Recycle Velocity Tracker
 					if (null != mVelocityTracker) {
@@ -174,7 +179,7 @@ public abstract class VersionedGestureDetector {
 				}
 			}
 
-			return true;
+			return handled;
 		}
 	}
 

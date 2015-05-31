@@ -139,6 +139,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
     private MessageManager messageManager;
 
+    private boolean sentMessage = false;
+
     // 分享的照片
     String iamge_path = null;
     // 设置按钮
@@ -498,8 +500,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
         int id = view.getId();
         if (id == R.id.btn_send) {// 点击发送按钮(发文字和表情)
-            String s = mEditTextContent.getText().toString();
-            sendText(s);
+            String content = mEditTextContent.getText().toString().trim();
+            if(!content.isEmpty()) {
+                sendText(content);
+                sentMessage = true;
+            }
         } else if (id == R.id.btn_take_picture) {
             selectPicFromCamera();// 点击照相图标
         } else if (id == R.id.btn_picture) {
@@ -523,8 +528,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             Intent intent = new Intent(ChatActivity.this,
                     ImageGridActivity.class);
             startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
-        } else if (id == R.id.btn_file) { // 点击文件图标
-            selectFileFromLocal();
         } else if (id == R.id.btn_voice_call) { // 点击语音电话图标
         }
     }
@@ -576,7 +579,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     }
 
     private void sendText(String content) {
-        content = content.trim();
         if (content.length() > 0) {
             Message message = new Message(UUID.randomUUID(), friend.id, Message.Direction.SEND,
                     content, (new Date()).getTime(), Message.MessageType.TEXT, false);
@@ -1153,6 +1155,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     protected void onStop() {
         super.onStop();
 
-        AppConstant.conversationManager.addOrReplaceConversation(messageManager.getLastMessage());
+        if(sentMessage) {
+            sentMessage = false;
+            AppConstant.conversationManager.addOrReplaceConversation(messageManager.getLastMessage());
+        }
     }
 }
