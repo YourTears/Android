@@ -1,10 +1,14 @@
 package com.fanxin.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,8 +17,10 @@ import com.fanxin.app.R;
 import com.fanxin.adapter.ConversationAdapter;
 
 import appLogic.AppConstant;
+import appLogic.FriendInfo;
 
 public class FragmentConversation extends Fragment {
+    private static String[] conversationItemLongClickItem = {"删除聊天"};
 
     private ListView listView;
 
@@ -39,5 +45,36 @@ public class FragmentConversation extends Fragment {
 
         listView = (ListView) getView().findViewById(R.id.conversation_list);
         listView.setAdapter(AppConstant.conversationManager.adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
+                String friendId = (String)view.getTag();
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("id", friendId);
+                getActivity().startActivity(intent);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                final String friendId = (String)view.getTag();
+                FriendInfo friend = AppConstant.friendManager.getFriend(friendId);
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(friend.name)
+                        .setItems(conversationItemLongClickItem, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int item) {
+                                if (item == 0) {
+                                    AppConstant.conversationManager.deleteConversation(friendId);
+                                }
+                            }
+                        })
+                        .show();
+
+                return true;
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.fanxin.adapter.ConversationAdapter;
 import com.fanxin.database.ConversationTable;
+import com.fanxin.database.MessageTable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +20,12 @@ public class ConversationManager {
     public int totalUnreadCount = 0;
 
     ConversationTable conversationTable = null;
+    MessageTable messageTable = null;
 
     public ConversationManager(Context context) {
-        conversationTable = new ConversationTable(context);
+        conversationTable = ConversationTable.getInstance(context);
+        messageTable = MessageTable.getInstance(context);
+
         indexMap = new HashMap<>();
         refresh();
         adapter = new ConversationAdapter(context, conversations);
@@ -34,7 +38,7 @@ public class ConversationManager {
         conversation.time = message.time;
         conversation.isSent = message.isSent;
 
-        deleteConversation(conversation.friendId);
+        deleteConversationInternal(conversation.friendId);
 
         conversations.add(0, conversation);
         indexMap.put(conversation.friendId, 0);
@@ -53,16 +57,23 @@ public class ConversationManager {
     }
 
     public void deleteConversation(String friendId){
-        if(indexMap.containsKey(friendId)){
-            int idx = indexMap.get(friendId);
-            conversations.remove(idx);
-            indexMap.remove(friendId);
-        }
+        deleteConversationInternal(friendId);
+        conversationTable.deleteConversation(friendId);
+        messageTable.deleteMessages(friendId);
+        adapter.notifyDataSetChanged();
     }
 
     public void saveConversations(){
         for(Conversation conversation : conversations){
             conversationTable.replaceConversation(conversation);
+        }
+    }
+
+    private void deleteConversationInternal(String friendId){
+        if(indexMap.containsKey(friendId)){
+            int idx = indexMap.get(friendId);
+            conversations.remove(idx);
+            indexMap.remove(friendId);
         }
     }
 }

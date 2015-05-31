@@ -24,12 +24,10 @@ import android.widget.ImageView;
 import com.fanxin.app.R;
 
 public class ExpressionAdapter extends ArrayAdapter<String>{
-
-	public ExpressionAdapter(Context context, int textViewResourceId, List<String> objects) {
-		super(context, textViewResourceId, objects);
+	public ExpressionAdapter(Context context, int resourceId, List<String> objects) {
+		super(context, resourceId, objects);
 	}
-	
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if(convertView == null){

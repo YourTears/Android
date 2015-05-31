@@ -24,7 +24,7 @@ public class MessageManager {
         messages = new ArrayList<>();
         endTime = (new Date()).getTime();
 
-        messageTable = new MessageTable(context);
+        messageTable = MessageTable.getInstance(context);
         messages = messageTable.getMessages(friendId, (new Date()).getTime());
     }
 

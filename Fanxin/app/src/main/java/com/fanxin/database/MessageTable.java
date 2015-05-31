@@ -30,8 +30,16 @@ public class MessageTable {
     private DbOpenHelper dbHelper;
     private SQLiteDatabase dbWriter = null, dbReader = null;
 
-    public MessageTable(Context context) {
+    private MessageTable(Context context) {
         dbHelper = DbOpenHelper.getInstance(context);
+    }
+
+    private static MessageTable instance = null;
+    public static MessageTable getInstance(Context context){
+        if(instance == null)
+            instance = new MessageTable(context);
+
+        return instance;
     }
 
     public synchronized boolean insertMessage(Message message) {
@@ -95,6 +103,38 @@ public class MessageTable {
         }
 
         return messages;
+    }
+
+    public void deleteMessages(String friendId) {
+        try {
+            dbWriter = dbHelper.getWritableDatabase();
+            if (dbWriter.isOpen()) {
+                String query = "DELETE FROM " + TableName + " WHERE FriendId = '" + friendId + "'";
+
+                dbWriter.execSQL(query);
+            }
+        } catch (Exception e) {
+            Log.e("MessageTable", e.getMessage());
+        } finally {
+            dbWriter.close();
+            dbWriter = null;
+        }
+    }
+
+    public void deleteMessage(String messageId) {
+        try {
+            dbWriter = dbHelper.getWritableDatabase();
+            if (dbWriter.isOpen()) {
+                String query = "DELETE FROM " + TableName + " WHERE ID = " + messageId;
+
+                dbWriter.execSQL(query);
+            }
+        } catch (Exception e) {
+            Log.e("MessageTable", e.getMessage());
+        } finally {
+            dbWriter.close();
+            dbWriter = null;
+        }
     }
 
     private int convertDirection(Message.Direction direction) {

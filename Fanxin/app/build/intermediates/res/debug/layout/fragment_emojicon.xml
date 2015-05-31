@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/delete_expression" /> -->
+            android:src="@drawable/expression_delete" /> -->
     </RelativeLayout>
 
 </LinearLayout><!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/layout/fragment_emojicon.xml -->

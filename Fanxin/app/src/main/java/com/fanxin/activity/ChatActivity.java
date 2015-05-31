@@ -3,6 +3,7 @@ package com.fanxin.activity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,17 +53,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fanxin.adapter.ExpressionAdapter;
 import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.activity.ImageGridActivity;
 import com.fanxin.adapter.ExpressionPagerAdapter;
 import com.fanxin.adapter.MessageAdapter;
+import com.fanxin.app.widget.ExpandGridView;
 import com.fanxin.app.widget.PasteEditText;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
 import appLogic.Message;
 import appLogic.MessageManager;
+import common.ExpressionUtils;
 
 public class ChatActivity extends BaseActivity implements OnClickListener {
 
@@ -117,7 +122,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private View more;
     private ClipboardManager clipboard;
     private ViewPager expressionViewpager;
-    private List<String> reslist;
     private Drawable[] micImages;
     private NewMessageBroadcastReceiver receiver;
     public static ChatActivity activityInstance = null;
@@ -165,6 +169,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
         initView();
         setUpView();
+
+        listView.requestFocus();
     }
 
     /**
@@ -212,16 +218,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                 getResources().getDrawable(R.drawable.record_animate_13),
                 getResources().getDrawable(R.drawable.record_animate_14),};
 
-        // 表情list
-        //reslist = getExpressionRes(35);
         // 初始化表情viewpager
-        List<View> views = new ArrayList<View>();
-//        View gv1 = getGridChildView(1);
-//        View gv2 = getGridChildView(2);
-//        views.add(gv1);
-//        views.add(gv2);
+        List<View> views = getGridChildView();
+
         expressionViewpager.setAdapter(new ExpressionPagerAdapter(views));
-        edittext_layout.requestFocus();
         mEditTextContent.setOnFocusChangeListener(new OnFocusChangeListener() {
 
             @Override
@@ -274,7 +274,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
             }
         });
-
     }
 
     private void setUpView() {
@@ -285,11 +284,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
         ((TextView) findViewById(R.id.name)).setText(friend.name);
-
-//        conversation = EMChatManager.getInstance().getConversation(
-//                friend.name);
-//        // 把此会话的未读数置为0
-//        conversation.resetUnreadMsgCount();
 
         adapter = new MessageAdapter(this, friend.id, messageManager.messages);
         // 显示消息
@@ -445,14 +439,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                         sendPicByUri(selectedImage);
                     }
                 }
-            } else if (requestCode == REQUEST_CODE_SELECT_FILE) { // 发送选择的文件
-                if (data != null) {
-                    Uri uri = data.getData();
-                    if (uri != null) {
-                        sendFile(uri);
-                    }
-                }
-
             } else if (requestCode == REQUEST_CODE_MAP) { // 地图
                 double latitude = data.getDoubleExtra("latitude", 0);
                 double longitude = data.getDoubleExtra("longitude", 0);
@@ -544,24 +530,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     }
 
     /**
-     * 选择文件
-     */
-    private void selectFileFromLocal() {
-        Intent intent = null;
-        if (Build.VERSION.SDK_INT < 19) {
-            intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        } else {
-            intent = new Intent(
-                    Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        }
-        startActivityForResult(intent, REQUEST_CODE_SELECT_FILE);
-    }
-
-    /**
      * 从图库获取图片
      */
     public void selectPicFromLocal() {
@@ -580,8 +548,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
     private void sendText(String content) {
         if (content.length() > 0) {
+            long time = (new Date()).getTime();
+            if(time == messageManager.endTime)
+                time ++;
+
             Message message = new Message(UUID.randomUUID(), friend.id, Message.Direction.SEND,
-                    content, (new Date()).getTime(), Message.MessageType.TEXT, false);
+                    content,time , Message.MessageType.TEXT, false);
 
             messageManager.addMessage(message);
             adapter.notifyDataSetChanged();
@@ -707,48 +679,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     }
 
     /**
-     * 发送文件
-     *
-     * @param uri
-     */
-    private void sendFile(Uri uri) {
-        String filePath = null;
-        if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = {"_data"};
-            Cursor cursor = null;
-
-            try {
-                cursor = getContentResolver().query(uri, projection, null,
-                        null, null);
-                int column_index = cursor.getColumnIndexOrThrow("_data");
-                if (cursor.moveToFirst()) {
-                    filePath = cursor.getString(column_index);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            filePath = uri.getPath();
-        }
-        File file = new File(filePath);
-        if (file == null || !file.exists()) {
-            Toast.makeText(getApplicationContext(), "文件不存在", Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-        if (file.length() > 10 * 1024 * 1024) {
-            Toast.makeText(getApplicationContext(), "文件不能大于10M",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        listView.setAdapter(adapter);
-        adapter.refresh();
-        listView.setSelection(listView.getCount() - 1);
-        setResult(RESULT_OK);
-    }
-
-    /**
      * 重发消息
      */
     private void resendMessage() {
@@ -797,7 +727,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         view.setVisibility(View.GONE);
         buttonSetModeVoice.setVisibility(View.VISIBLE);
         // mEditTextContent.setVisibility(View.VISIBLE);
-        mEditTextContent.requestFocus();
         // buttonSend.setVisibility(View.VISIBLE);
         buttonPressToSpeak.setVisibility(View.GONE);
         if (TextUtils.isEmpty(mEditTextContent.getText())) {
@@ -849,6 +778,84 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             iv_emoticons_checked.setVisibility(View.INVISIBLE);
         }
 
+    }
+
+    /**
+     * 获取表情的gridview的子view
+     */
+    private List<View> getGridChildView() {
+        List<String> expressionNames = ExpressionUtils.getExpressionNames();
+        List<View> views = new ArrayList<>();
+
+        for(int i = 0; i < expressionNames.size(); i += 20) {
+
+            View view = View.inflate(this, R.layout.expression_gridview, null);
+            ExpandGridView gv = (ExpandGridView) view.findViewById(R.id.gridview);
+            List<String> list = new ArrayList<>();
+            list.addAll(expressionNames.subList(i, Math.min(i + 20, expressionNames.size())));
+            list.add("delete_expression");
+
+            final ExpressionAdapter expressionAdapter = new ExpressionAdapter(this, R.layout.row_expression, list);
+            gv.setAdapter(expressionAdapter);
+            gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    String filename = expressionAdapter.getItem(position);
+                    try {
+                        // 文字输入框可见时，才可输入表情
+                        // 按住说话可见，不让输入表情
+                        if (buttonSetModeKeyboard.getVisibility() != View.VISIBLE) {
+
+                            if (filename != "delete_expression") { // 不是删除键，显示表情
+                                // 这里用的反射，所以混淆的时候不要混淆SmileUtils这个类
+
+                                Class expressionClass = Class.forName(ExpressionUtils.class.getName());
+                                Field field = expressionClass.getField(filename);
+                                mEditTextContent.append(ExpressionUtils.getSmiledText(
+                                        ChatActivity.this, (String) field.get(null)));
+                            } else { // 删除文字或者表情
+                                if (!TextUtils.isEmpty(mEditTextContent.getText())) {
+
+                                    int selectionStart = mEditTextContent
+                                            .getSelectionStart();// 获取光标的位置
+                                    if (selectionStart > 0) {
+                                        String body = mEditTextContent.getText()
+                                                .toString();
+                                        String tempStr = body.substring(0,
+                                                selectionStart);
+                                        int i = tempStr.lastIndexOf("[");// 获取最后一个表情的位置
+                                        if (i != -1) {
+                                            CharSequence cs = tempStr.substring(i,
+                                                    selectionStart);
+                                            if (ExpressionUtils.containsKey(cs
+                                                    .toString()))
+                                                mEditTextContent.getEditableText()
+                                                        .delete(i, selectionStart);
+                                            else
+                                                mEditTextContent.getEditableText()
+                                                        .delete(selectionStart - 1,
+                                                                selectionStart);
+                                        } else {
+                                            mEditTextContent.getEditableText()
+                                                    .delete(selectionStart - 1,
+                                                            selectionStart);
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
+
+                }
+            });
+            views.add(view);
+        }
+
+        return views;
     }
 
     /**
@@ -964,28 +971,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                         return false;
                 }
             }
-        }
-
-        /**
-         * 获取表情的gridview的子view
-         *
-         * @param i
-         * @return
-         */
-        private View getGridChildView(int i) {
-            return null;
-        }
-
-        public List<String> getExpressionRes(int getSum) {
-            List<String> reslist = new ArrayList<String>();
-            for (int x = 1; x <= getSum; x++) {
-                String filename = "ee_" + x;
-
-                reslist.add(filename);
-
-            }
-            return reslist;
-
         }
 
         protected void onDestroy() {

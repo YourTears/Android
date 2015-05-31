@@ -7,13 +7,16 @@ import java.util.Map;
 import com.fanxin.app.R;
 import com.fanxin.activity.ChatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,6 +29,8 @@ import common.DateUtils;
 import common.ImageLoaderManager;
 
 public class ConversationAdapter extends BaseAdapter {
+    private static String[] conversationItemLongClickItem = {"删除聊天"};
+
     private LayoutInflater inflater;
     private Context context;
     private List<Conversation> conversations;
@@ -57,7 +62,7 @@ public class ConversationAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final Conversation conversation = (Conversation) getItem(position);
-        FriendInfo friend = AppConstant.friendManager.getFriend(conversation.friendId);
+        final FriendInfo friend = AppConstant.friendManager.getFriend(conversation.friendId);
 
         View view = null;
         if(views.containsKey(conversation.friendId)){
@@ -75,26 +80,6 @@ public class ConversationAdapter extends BaseAdapter {
 
                 AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
             }
-
-            RelativeLayout re_parent = (RelativeLayout) view.findViewById(R.id.re_parent);
-
-            re_parent.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, ChatActivity.class);
-                    intent.putExtra("id", conversation.friendId);
-                    context.startActivity(intent);
-                }
-            });
-
-            re_parent.setOnLongClickListener(new OnLongClickListener() {
-
-                @Override
-                public boolean onLongClick(View v) {
-                    return true;
-                }
-            });
         }
 
         TextView unreadView = (TextView) view.findViewById(R.id.tv_unread);
@@ -113,17 +98,5 @@ public class ConversationAdapter extends BaseAdapter {
         }
 
         return view;
-    }
-
-    /**
-     * 根据消息内容和消息类型获取消息内容提示
-     *
-     * @param message
-     * @param context
-     * @return
-     */
-    private String getMessageDigest(Object message, Context context) {
-        String digest = "";
-        return digest;
     }
 }

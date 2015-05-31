@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <RelativeLayout
-        android:id="@+id/re_parent"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@drawable/btn_list_item_bg"
-        android:clickable="true" >
+    android:layout_height="64dp"
+    android:background="@drawable/btn_list_item_bg">
 
         <RelativeLayout
             android:id="@+id/re_avatar"
@@ -91,6 +85,4 @@
             android:layout_height="0.1dp"
             android:layout_alignParentBottom="true"
             android:background="#dadada" />
-    </RelativeLayout>
-
 </RelativeLayout><!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/layout/item_conversation_single.xml -->

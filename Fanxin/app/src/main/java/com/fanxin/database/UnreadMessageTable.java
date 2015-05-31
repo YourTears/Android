@@ -19,8 +19,16 @@ public class UnreadMessageTable {
     private DbOpenHelper dbHelper;
     private SQLiteDatabase dbWriter = null, dbReader = null;
 
-    public UnreadMessageTable(Context context) {
+    private UnreadMessageTable(Context context) {
         dbHelper = DbOpenHelper.getInstance(context);
+    }
+
+    private static UnreadMessageTable instance = null;
+    public static UnreadMessageTable getInstance(Context context){
+        if(instance == null)
+            instance = new UnreadMessageTable(context);
+
+        return instance;
     }
 
     public synchronized boolean replaceMessageCount(String friendId, int unreadCount) {

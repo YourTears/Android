@@ -29,8 +29,8 @@ import appLogic.AppConstant;
 import appLogic.FriendInfo;
 import appLogic.Message;
 import common.DateUtils;
+import common.ExpressionUtils;
 import common.ImageLoaderManager;
-import common.SmileUtils;
 
 public class MessageAdapter extends BaseAdapter {
     private final static String TAG = "msg";
@@ -116,7 +116,7 @@ public class MessageAdapter extends BaseAdapter {
         AppConstant.imageLoaderManager.loadImage(headerView, ownerId, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
 
         TextView textView = (TextView) view.findViewById(R.id.tv_chatcontent);
-        Spannable span = SmileUtils.getSmiledText(context, message.body);
+        Spannable span = ExpressionUtils.getSmiledText(context, message.body);
         textView.setText(span, TextView.BufferType.SPANNABLE);
 
         TextView timeView = (TextView) view.findViewById(R.id.tv_timestamp);

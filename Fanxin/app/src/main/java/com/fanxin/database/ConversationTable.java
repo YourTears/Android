@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,16 @@ public class ConversationTable {
     private DbOpenHelper dbHelper;
     private SQLiteDatabase dbWriter = null, dbReader = null;
 
-    public ConversationTable(Context context) {
+    private ConversationTable(Context context) {
         dbHelper = DbOpenHelper.getInstance(context);
+    }
+
+    private static ConversationTable instance = null;
+    public static ConversationTable getInstance(Context context){
+        if(instance == null)
+            instance = new ConversationTable(context);
+
+        return instance;
     }
 
     public synchronized boolean replaceConversation(Conversation conversation) {
@@ -87,5 +96,21 @@ public class ConversationTable {
         }
 
         return conversations;
+    }
+
+    public void deleteConversation(String friendId) {
+        try {
+            dbWriter = dbHelper.getWritableDatabase();
+            if (dbWriter.isOpen()) {
+                String query = "DELETE FROM " + TableName + " WHERE FriendId = '" + friendId + "'";
+
+                dbWriter.execSQL(query);
+            }
+        } catch (Exception e) {
+            Log.e("ConversationTable", e.getMessage());
+        } finally {
+            dbWriter.close();
+            dbWriter = null;
+        }
     }
 }

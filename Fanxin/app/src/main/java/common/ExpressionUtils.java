@@ -13,7 +13,9 @@
  */
 package common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -26,7 +28,8 @@ import android.text.style.ImageSpan;
 
 import com.fanxin.app.R;
 
-public class SmileUtils {
+public class ExpressionUtils {
+    public static final int emotionCount = 35;
 	public static final String ee_1 = "[):]";
 	public static final String ee_2 = "[:D]";
 	public static final String ee_3 = "[;)]";
@@ -163,6 +166,13 @@ public class SmileUtils {
 		return b;
 	}
 	
-	
-	
+	public static List<String> getExpressionNames(){
+        List<String> fileNames = new ArrayList<>();
+
+        for(int i = 1; i <= emotionCount; i ++) {
+            fileNames.add("ee_" + i);
+        }
+
+        return fileNames;
+    }
 }
