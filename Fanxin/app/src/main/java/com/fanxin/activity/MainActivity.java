@@ -16,7 +16,7 @@ import com.fanxin.app.db.UserDao;
 import com.fanxin.app.domain.InviteMessage;
 import com.fanxin.app.fx.AddPopWindow;
 import com.fanxin.app.fx.FragmentFind;
-import com.fanxin.app.fx.FragmentFriends;
+import com.fanxin.activity.FragmentFriends;
 import com.fanxin.app.fx.LoginActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;

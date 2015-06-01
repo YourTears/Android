@@ -338,6 +338,12 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
+            android:name="com.fanxin.activity.PendingUserActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
             android:name="com.fanxin.app.fx.AddFriendsFinalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
