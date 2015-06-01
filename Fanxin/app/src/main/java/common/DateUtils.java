@@ -28,10 +28,31 @@ public class DateUtils {
         return date;
     }
 
-    private static int getDaysDiff(Date date1, Date date2) {
-        long millisecondsDiff = date2.getTime() - date1.getTime();
-        int daysDiff = (int) (millisecondsDiff / 1000 / 3600 / 24);
+    public static String getDateTimeStringForConversation(long milliseconds) {
+        Date then = new Date(milliseconds);
+        Date now = new Date();
 
-        return Math.abs(daysDiff);
+        String date = "";
+
+        int daysDiff = getDaysDiff(then, now);
+        if(daysDiff == 0){
+            DateFormat format = new SimpleDateFormat("HH:mm");
+            date = format.format(then);
+        } else if (daysDiff == 1) {
+            date = "昨天";
+        }
+        else if(daysDiff > 1){
+            DateFormat format = new SimpleDateFormat("MM月dd日");
+            date = format.format(then);
+        }
+
+        return date;
+    }
+
+    private static int getDaysDiff(Date date1, Date date2) {
+        long dayMilliseconds = 86400000L;
+        int daysDiff = (int)Math.abs((date2.getTime() / dayMilliseconds) - (date1.getTime() / dayMilliseconds));
+
+        return daysDiff;
     }
 }

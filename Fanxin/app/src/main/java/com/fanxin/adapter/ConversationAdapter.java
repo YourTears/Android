@@ -88,7 +88,7 @@ public class ConversationAdapter extends BaseAdapter {
         ImageView statusView = (ImageView) view.findViewById(R.id.msg_state);
 
         contentView.setText(conversation.body);
-        timeView.setText(DateUtils.getDateTimeString(conversation.time));
+        timeView.setText(DateUtils.getDateTimeStringForConversation(conversation.time));
 
         if (conversation.unreadCount > 0) {
             unreadView.setText(String.valueOf(conversation.unreadCount));

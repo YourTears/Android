@@ -72,8 +72,13 @@ public class FriendManager {
                     FriendInfo friend = getFriendInfo(array.getJSONObject(idx));
 
                     if(friend != null) {
-                        friends.add(friend);
-                        friendMapping.put(friend.id, friend);
+                        if(friend.friendStatus != FriendInfo.FriendStatus.Blocked){
+                            if(friend.friendStatus == FriendInfo.FriendStatus.Friend)
+                                friends.add(friend);
+                            else
+                                pendingFriends.add(friend);
+                            friendMapping.put(friend.id, friend);
+                        }
                     }
                 }
             }

@@ -64,7 +64,7 @@ public class FragmentFriends extends Fragment {
         
         tv_total = (TextView) footerView.findViewById(R.id.tv_total);
 
-        adapter = new ContactAdapter(getActivity(), AppConstant.friendManager.friends);
+        adapter = new ContactAdapter(getActivity(), AppConstant.friendManager.friends, AppConstant.friendManager.pendingFriends);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new OnItemClickListener() {

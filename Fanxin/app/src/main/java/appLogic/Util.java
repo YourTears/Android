@@ -1,27 +1,26 @@
 package appLogic;
 
-import appLogic.enums.FriendStatus;
-import appLogic.enums.Gender;
-
 /**
- * Created by tiazh on 4/27/2015.
+ * Created by Long on 4/27/2015.
  */
 public class Util {
-    public static Gender parseGender(int gender) {
+    public static FriendInfo.Gender parseGender(int gender) {
         if (gender == 0)
-            return Gender.female;
+            return FriendInfo.Gender.Female;
         else
-            return Gender.male;
+            return FriendInfo.Gender.Male;
     }
 
-    public static FriendStatus parseFriendStatus(int status){
+    public static FriendInfo.FriendStatus parseFriendStatus(int status){
         if(status == 0)
-            return FriendStatus.pendingAccept;
+            return FriendInfo.FriendStatus.Friend;
         else if(status == 1)
-            return FriendStatus.pendingAccepted;
+            return FriendInfo.FriendStatus.PendingRequest;
         else if(status == 2)
-            return FriendStatus.blocked;
+            return FriendInfo.FriendStatus.ToAccept;
+        else if(status == 3)
+            return FriendInfo.FriendStatus.PendingAccepted;
         else
-            return FriendStatus.friend;
+            return FriendInfo.FriendStatus.Blocked;
     }
 }

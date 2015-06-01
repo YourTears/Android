@@ -40,7 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import appLogic.enums.Gender;
+import appLogic.FriendInfo;
 import appLogic.MeInfo;
 
 @SuppressLint("SdCardPath")
@@ -393,7 +393,7 @@ public class MyUserInfoActivity extends Activity {
                 try {
                     int code = data.getInteger("code");
                     if (code == 1) {
-                        MeInfo.getInstance().gender = Gender.valueOf(sexnum);
+                        MeInfo.getInstance().gender = FriendInfo.Gender.valueOf(sexnum);
                     } else if (code == 2) {
 
                         Toast.makeText(MyUserInfoActivity.this, "更新失败...",

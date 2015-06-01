@@ -1,10 +1,7 @@
 package appLogic;
 
-import appLogic.enums.FriendStatus;
-import appLogic.enums.Gender;
-
 /**
- * Created by tiazh on 4/21/2015.
+ * Created by Long on 4/21/2015.
  */
 public class FriendInfo {
     public String sys_id;
@@ -24,5 +21,16 @@ public class FriendInfo {
     public String region;
     public String home;
 
+    public enum FriendStatus {
+        Friend,
+        PendingRequest,
+        ToAccept,
+        PendingAccepted,
+        Blocked
+    }
 
+    public static enum Gender {
+        Male,
+        Female
+    }
 }

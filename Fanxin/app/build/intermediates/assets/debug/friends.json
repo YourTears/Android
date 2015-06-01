@@ -7,7 +7,7 @@
             "name":"Long",
             "gender":"1",
             "phone" : "13818085246",
-            "friendStatus" :"3",
+            "friendStatus" :"0",
             "imageUrl":"http://www.dongomusic.com/upload/2011/05/10/22403870.jpeg"
         },
         {
@@ -16,7 +16,7 @@
             "name":"Fei Fei",
             "gender":"0",
             "phone" : "13818085246",
-            "friendStatus" : "3",
+            "friendStatus" : "0",
             "imageUrl":"http://img5.imgtn.bdimg.com/it/u=4037265137,1594734448&fm=11&gp=0.jpg"
         },
         {
@@ -25,7 +25,7 @@
             "name":"Long",
             "gender":"1",
             "phone" : "13818085246",
-            "friendStatus" :"3",
+            "friendStatus" :"0",
             "imageUrl":"http://img2.imgtn.bdimg.com/it/u=3047741947,4037352593&fm=21&gp=0.jpg"
         },
         {
@@ -34,7 +34,7 @@
             "name":"Mao Mao",
             "gender":"0",
             "phone" : "13818085246",
-            "friendStatus" : "3",
+            "friendStatus" : "0",
             "imageUrl":"http://img4q.duitang.com/uploads/item/201312/28/20131228162545_kFuGB.thumb.700_0.jpeg"
         },
         {
@@ -52,7 +52,7 @@
             "name":"ShuanShuan",
             "gender":"0",
             "phone" : "13818085246",
-            "friendStatus" : "3",
+            "friendStatus" : "2",
             "imageUrl":"http://img4.imgtn.bdimg.com/it/u=2214862682,3607935918&fm=21&gp=0.jpg"
         },
         {
@@ -61,7 +61,7 @@
             "name":"Song Jia",
             "gender":"1",
             "phone" : "13818085246",
-            "friendStatus" :"3",
+            "friendStatus" :"1",
             "imageUrl":"http://img0.imgtn.bdimg.com/it/u=3512869393,3666053781&fm=21&gp=0.jpg"
         },
         {
@@ -70,7 +70,7 @@
             "name":"Bo xue",
             "gender":"0",
             "phone" : "13818085246",
-            "friendStatus" : "3",
+            "friendStatus" : "4",
             "imageUrl":"http://a4.att.hudong.com/84/78/01300000219264121978786231184.jpg"
         },
         {
@@ -79,7 +79,7 @@
             "name":"Bing",
             "gender":"1",
             "phone" : "13818085246",
-            "friendStatus" :"3",
+            "friendStatus" :"0",
             "imageUrl":"http://img4.duitang.com/uploads/item/201203/03/20120303234549_MaCk5.jpeg"
         },
         {
@@ -88,7 +88,7 @@
             "name":"Qian",
             "gender":"0",
             "phone" : "13818085246",
-            "friendStatus" : "3",
+            "friendStatus" : "2",
             "imageUrl":"http://img3.imgtn.bdimg.com/it/u=601141556,398617747&fm=21&gp=0.jpg"
         },
         {
@@ -97,7 +97,7 @@
             "name":"Kun L",
             "gender":"0",
             "phone" : "13818085246",
-            "friendStatus" : "3",
+            "friendStatus" : "0",
             "imageUrl":"http://img5.imgtn.bdimg.com/it/u=1530141476,2377406349&fm=11&gp=0.jpg"
         },
         {
@@ -106,7 +106,7 @@
             "name":"Leng",
             "gender":"1",
             "phone" : "13818085246",
-            "friendStatus" :"3",
+            "friendStatus" :"0",
             "imageUrl":"http://p5.qhimg.com/t017cd9ad5a194988f6.jpg"
         },
         {
@@ -115,7 +115,7 @@
             "name":"Shi_Shi",
             "gender":"0",
             "phone" : "13818085246",
-            "friendStatus" : "3",
+            "friendStatus" : "0",
             "imageUrl":"http://img.67.com/upload/images/2012/03/18/bGljaGFuZ3dlaTEzMzIwODE4ODg=_10.jpg"
         },
         {
@@ -124,7 +124,7 @@
             "name":"A Lan",
             "gender":"0",
             "phone" : "13818085246",
-            "friendStatus" : "3",
+            "friendStatus" : "2",
             "imageUrl":"http://pic4.nipic.com/20090825/2143781_194202065121_2.jpg"
         }
     ]

@@ -5,8 +5,6 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 
-import appLogic.enums.Gender;
-
 /**
  * Created by long on 4/21/2015.
  */
@@ -16,7 +14,7 @@ public class MeInfo {
     public String name;
     public String imageUrl;
     public String phone;
-    public Gender gender;
+    public FriendInfo.Gender gender;
 
     private static MeInfo m_instance = null;
 

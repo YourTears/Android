@@ -39,11 +39,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="ConversationAdapter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ConversationAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="513" max-vertical-offset="1444">
+              <caret line="80" column="46" selection-start-line="80" selection-start-column="28" selection-end-line="80" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ChatActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/ChatActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="8279" max-vertical-offset="19361">
-              <caret line="574" column="35" selection-start-line="574" selection-start-column="35" selection-end-line="574" selection-end-column="35" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5242" max-vertical-offset="19361">
+              <caret line="298" column="23" selection-start-line="298" selection-start-column="23" selection-end-line="298" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5670#5864#0" expanded="true" />
@@ -73,32 +83,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_chat.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_chat.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.2363634" vertical-offset="3455" max-vertical-offset="7980">
-              <caret line="197" column="54" selection-start-line="197" selection-start-column="54" selection-end-line="197" selection-end-column="54" />
-              <folding>
-                <element signature="e#8087#8108#0" expanded="true" />
-                <element signature="tag#RelativeLayout#1;tag#RelativeLayout#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="chat_send_btn_selector.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/chat_send_btn_selector.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14011799" vertical-offset="0" max-vertical-offset="678">
-              <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ExpandGridView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/app/widget/ExpandGridView.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -109,11 +93,72 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExpressionAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ExpressionAdapter.java">
+      <file leaf-file-name="ContactAdapter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ContactAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="658" max-vertical-offset="2071">
+              <caret line="69" column="74" selection-start-line="69" selection-start-column="74" selection-end-line="69" selection-end-column="74" />
+              <folding>
+                <element signature="e#3235#3236#0" expanded="true" />
+                <element signature="e#3266#3267#0" expanded="true" />
+                <element signature="e#3637#3638#0" expanded="true" />
+                <element signature="e#3702#3703#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="item_contact_list_pending.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_contact_list_pending.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.42771083" vertical-offset="457" max-vertical-offset="1121">
+              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="item_contact_list.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_contact_list.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.222222" vertical-offset="248" max-vertical-offset="912">
+              <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FragmentFriends.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/app/fx/FragmentFriends.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="702" max-vertical-offset="2508">
+              <caret line="66" column="127" selection-start-line="66" selection-start-column="127" selection-end-line="66" selection-end-column="127" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FriendManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/FriendManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="644" max-vertical-offset="2033">
+              <caret line="78" column="59" selection-start-line="78" selection-start-column="59" selection-end-line="78" selection-end-column="59" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Util.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/Util.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="608">
-              <caret line="33" column="76" selection-start-line="33" selection-start-column="53" selection-end-line="33" selection-end-column="76" />
+              <caret line="15" column="35" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -859,13 +904,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/appLogic/enums/FriendStatus.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/appLogic/Conversation.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/app/activity/BaseActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activities/ChatActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activities/SplashActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activities/FragmentCoversation.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/app/fx/others/ConversationAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/app/adapter/ConversationAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_profile.xml" />
@@ -877,7 +915,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/app/activity/UserInfoActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/common/BitmapMemoryCache.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_userinfo.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ContactAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/FragmentProfile.java" />
         <option value="$PROJECT_DIR$/app/src/main/assets/meInfo.json" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/MessageAdapter.java" />
@@ -895,10 +932,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/app/widget/photoview/VersionedGestureDetector.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/FragmentCoversation.java" />
-        <option value="$PROJECT_DIR$/app/src/main/assets/friends.json" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/item_conversation_single.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/FragmentConversation.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ConversationAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/database/UnreadMessageTable.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/appLogic/MessageManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/database/MessageTable.java" />
@@ -907,9 +942,19 @@
         <option value="$PROJECT_DIR$/app/src/main/java/common/SmileUtils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ExpressionAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/common/ExpressionUtils.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/ChatActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_chat.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/chat_send_btn_selector.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/ChatActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ConversationAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/common/DateUtils.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/appLogic/FriendInfo.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/appLogic/Util.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/appLogic/FriendManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/app/fx/FragmentFriends.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/contact_view_title.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/assets/friends.json" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ContactAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_contact_list_pending.xml" />
       </list>
     </option>
   </component>
@@ -1011,7 +1056,7 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="drawable" />
+              <option name="myItemId" value="layout" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1233,6 +1278,9 @@
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_21_x86" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Project\Android\Fanxin\app\src\main\res\layout" />
+    </key>
     <key name="android.template.packageName">
       <recent name="com.fanxin.app" />
     </key>
@@ -1437,7 +1485,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31940874" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31940874" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962447" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32823366" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39360222" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1525,162 +1573,33 @@
           <properties />
           <option name="timeStamp" value="240" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/ChatActivity.java</url>
+          <line>235</line>
+          <properties />
+          <option name="timeStamp" value="306" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/ChatActivity.java</url>
+          <line>237</line>
+          <properties />
+          <option name="timeStamp" value="307" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/ChatActivity.java</url>
+          <line>275</line>
+          <properties />
+          <option name="timeStamp" value="308" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="306" />
+      <option name="time" value="310" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/common/ImageLoaderManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="2223">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-21/android/widget/AbsListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="40775" max-vertical-offset="135660">
-          <caret line="2254" column="0" selection-start-line="2254" selection-start-column="0" selection-end-line="2254" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/app/widget/photoview/PhotoView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33878157" vertical-offset="1026" max-vertical-offset="3743">
-          <caret line="66" column="13" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#4921#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#2045#2046#0" expanded="true" />
-            <element signature="e#2071#2072#0" expanded="true" />
-            <element signature="e#2128#2129#0" expanded="true" />
-            <element signature="e#2157#2158#0" expanded="true" />
-            <element signature="e#2494#2495#0" expanded="true" />
-            <element signature="e#2527#2528#0" expanded="true" />
-            <element signature="e#2572#2573#0" expanded="true" />
-            <element signature="e#2612#2613#0" expanded="true" />
-            <element signature="e#2654#2655#0" expanded="true" />
-            <element signature="e#2691#2692#0" expanded="true" />
-            <element signature="e#2733#2734#0" expanded="true" />
-            <element signature="e#2770#2771#0" expanded="true" />
-            <element signature="e#2812#2813#0" expanded="true" />
-            <element signature="e#2849#2850#0" expanded="true" />
-            <element signature="e#2888#2889#0" expanded="true" />
-            <element signature="e#2922#2923#0" expanded="true" />
-            <element signature="e#2969#2970#0" expanded="true" />
-            <element signature="e#3007#3008#0" expanded="true" />
-            <element signature="e#3205#3206#0" expanded="true" />
-            <element signature="e#3243#3244#0" expanded="true" />
-            <element signature="e#3298#3299#0" expanded="true" />
-            <element signature="e#3336#3337#0" expanded="true" />
-            <element signature="e#3391#3392#0" expanded="true" />
-            <element signature="e#3429#3430#0" expanded="true" />
-            <element signature="e#4121#4122#0" expanded="true" />
-            <element signature="e#4163#4164#0" expanded="true" />
-            <element signature="e#4647#4648#0" expanded="true" />
-            <element signature="e#4685#4686#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/app/widget/photoview/PhotoViewAttacher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42199108" vertical-offset="7449" max-vertical-offset="18449">
-          <caret line="434" column="32" selection-start-line="434" selection-start-column="25" selection-end-line="434" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6126#6397#0" expanded="true" />
-            <element signature="e#6389#6390#0" expanded="true" />
-            <element signature="e#6577#6578#0" expanded="true" />
-            <element signature="e#6603#6604#0" expanded="true" />
-            <element signature="e#8565#8566#0" expanded="true" />
-            <element signature="e#8588#8589#0" expanded="true" />
-            <element signature="e#8706#8707#0" expanded="true" />
-            <element signature="e#8729#8730#0" expanded="true" />
-            <element signature="e#8774#8775#0" expanded="true" />
-            <element signature="e#8826#8827#0" expanded="true" />
-            <element signature="e#8879#8880#0" expanded="true" />
-            <element signature="e#8903#8904#0" expanded="true" />
-            <element signature="e#14324#14325#0" expanded="true" />
-            <element signature="e#14366#14367#0" expanded="true" />
-            <element signature="e#15314#15315#0" expanded="true" />
-            <element signature="e#15348#15349#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/BigImageActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="543" max-vertical-offset="1216">
-          <caret line="52" column="120" selection-start-line="52" selection-start-column="120" selection-end-line="52" selection-end-column="120" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1879#2016#0" expanded="true" />
-            <element signature="e#2005#2006#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38235295" vertical-offset="0" max-vertical-offset="646">
-          <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.407408" vertical-offset="1539" max-vertical-offset="4085">
-          <caret line="110" column="50" selection-start-line="110" selection-start-column="33" selection-end-line="110" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/common/BitmapMemoryCache.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="286" max-vertical-offset="836">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/friends.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.96" vertical-offset="1767" max-vertical-offset="2584">
-          <caret line="114" column="29" selection-start-line="114" selection-start-column="29" selection-end-line="114" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="950">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-21/java/lang/Object.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.17533432" vertical-offset="5343" max-vertical-offset="8265">
           <caret line="309" column="35" selection-start-line="309" selection-start-column="29" selection-end-line="309" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ContactAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33878157" vertical-offset="0" max-vertical-offset="1045">
-          <caret line="28" column="44" selection-start-line="28" selection-start-column="44" selection-end-line="28" selection-end-column="44" />
           <folding />
         </state>
       </provider>
@@ -1706,22 +1625,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/FragmentConversation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="867" max-vertical-offset="1615">
-          <caret line="63" column="16" selection-start-line="63" selection-start-column="16" selection-end-line="63" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1604#2005#0" expanded="true" />
-            <element signature="e#1994#1995#0" expanded="true" />
-            <element signature="e#2053#2967#0" expanded="true" />
-            <element signature="e#2518#2879#0" expanded="true" />
-            <element signature="e#2852#2853#0" expanded="true" />
-            <element signature="e#2956#2957#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/alert_dialog.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -1741,21 +1644,6 @@
         <state vertical-scroll-proportion="20.444445" vertical-offset="1730" max-vertical-offset="2907">
           <caret line="62" column="21" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="21" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ConversationAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1558">
-          <caret line="100" column="5" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
-          <folding>
-            <element signature="e#1370#1371#0" expanded="true" />
-            <element signature="e#1413#1414#0" expanded="true" />
-            <element signature="e#1470#1471#0" expanded="true" />
-            <element signature="e#1520#1521#0" expanded="true" />
-            <element signature="e#1577#1578#0" expanded="true" />
-            <element signature="e#1608#1609#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1805,14 +1693,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1304" max-vertical-offset="2052">
           <caret line="112" column="28" selection-start-line="112" selection-start-column="28" selection-end-line="112" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/ConversationManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="677" max-vertical-offset="1482">
-          <caret line="73" column="43" selection-start-line="73" selection-start-column="35" selection-end-line="73" selection-end-column="43" />
           <folding />
         </state>
       </provider>
@@ -1925,14 +1805,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/input_bar_bg_normal.9.png">
-      <provider selected="true" editor-type-id="ninepatcheditor">
-        <state />
-      </provider>
-      <provider editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/chat_press_speak_btn.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="678">
@@ -1978,10 +1850,73 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-21/data/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32706222" vertical-offset="1313" max-vertical-offset="3192">
+          <caret line="81" column="17" selection-start-line="81" selection-start-column="17" selection-end-line="81" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/chat_send_btn_selector.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14011799" vertical-offset="0" max-vertical-offset="678">
+          <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_chat.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="15.037037" vertical-offset="4871" max-vertical-offset="7980">
+          <caret line="235" column="28" selection-start-line="235" selection-start-column="28" selection-end-line="235" selection-end-column="28" />
+          <folding>
+            <element signature="tag#RelativeLayout#1;tag#RelativeLayout#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/input_bar_bg_normal.9.png">
+      <provider selected="true" editor-type-id="ninepatcheditor">
+        <state />
+      </provider>
+      <provider editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/FragmentConversation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="525" max-vertical-offset="1463">
+          <caret line="46" column="64" selection-start-line="46" selection-start-column="64" selection-end-line="46" selection-end-column="64" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/ConversationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1482">
+          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/common/DateUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.79739505" vertical-offset="456" max-vertical-offset="1178">
+          <caret line="55" column="24" selection-start-line="55" selection-start-column="24" selection-end-line="55" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/activity/ChatActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="8279" max-vertical-offset="19361">
-          <caret line="574" column="35" selection-start-line="574" selection-start-column="35" selection-end-line="574" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5356" max-vertical-offset="19361">
+          <caret line="298" column="23" selection-start-line="298" selection-start-column="23" selection-end-line="298" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5670#5864#0" expanded="true" />
@@ -2010,32 +1945,104 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/platforms/android-21/data/res/values/colors.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/AppConstant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32706222" vertical-offset="1313" max-vertical-offset="3192">
-          <caret line="81" column="17" selection-start-line="81" selection-start-column="17" selection-end-line="81" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="37" max-vertical-offset="665">
+          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_chat.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/FriendInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.47756875" vertical-offset="107" max-vertical-offset="798">
+          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/Util.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="608">
+          <caret line="15" column="35" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/appLogic/FriendManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="644" max-vertical-offset="2033">
+          <caret line="78" column="59" selection-start-line="78" selection-start-column="59" selection-end-line="78" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/app/fx/FragmentFriends.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="702" max-vertical-offset="2508">
+          <caret line="66" column="127" selection-start-line="66" selection-start-column="127" selection-end-line="66" selection-end-column="127" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ConversationAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="513" max-vertical-offset="1444">
+          <caret line="80" column="46" selection-start-line="80" selection-start-column="28" selection-end-line="80" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/contact_view_title.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.2363634" vertical-offset="3455" max-vertical-offset="7980">
-          <caret line="197" column="54" selection-start-line="197" selection-start-column="54" selection-end-line="197" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.25753012" vertical-offset="0" max-vertical-offset="664">
+          <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_contact_list.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.222222" vertical-offset="248" max-vertical-offset="912">
+          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/friends.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5990991" vertical-offset="0" max-vertical-offset="2584">
+          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fanxin/adapter/ContactAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="658" max-vertical-offset="2071">
+          <caret line="69" column="74" selection-start-line="69" selection-start-column="74" selection-end-line="69" selection-end-column="74" />
           <folding>
-            <element signature="e#8087#8108#0" expanded="true" />
-            <element signature="tag#RelativeLayout#1;tag#RelativeLayout#0" expanded="false" />
+            <element signature="e#3235#3236#0" expanded="true" />
+            <element signature="e#3266#3267#0" expanded="true" />
+            <element signature="e#3637#3638#0" expanded="true" />
+            <element signature="e#3702#3703#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/chat_send_btn_selector.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_contact_list_pending.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14011799" vertical-offset="0" max-vertical-offset="678">
-          <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.42771083" vertical-offset="457" max-vertical-offset="1121">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding />
         </state>
       </provider>

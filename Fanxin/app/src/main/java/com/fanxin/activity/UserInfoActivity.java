@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
-import appLogic.enums.Gender;
 import common.ImageLoaderManager;
 
 import com.fanxin.app.R;
@@ -37,9 +36,9 @@ public class UserInfoActivity extends Activity {
 
         if (friend != null) {
             tv_name.setText(friend.name);
-            if (friend.gender == Gender.male) {
+            if (friend.gender == FriendInfo.Gender.Male) {
                 iv_sex.setImageResource(R.drawable.ic_sex_male);
-            } else if (friend.gender == Gender.female) {
+            } else if (friend.gender == FriendInfo.Gender.Female) {
                 iv_sex.setImageResource(R.drawable.ic_sex_female);
             }
         }
