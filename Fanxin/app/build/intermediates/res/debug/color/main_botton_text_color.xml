@@ -3,4 +3,4 @@
     <item android:state_selected="true" android:color="@color/common_botton_bar_blue" />
     <item android:color="@android:color/white" />
 </selector>
-<!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/color/main_botton_text_color.xml -->
+<!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/Fanxin/app/src/main/res/color/main_botton_text_color.xml -->

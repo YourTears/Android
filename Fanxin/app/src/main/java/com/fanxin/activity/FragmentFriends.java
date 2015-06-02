@@ -28,7 +28,6 @@ import appLogic.FriendInfo;
 @SuppressLint("InflateParams")
 public class FragmentFriends extends Fragment {
     private View mainView = null;
-    private ContactAdapter adapter;
     private ListView listView;
     private boolean hidden;
 
@@ -62,8 +61,8 @@ public class FragmentFriends extends Fragment {
         
         tv_total = (TextView) footerView.findViewById(R.id.tv_total);
 
-        adapter = new ContactAdapter(getActivity(), AppConstant.friendManager.friends, AppConstant.friendManager.pendingFriends);
-        listView.setAdapter(adapter);
+
+        listView.setAdapter(AppConstant.friendManager.adapter);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -111,8 +110,7 @@ public class FragmentFriends extends Fragment {
             // 可能会在子线程中调到这方法
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-
-                    adapter.notifyDataSetChanged();
+                    AppConstant.friendManager.adapter.notifyDataSetChanged();
                     tv_total.setText(String.valueOf(AppConstant.friendManager.getFriendCount())+"位联系人");
                 }
             });

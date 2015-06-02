@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/dx_checkbox_on" android:state_checked="true"/>
     <item android:drawable="@drawable/dx_checkbox_off"/>
 
-</selector>	<!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/drawable/checkbox_bg_selector.xml -->
+</selector>	<!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/Fanxin/app/src/main/res/drawable/checkbox_bg_selector.xml -->

@@ -147,7 +147,7 @@ public class MainActivity extends BaseActivity {
         MeInfo.getMeInfo(Util.getAssertInputStream(this.getResources().getAssets(), "meInfo.json"));
 
         AppConstant.meInfo = MeInfo.getInstance();
-        AppConstant.friendManager = FriendManager.getInstance();
+        AppConstant.friendManager = FriendManager.getInstance(this);
         AppConstant.friendManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
 
         AppConstant.dataFolder = Util.getAppFilePath(this);
