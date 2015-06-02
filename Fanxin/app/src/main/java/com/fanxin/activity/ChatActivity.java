@@ -849,6 +849,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         return views;
     }
 
+    public void back(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("fragment", "conversation");
+        startActivity(intent);
+    }
+
     /**
      * 消息广播接收者
      */
@@ -1010,29 +1016,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
          * @param username
          */
         private void addUserToBlacklist(String username) {
-        }
-
-        /**
-         * 返回
-         *
-         * @param view
-         */
-        public void back(View view) {
-            // if(type==3){
-            // startActivity(new
-            // Intent(getApplicationContext(),MyGroupActivity.class));
-            // finish();
-            // }else if(type==2){
-            // startActivity(new
-            // Intent(getApplicationContext(),ContactListActivity.class));
-            // finish();
-            // }else if(type==1){
-            // startActivity(new
-            // Intent(getApplicationContext(),MainActivity.class));
-            // finish();
-            // }else{
-            finish();
-            // }
         }
 
         /**

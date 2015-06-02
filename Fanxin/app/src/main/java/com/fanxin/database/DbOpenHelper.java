@@ -42,6 +42,12 @@ public class DbOpenHelper extends SQLiteOpenHelper{
             String.format("CREATE TABLE IF NOT EXISTS %s (%s TEXT PRIMARY KEY, %s TEXT, %s BIGINT, %s INTEGER)",
                     ConversationTable.TableName, ConversationTable.FriendId, ConversationTable.Body, ConversationTable.Time, ConversationTable.UnreadCount);
 
+    private static final String Friends_Table_Create =
+            String.format("CREATE TABLE IF NOT EXISTS %s " +
+                            "(%s TEXT PRIMARY KEY, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s TEXT, %s TEXT, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER)",
+                    FriendTable.TableName, FriendTable.SYS_ID, FriendTable.ID, FriendTable.Name, FriendTable.NickName, FriendTable.Phone, FriendTable.Gender,
+                    FriendTable.ImageUrl, FriendTable.Sign, FriendTable.FriendStatus, FriendTable.RegionProvinceId, FriendTable.RegionCityId, FriendTable.HomeProvinceId, FriendTable.HomeCityId);
+
 	private DbOpenHelper(Context context) {
 		super(context, getDatabasePath(), null, DATABASE_VERSION);
 
@@ -62,6 +68,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
         db.execSQL(Messages_Index_Create);
         db.execSQL(UnreadMessageCount_Table_Create);
         db.execSQL(Conversations_Table_Create);
+        db.execSQL(Friends_Table_Create);
 	}
 
 	@Override

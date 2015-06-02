@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fanxin.adapter.ContactAdapter;
+import com.fanxin.database.FriendTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +27,7 @@ public class FriendManager {
     private HashSet<String> blockIds;
     private HashMap<String, FriendInfo> friendMapping;
     private HashMap<String, FriendInfo> pendingFriendMapping;
+    private FriendTable friendTable;
 
     private FriendManager(Context context) {
         friends = new ArrayList<FriendInfo>();
@@ -35,6 +37,22 @@ public class FriendManager {
         pendingFriendMapping = new HashMap<String, FriendInfo>();
 
         adapter = new ContactAdapter(context, friends, pendingFriends);
+
+        friendTable = FriendTable.getInstance(context);
+
+        for(FriendInfo friend : friendTable.getFriends()){
+            if (friend.friendStatus != FriendInfo.FriendStatus.Blocked) {
+                if (friend.friendStatus == FriendInfo.FriendStatus.Friend) {
+                    friends.add(friend);
+                    friendMapping.put(friend.id, friend);
+                } else {
+                    pendingFriends.add(friend);
+                    pendingFriendMapping.put(friend.id, friend);
+                }
+            } else {
+                blockIds.add(friend.id);
+            }
+        }
     }
 
     private static FriendManager instance = null;
@@ -70,6 +88,8 @@ public class FriendManager {
         FriendInfo friend = getFriend(friendId);
         if (friend != null && friend.friendStatus == FriendInfo.FriendStatus.ToAccept) {
             try {
+                friend.friendStatus = FriendInfo.FriendStatus.Friend;
+
                 pendingFriends.remove(friend);
                 pendingFriendMapping.remove(friendId);
 
@@ -77,6 +97,7 @@ public class FriendManager {
                 friendMapping.put(friendId, friend);
 
                 adapter.notifyDataSetChanged();
+                friendTable.addOrReplaceFriend(friend);
             } catch (Exception e) {
                 Log.e("加好友失败", e.getMessage());
             }
@@ -109,6 +130,8 @@ public class FriendManager {
                         } else {
                             blockIds.add(friend.id);
                         }
+
+                        friendTable.addOrReplaceFriend(friend);
                     }
                 }
             }
@@ -127,10 +150,10 @@ public class FriendManager {
         try {
             friend.sys_id = json.getString("sys_id");
             friend.id = json.getString("id");
-            friend.gender = appLogic.Util.parseGender(json.getInt("gender"));
+            friend.gender = FriendInfo.parseGender(json.getInt("gender"));
             friend.name = json.getString("name");
             friend.imageUrl = json.getString("imageUrl");
-            friend.friendStatus = appLogic.Util.parseFriendStatus(json.getInt("friendStatus"));
+            friend.friendStatus = FriendInfo.parseFriendStatus(json.getInt("friendStatus"));
 
         } catch (JSONException e) {
             return null;

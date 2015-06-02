@@ -37,7 +37,18 @@
             android:text=""
             android:textColor="#353535"
             android:textSize="16sp" />
-    </RelativeLayout>
-    
 
-</LinearLayout><!-- From: file:/C:/Users/tiazh/AndroidStudioProjects/Fanxin/app/src/main/res/layout/item_contact_list.xml -->
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:layout_alignParentRight="true"
+            android:text=""
+            android:textColor="#353535"
+            android:textSize="13sp"/>
+    </RelativeLayout>
+
+
+</LinearLayout><!-- From: file:/D:/Project/Android/Fanxin/app/src/main/res/layout/item_contact_list.xml -->

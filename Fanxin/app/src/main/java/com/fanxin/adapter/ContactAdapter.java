@@ -33,10 +33,20 @@ public class ContactAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         String itemKey = getItemKey(position);
-        if(views.containsKey(itemKey))
-            return views.get(itemKey);
+        FriendInfo friend = getItem(position);
 
         View view = null;
+
+        if(views.containsKey(itemKey)) {
+            view = views.get(itemKey);
+
+            if(friend != null){
+                updateStatusView((TextView)view.findViewById(R.id.tv_status), friend.friendStatus);
+            }
+
+            return view;
+        }
+
         if(position == 0 || position == friends.size() + 1){
             view = layoutInflater.inflate(R.layout.contact_view_title, parent, false);
 
@@ -46,23 +56,8 @@ public class ContactAdapter extends BaseAdapter {
                 textView.setText("我的好友");
             else
                 textView.setText("等待中");
-        } else if(position <= friends.size()){
-
-            FriendInfo friend = getItem(position);
-
+        } else {
             view = layoutInflater.inflate(R.layout.item_contact_list, parent, false);
-            view.setTag(friend.id);
-
-            ImageView imageView = (ImageView) view.findViewById(R.id.iv_avatar);
-            TextView nameTextView = (TextView) view.findViewById(R.id.tv_name);
-
-            nameTextView.setText(friend.name);
-
-            AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
-        } else{
-            FriendInfo friend = getItem(position);
-
-            view = layoutInflater.inflate(R.layout.item_contact_list_pending, parent, false);
             view.setTag(friend.id);
 
             ImageView imageView = (ImageView) view.findViewById(R.id.iv_avatar);
@@ -71,18 +66,24 @@ public class ContactAdapter extends BaseAdapter {
 
             nameTextView.setText(friend.name);
 
-            if(friend.friendStatus == FriendInfo.FriendStatus.PendingRequest)
-                statusTextView.setText("未加为好友");
-            else if(friend.friendStatus == FriendInfo.FriendStatus.ToAccept)
-                statusTextView.setText("等待确认");
-            else if(friend.friendStatus == FriendInfo.FriendStatus.PendingAccepted)
-                statusTextView.setText("等待对方确认");
+            updateStatusView(statusTextView, friend.friendStatus);
 
             AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
         }
 
         views.put(itemKey, view);
         return view;
+    }
+
+    private void updateStatusView(TextView textView, FriendInfo.FriendStatus status){
+        if(status == FriendInfo.FriendStatus.Friend)
+            textView.setVisibility(View.GONE);
+        else if(status == FriendInfo.FriendStatus.PendingRequest)
+            textView.setText("未加为好友");
+        else if(status == FriendInfo.FriendStatus.ToAccept)
+            textView.setText("等待确认");
+        else if(status == FriendInfo.FriendStatus.PendingAccepted)
+            textView.setText("等待对方确认");
     }
 
     @Override

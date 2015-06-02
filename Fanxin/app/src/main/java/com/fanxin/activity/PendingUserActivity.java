@@ -54,11 +54,7 @@ public class PendingUserActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         AppConstant.friendManager.acceptFriendInvitation(friend.id);
-
-                        Intent intent = new Intent();
-                        intent.putExtra("id", friend.id);
-                        intent.setClass(PendingUserActivity.this, BigImageActivity.class);
-                        startActivity(intent);
+                        finish();
                     }
                 });
 

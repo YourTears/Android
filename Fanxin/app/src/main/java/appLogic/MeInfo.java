@@ -46,7 +46,7 @@ public class MeInfo {
             getInstance().id = json.getString("id");
             getInstance().name = json.getString("name");
             getInstance().phone = json.getString("phone");
-            getInstance().gender = appLogic.Util.parseGender(json.getInt("gender"));
+            getInstance().gender = FriendInfo.parseGender(json.getInt("gender"));
             getInstance().imageUrl = json.getString("imageUrl");
 
         } catch (JSONException e) {
