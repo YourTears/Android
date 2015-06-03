@@ -2,6 +2,7 @@ package appLogic;
 
 import android.content.Context;
 
+import com.fanxin.adapter.MessageAdapter;
 import com.fanxin.database.MessageTable;
 import com.fanxin.database.UnreadMessageTable;
 
@@ -15,22 +16,27 @@ import java.util.List;
 public class MessageManager {
     public String friendId;
     public List<Message> messages;
-    public long endTime;
+    public long lastMessageTime;
+    public MessageAdapter adapter;
 
-    MessageTable messageTable = null;
+    private MessageTable messageTable = null;
 
     public MessageManager(Context context, String friendId) {
         this.friendId = friendId;
         messages = new ArrayList<>();
-        endTime = (new Date()).getTime();
+        lastMessageTime = (new Date()).getTime();
 
         messageTable = MessageTable.getInstance(context);
         messages = messageTable.getMessages(friendId, (new Date()).getTime());
+
+        adapter = new MessageAdapter(context, friendId, messages);
     }
 
     public void addMessage(Message message) {
         messages.add(message);
         messageTable.insertMessage(message);
+
+        adapter.notifyDataSetChanged();
     }
 
     public Message getLastMessage(){

@@ -33,7 +33,7 @@ import common.ExpressionUtils;
 import common.ImageLoaderManager;
 
 public class MessageAdapter extends BaseAdapter {
-    private final static String TAG = "msg";
+    private final static String TAG = "MessageAdapter";
 
     private static final int MESSAGE_TYPE_RECV_TXT = 0;
     private static final int MESSAGE_TYPE_SENT_TXT = 1;
@@ -62,7 +62,9 @@ public class MessageAdapter extends BaseAdapter {
 
     private Map<String, Timer> timers = new Hashtable<String, Timer>();
 
-    public List<Message> messages;
+    private List<Message> messages;
+    private long lastShowTime;
+    private long messageCountToLastShowTime;
 
     public MessageAdapter(Context context, String id, List<Message> messages) {
         this.context = context;
@@ -71,6 +73,9 @@ public class MessageAdapter extends BaseAdapter {
 
         friend = AppConstant.friendManager.getFriend(id);
         this.messages = messages;
+
+        lastShowTime = 0;
+        messageCountToLastShowTime = 0;
     }
 
     /**
@@ -78,13 +83,6 @@ public class MessageAdapter extends BaseAdapter {
      */
     public int getCount() {
         return messages.size();
-    }
-
-    /**
-     * 刷新页面
-     */
-    public void refresh() {
-        notifyDataSetChanged();
     }
 
     public long getItemId(int position) {
@@ -120,7 +118,15 @@ public class MessageAdapter extends BaseAdapter {
         textView.setText(span, TextView.BufferType.SPANNABLE);
 
         TextView timeView = (TextView) view.findViewById(R.id.tv_timestamp);
-        timeView.setText(DateUtils.getDateTimeString(message.time));
+
+        if(message.time - lastShowTime > 120000 || messageCountToLastShowTime > 20) {
+            timeView.setText(DateUtils.getDateTimeString(message.time));
+            lastShowTime = message.time;
+            messageCountToLastShowTime = 1;
+        } else {
+            timeView.setVisibility(View.GONE);
+            messageCountToLastShowTime ++;
+        }
 
         TextView userNameView =(TextView) view.findViewById(R.id.tv_userid);
         if(userNameView != null)

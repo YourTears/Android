@@ -127,7 +127,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     public static ChatActivity activityInstance = null;
     // 给谁发送消息
     private FriendInfo friend;
-    private MessageAdapter adapter;
+
     private File cameraFile;
     public static int resendPos;
 
@@ -377,9 +377,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
         ((TextView) findViewById(R.id.textview_name)).setText(friend.name);
 
-        adapter = new MessageAdapter(this, friend.id, messageManager.messages);
+
         // 显示消息
-        conversationListView.setAdapter(adapter);
+        conversationListView.setAdapter(messageManager.adapter);
         //conversationListView.setOnScrollListener(new ListScrollListener());
         int count = conversationListView.getCount();
         if (count > 0) {
@@ -457,9 +457,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                 case RESULT_CODE_COPY: // 复制消息
                     break;
                 case RESULT_CODE_DELETE: // 删除消息
-                    adapter.refresh();
-                    conversationListView.setSelection(data.getIntExtra("position",
-                            adapter.getCount()) - 1);
+                    messageManager.adapter.notifyDataSetChanged();
+                    conversationListView.setSelection(data.getIntExtra("position", messageManager.adapter.getCount()) - 1);
                     break;
 
                 case RESULT_CODE_FORWARD: // 转发消息
@@ -479,7 +478,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         if (resultCode == RESULT_OK) { // 清空消息
             if (requestCode == REQUEST_CODE_EMPTY_HISTORY) {
                 // 清空会话
-                adapter.refresh();
+                messageManager.adapter.notifyDataSetChanged();
             } else if (requestCode == REQUEST_CODE_CAMERA) { // 发送照片
                 if (cameraFile != null && cameraFile.exists())
                     Log.e("cameraFile.getAbsolutePath()------>>>>", cameraFile.getAbsolutePath());
@@ -558,7 +557,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             } else if (requestCode == REQUEST_CODE_ADD_TO_BLACKLIST) { // 移入黑名单
 
             } else if (requestCode == REQUEST_CODE_GROUP_DETAIL) {
-                adapter.refresh();
+                messageManager.adapter.notifyDataSetChanged();
             }
         }
     }
@@ -634,14 +633,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private void sendText(String content) {
         if (content.length() > 0) {
             long time = (new Date()).getTime();
-            if(time == messageManager.endTime)
+            if(time == messageManager.lastMessageTime)
                 time ++;
 
             Message message = new Message(UUID.randomUUID(), friend.id, Message.Direction.SEND,
                     content,time , Message.MessageType.TEXT, false);
 
             messageManager.addMessage(message);
-            adapter.notifyDataSetChanged();
 
             conversationListView.setSelection(conversationListView.getCount() - 1);
             messageEditText.setText("");
@@ -663,7 +661,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             return;
         }
         try {
-            adapter.refresh();
             conversationListView.setSelection(conversationListView.getCount() - 1);
             setResult(RESULT_OK);
             // send file
@@ -682,8 +679,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         Log.e("filePath------>>>>", filePath);
         String to = friend.name;
 
-        conversationListView.setAdapter(adapter);
-        adapter.refresh();
         conversationListView.setSelection(conversationListView.getCount() - 1);
         setResult(RESULT_OK);
         // textModeLayout(textModeLayout);
@@ -699,8 +694,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             return;
         }
         try {
-            conversationListView.setAdapter(adapter);
-            adapter.refresh();
             conversationListView.setSelection(conversationListView.getCount() - 1);
             setResult(RESULT_OK);
         } catch (Exception e) {
@@ -756,8 +749,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
      */
     private void sendLocationMsg(double latitude, double longitude,
                                  String imagePath, String locationAddress) {
-        conversationListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
         conversationListView.setSelection(conversationListView.getCount() - 1);
         setResult(RESULT_OK);
 
@@ -767,7 +758,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
      * 重发消息
      */
     private void resendMessage() {
-        adapter.refresh();
         conversationListView.setSelection(resendPos);
     }
 
@@ -881,7 +871,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
                 String msgid = intent.getStringExtra("msgid");
                 String from = intent.getStringExtra("from");
-                adapter.notifyDataSetChanged();
 
             }
         };
@@ -896,8 +885,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
                 String msgid = intent.getStringExtra("msgid");
                 String from = intent.getStringExtra("from");
-
-                adapter.notifyDataSetChanged();
             }
         };
         private PowerManager.WakeLock wakeLock;
