@@ -2,39 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\libs\locSDK_3.3.jar"
+        jar="D:\Project\Android\Fanxin\app\libs\pinyin4j-2.5.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="590d32bdf5bb37ee372a21696b8f7853b224e31f">
-        <dex dex="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\build\intermediates\pre-dexed\debug\locSDK_3.3-6b5b06fc3fe0ab5360d191a59e4423c33ceaf31a.jar" />
-    </item>
-    <item
-        jar="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\libs\libjingle_peerconnection.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="921ac750da621ae057bf3fc59f499a3b871700ba">
-        <dex dex="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\build\intermediates\pre-dexed\debug\libjingle_peerconnection-3d8223b4d3eb910160ad62c7a298cc0d1841eff9.jar" />
-    </item>
-    <item
-        jar="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\libs\fastjson-1.1.34.android.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="bef1d1224be099c387794bce1bdf81b38f37c6ce">
-        <dex dex="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\build\intermediates\pre-dexed\debug\fastjson-1.1.34.android-f51504fe91235fbd90b193420248913d15c07ce4.jar" />
-    </item>
-    <item
-        jar="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\libs\android-support-v4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="bd6479f5dd592790607e0504e66e0f31c2b4d308">
-        <dex dex="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\build\intermediates\pre-dexed\debug\android-support-v4-f43ff0f95ef8046323ccfd076d64c49ea763ccd7.jar" />
-    </item>
-    <item
-        jar="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\libs\autobanh.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="9b51fb848b29a3e41b8474ce2d4360f4d7d144c5">
-        <dex dex="C:\Users\tiazh\AndroidStudioProjects\Fanxin\app\build\intermediates\pre-dexed\debug\autobanh-38e2ec7635c107f5b7a0eb53ab6562023d6efd76.jar" />
+        sha1="ae353005f973da1cd8545b54354504c2503f6865">
+        <dex dex="D:\Project\Android\Fanxin\app\build\intermediates\pre-dexed\debug\pinyin4j-2.5.0-7962ff13094ac90118c567fac62fbf2dc3f57924.jar" />
     </item>
 
 </items>

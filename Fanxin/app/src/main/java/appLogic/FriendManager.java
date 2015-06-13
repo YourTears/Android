@@ -1,5 +1,6 @@
 package appLogic;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -12,9 +13,14 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import common.HanziToPinyin;
 
 /**
  * Created by Long on 4/29/2015.
@@ -41,6 +47,7 @@ public class FriendManager {
         friendTable = FriendTable.getInstance(context);
 
         for(FriendInfo friend : friendTable.getFriends()){
+            friend.name_pinyin = HanziToPinyin.getPinYin(friend.name);
             if (friend.friendStatus != FriendInfo.FriendStatus.Blocked) {
                 if (friend.friendStatus == FriendInfo.FriendStatus.Friend) {
                     friends.add(friend);
@@ -53,6 +60,8 @@ public class FriendManager {
                 blockIds.add(friend.id);
             }
         }
+
+        Collections.sort(friends, new FriendManager.PinyinComparator());
     }
 
     private static FriendManager instance = null;
@@ -160,5 +169,44 @@ public class FriendManager {
         }
 
         return friend;
+    }
+
+    @SuppressLint("DefaultLocale")
+    public class PinyinComparator implements Comparator<FriendInfo> {
+
+        @SuppressLint("DefaultLocale")
+        @Override
+        public int compare(FriendInfo f1, FriendInfo f2) {
+            String py1 = f1.name_pinyin;
+            String py2 = f2.name_pinyin;
+
+            if (isEmpty(py1) && isEmpty(py2))
+                return 0;
+            if (isEmpty(py1))
+                return -1;
+            if (isEmpty(py2))
+                return 1;
+
+            return py1.compareTo(py2);
+        }
+
+        private boolean isEmpty(String str) {
+            return "".equals(str.trim());
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    public class TimeComparator implements Comparator<FriendInfo> {
+
+        @SuppressLint("DefaultLocale")
+        @Override
+        public int compare(FriendInfo f1, FriendInfo f2) {
+
+            return 0;
+        }
+
+        private boolean isEmpty(String str) {
+            return "".equals(str.trim());
+        }
     }
 }

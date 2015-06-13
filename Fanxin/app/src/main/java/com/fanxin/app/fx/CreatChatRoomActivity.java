@@ -105,9 +105,6 @@ public class CreatChatRoomActivity extends BaseActivity {
 //                    & !user.getUsername().equals(Constant.GROUP_USERNAME))
 //                alluserList.add(user);
 //        }
-        // 对list进行排序
-        Collections.sort(alluserList, new PinyinComparator() {
-        });
 
         listView = (ListView) findViewById(R.id.list);
         LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -454,7 +451,7 @@ public class CreatChatRoomActivity extends BaseActivity {
 
             final String avater = user.imageUrl;
             String name = user.nickName;
-            String header = user.name_pinyin;
+            String header = user.nickName;
             final String username = user.sys_id;
             tv_name.setText(name);
             iv_avatar.setImageResource(R.drawable.default_boy_drawable);
@@ -548,7 +545,7 @@ public class CreatChatRoomActivity extends BaseActivity {
                 return "";
             }
 
-            String header = list.get(position).name_pinyin;
+            String header = list.get(position).name;
 
             return header;
 
@@ -564,30 +561,4 @@ public class CreatChatRoomActivity extends BaseActivity {
     public void back(View view) {
         finish();
     }
-
-    @SuppressLint("DefaultLocale")
-    public class PinyinComparator implements Comparator<FriendInfo> {
-
-        @SuppressLint("DefaultLocale")
-        @Override
-        public int compare(FriendInfo o1, FriendInfo o2) {
-            // TODO Auto-generated method stub
-            String py1 = o1.name_pinyin;
-            String py2 = o2.name_pinyin;
-            // 判断是否为空""
-            if (isEmpty(py1) && isEmpty(py2))
-                return 0;
-            if (isEmpty(py1))
-                return -1;
-            if (isEmpty(py2))
-                return 1;
-
-            return py1.compareTo(py2);
-        }
-
-        private boolean isEmpty(String str) {
-            return "".equals(str.trim());
-        }
-    }
-
 }
