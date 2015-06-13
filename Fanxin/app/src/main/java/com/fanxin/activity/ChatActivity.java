@@ -58,7 +58,6 @@ import com.fanxin.app.R;
 import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.activity.ImageGridActivity;
 import com.fanxin.adapter.ExpressionPagerAdapter;
-import com.fanxin.adapter.MessageAdapter;
 import com.fanxin.app.widget.ExpandGridView;
 import com.fanxin.app.widget.PasteEditText;
 
@@ -135,9 +134,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private ImageView checkedExpressionView;
     private RelativeLayout messageLayout;
     private ProgressBar loadingMessageProcessBar;
-    private boolean isloading;
+    private boolean isLoading = false;
     private final int pagesize = 20;
-    private boolean haveMoreData = true;
     private Button moreButton;
     public String playMsgId;
 
@@ -166,6 +164,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
         String friendId = this.getIntent().getStringExtra("id");
         friend = AppConstant.friendManager.getFriend(friendId);
+
+        wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
+                .newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "ForPressToTalk");
 
         initView();
         setUpView();
@@ -267,12 +268,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         });
     }
 
-    private void readingMessageMode(){
+    private void readingMessageMode() {
         hideKeyboard();
         textModeLayout.setVisibility(View.GONE);
     }
 
-    private void editTextMode(){
+    private void editTextMode() {
         keyboardMode();
 
         messageLayout.setBackgroundResource(R.drawable.input_bar_bg_active);
@@ -294,7 +295,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         expressionLayout.setVisibility(View.GONE);
     }
 
-    private void expressionMode(){
+    private void expressionMode() {
         hideKeyboard();
         keyboardMode();
 
@@ -318,7 +319,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-    private void moreButtonsMode(){
+    private void moreButtonsMode() {
         hideKeyboard();
         keyboardMode();
 
@@ -338,7 +339,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         moreButtonsLayout.setVisibility(View.VISIBLE);
     }
 
-    private void keyboardMode(){
+    private void keyboardMode() {
         voiceModeButton.setVisibility(View.VISIBLE);
         keyboardModeButton.setVisibility(View.GONE);
 
@@ -346,7 +347,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         pressToSpeakButton.setVisibility(View.GONE);
     }
 
-    private void speakMode(){
+    private void speakMode() {
         hideKeyboard();
         messageLayout.setVisibility(View.GONE);
 
@@ -380,7 +381,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
 
         // 显示消息
         conversationListView.setAdapter(messageManager.adapter);
-        //conversationListView.setOnScrollListener(new ListScrollListener());
+        conversationListView.setOnScrollListener(new ListScrollListener());
         int count = conversationListView.getCount();
         if (count > 0) {
             conversationListView.setSelection(count - 1);
@@ -573,7 +574,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         int id = view.getId();
         if (id == R.id.button_send_message) {// 点击发送按钮(发文字和表情)
             String content = messageEditText.getText().toString().trim();
-            if(!content.isEmpty()) {
+            if (!content.isEmpty()) {
                 sendText(content);
                 sentMessage = true;
             }
@@ -591,13 +592,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                     ImageGridActivity.class);
             startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
         } else if (id == R.id.btn_voice_call) { // 点击语音电话图标
-        } else if(id == R.id.button_voice_mode){
+        } else if (id == R.id.button_voice_mode) {
             speakMode();
-        } else if(id == R.id.button_keyboard_mode){
+        } else if (id == R.id.button_keyboard_mode) {
             editTextMode();
-        } else if(id == R.id.button_more){
+        } else if (id == R.id.button_more) {
             moreButtonsMode();
-        } else if(id == R.id.et_message){
+        } else if (id == R.id.et_message) {
             editTextMode();
         }
     }
@@ -633,11 +634,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private void sendText(String content) {
         if (content.length() > 0) {
             long time = (new Date()).getTime();
-            if(time == messageManager.lastMessageTime)
-                time ++;
+            if (time == messageManager.lastMessageTime)
+                time++;
 
             Message message = new Message(UUID.randomUUID(), friend.id, Message.Direction.SEND,
-                    content,time , Message.MessageType.TEXT, false);
+                    content, time, Message.MessageType.TEXT, false);
 
             messageManager.addMessage(message);
 
@@ -768,7 +769,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         List<String> expressionNames = ExpressionUtils.getExpressionNames();
         List<View> views = new ArrayList<>();
 
-        for(int i = 0; i < expressionNames.size(); i += 20) {
+        for (int i = 0; i < expressionNames.size(); i += 20) {
 
             View view = View.inflate(this, R.layout.expression_gridview, null);
             ExpandGridView gv = (ExpandGridView) view.findViewById(R.id.gridview);
@@ -860,248 +861,210 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
             // 收到这个广播的时候，message已经在db和内存里了，可以通过id获取mesage对象
 
         }
+    }
 
-        /**
-         * 消息回执BroadcastReceiver
-         */
-        private BroadcastReceiver ackMessageReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                abortBroadcast();
+    /**
+     * 消息回执BroadcastReceiver
+     */
+    private BroadcastReceiver ackMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            abortBroadcast();
 
-                String msgid = intent.getStringExtra("msgid");
-                String from = intent.getStringExtra("from");
+            String msgid = intent.getStringExtra("msgid");
+            String from = intent.getStringExtra("from");
 
-            }
-        };
+        }
+    };
 
-        /**
-         * 消息送达BroadcastReceiver
-         */
-        private BroadcastReceiver deliveryAckMessageReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                abortBroadcast();
+    /**
+     * 消息送达BroadcastReceiver
+     */
+    private BroadcastReceiver deliveryAckMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            abortBroadcast();
 
-                String msgid = intent.getStringExtra("msgid");
-                String from = intent.getStringExtra("from");
-            }
-        };
-        private PowerManager.WakeLock wakeLock;
+            String msgid = intent.getStringExtra("msgid");
+            String from = intent.getStringExtra("from");
+        }
+    };
+    private PowerManager.WakeLock wakeLock;
 
-        /**
-         * 按住说话listener
-         */
-        class PressToSpeakListen implements View.OnTouchListener {
-            @SuppressLint({"ClickableViewAccessibility", "Wakelock"})
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        try {
-                            v.setPressed(true);
-                            wakeLock.acquire();
-                            recordingContainer.setVisibility(View.VISIBLE);
-                            recordingHint
-                                    .setText(getString(R.string.move_up_to_cancel));
-                            recordingHint.setBackgroundColor(Color.TRANSPARENT);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            v.setPressed(false);
-                            if (wakeLock.isHeld())
-                                wakeLock.release();
-                            recordingContainer.setVisibility(View.INVISIBLE);
-                            Toast.makeText(ChatActivity.this, R.string.recoding_fail,
-                                    Toast.LENGTH_SHORT).show();
-                            return false;
-                        }
-
-                        return true;
-                    case MotionEvent.ACTION_MOVE: {
-                        if (event.getY() < 0) {
-                            recordingHint
-                                    .setText(getString(R.string.release_to_cancel));
-                            recordingHint
-                                    .setBackgroundResource(R.drawable.recording_text_hint_bg);
-                        } else {
-                            recordingHint
-                                    .setText(getString(R.string.move_up_to_cancel));
-                            recordingHint.setBackgroundColor(Color.TRANSPARENT);
-                        }
-                        return true;
-                    }
-                    case MotionEvent.ACTION_UP:
+    /**
+     * 按住说话listener
+     */
+    class PressToSpeakListen implements View.OnTouchListener {
+        @SuppressLint({"ClickableViewAccessibility", "Wakelock"})
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    try {
+                        v.setPressed(true);
+                        wakeLock.acquire();
+                        recordingContainer.setVisibility(View.VISIBLE);
+                        recordingHint
+                                .setText(getString(R.string.move_up_to_cancel));
+                        recordingHint.setBackgroundColor(Color.TRANSPARENT);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                         v.setPressed(false);
-                        recordingContainer.setVisibility(View.INVISIBLE);
                         if (wakeLock.isHeld())
                             wakeLock.release();
-                        if (event.getY() < 0) {
-                            // discard the recorded audio.
-                        } else {
-                            // stop recording and send voice file
-                            try {
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Toast.makeText(ChatActivity.this, "发送失败，请检测服务器是否连接",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                        return true;
-                    default:
                         recordingContainer.setVisibility(View.INVISIBLE);
-
+                        Toast.makeText(ChatActivity.this, R.string.recoding_fail,
+                                Toast.LENGTH_SHORT).show();
                         return false;
+                    }
+
+                    return true;
+                case MotionEvent.ACTION_MOVE: {
+                    if (event.getY() < 0) {
+                        recordingHint
+                                .setText(getString(R.string.release_to_cancel));
+                        recordingHint
+                                .setBackgroundResource(R.drawable.recording_text_hint_bg);
+                    } else {
+                        recordingHint
+                                .setText(getString(R.string.move_up_to_cancel));
+                        recordingHint.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                    return true;
                 }
-            }
-        }
+                case MotionEvent.ACTION_UP:
+                    v.setPressed(false);
+                    recordingContainer.setVisibility(View.INVISIBLE);
+                    if (wakeLock.isHeld())
+                        wakeLock.release();
+                    if (event.getY() < 0) {
+                        // discard the recorded audio.
+                    } else {
+                        // stop recording and send voice file
+                        try {
 
-        protected void onDestroy() {
-            activityInstance = null;
-
-            // 注销广播
-            try {
-                unregisterReceiver(receiver);
-                receiver = null;
-            } catch (Exception e) {
-            }
-            try {
-                unregisterReceiver(ackMessageReceiver);
-                ackMessageReceiver = null;
-                unregisterReceiver(deliveryAckMessageReceiver);
-                deliveryAckMessageReceiver = null;
-            } catch (Exception e) {
-            }
-        }
-
-        protected void onResume() {
-            // GluGroup group_temp = DemoApplication.getInstance().getGroupsList()
-            // .get(friend.name);
-            // if (group_temp != null)
-            // ((TextView) findViewById(R.id.name)).setText(group_temp
-            // .getGroupName());
-            // adapter.refresh();
-        }
-
-        protected void onPause() {
-            if (wakeLock.isHeld())
-                wakeLock.release();
-        }
-
-        /**
-         * 隐藏软键盘
-         */
-        private void hideKeyboard() {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-
-        /**
-         * 加入到黑名单
-         *
-         * @param username
-         */
-        private void addUserToBlacklist(String username) {
-        }
-
-        /**
-         * 覆盖手机返回键
-         */
-        public void onBackPressed() {
-            if (textModeLayout.getVisibility() == View.VISIBLE) {
-                textModeLayout.setVisibility(View.GONE);
-                normalExpressionView.setVisibility(View.VISIBLE);
-                checkedExpressionView.setVisibility(View.INVISIBLE);
-            } else {
-                // if(type==3){
-                // startActivity(new
-                // Intent(getApplicationContext(),MyGroupActivity.class));
-                // finish();
-                // }else if(type==2){
-                // startActivity(new
-                // Intent(getApplicationContext(),ContactListActivity.class));
-                // finish();
-                // }else if(type==1){
-                // startActivity(new
-                // Intent(getApplicationContext(),MainActivity.class));
-                // finish();
-                // }else{
-                finish();
-                // }
-            }
-        }
-
-        /**
-         * listview滑动监听listener
-         */
-        private class ListScrollListener implements OnScrollListener {
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState) {
-                    case OnScrollListener.SCROLL_STATE_IDLE:
-                        if (view.getFirstVisiblePosition() == 0 && !isloading
-                                && haveMoreData) {
-                            loadingMessageProcessBar.setVisibility(View.VISIBLE);
-                            // sdk初始化加载的聊天记录为20条，到顶时去db里获取更多
-                            List<Object> messages;
-                            try {
-                            } catch (Exception e1) {
-                                loadingMessageProcessBar.setVisibility(View.GONE);
-                                return;
-                            }
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                            }
-
-                            loadingMessageProcessBar.setVisibility(View.GONE);
-                            isloading = false;
-
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(ChatActivity.this, "发送失败，请检测服务器是否连接",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                        break;
-                }
+
+                    }
+                    return true;
+                default:
+                    recordingContainer.setVisibility(View.INVISIBLE);
+
+                    return false;
             }
+        }
+    }
 
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
+    private class ListScrollListener implements OnScrollListener {
 
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+            switch (scrollState) {
+                case OnScrollListener.SCROLL_STATE_IDLE:
+                    if (view.getFirstVisiblePosition() == 0 && !isLoading) {
+                        loadingMessageProcessBar.setVisibility(View.VISIBLE);
+                        isLoading = false;
+                    }
+                    break;
             }
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem,
+                             int visibleItemCount, int totalItemCount) {
 
         }
 
-        protected void onNewIntent(Intent intent) {
-            // 点击notification bar进入聊天页面，保证只有一个聊天页面
-            String username = intent.getStringExtra("userId");
-            if (friend.name.equals(username)) {
+    }
 
-            } else {
-                finish();
-                startActivity(intent);
-            }
+    protected void onDestroy() {
+        super.onDestroy();
+        activityInstance = null;
 
+        // 注销广播
+        try {
+            unregisterReceiver(receiver);
+            receiver = null;
+        } catch (Exception e) {
         }
-
-        /**
-         * 转发消息
-         *
-         * @param forward_msg_id
-         */
-        protected void forwardMessage(String forward_msg_id) {
+        try {
+            unregisterReceiver(ackMessageReceiver);
+            ackMessageReceiver = null;
+            unregisterReceiver(deliveryAckMessageReceiver);
+            deliveryAckMessageReceiver = null;
+        } catch (Exception e) {
         }
+    }
 
-        public String getFriendName() {
-            return friend.name;
+    protected void onPause() {
+        super.onPause();
+        if (wakeLock.isHeld())
+            wakeLock.release();
+    }
+
+    /**
+     * 加入到黑名单
+     *
+     * @param username
+     */
+    private void addUserToBlacklist(String username) {
+    }
+
+    /**
+     * 覆盖手机返回键
+     */
+    public void onBackPressed() {
+        if (textModeLayout.getVisibility() == View.VISIBLE) {
+            textModeLayout.setVisibility(View.GONE);
+            normalExpressionView.setVisibility(View.VISIBLE);
+            checkedExpressionView.setVisibility(View.INVISIBLE);
+        } else {
+            // if(type==3){
+            // startActivity(new
+            // Intent(getApplicationContext(),MyGroupActivity.class));
+            // finish();
+            // }else if(type==2){
+            // startActivity(new
+            // Intent(getApplicationContext(),ContactListActivity.class));
+            // finish();
+            // }else if(type==1){
+            // startActivity(new
+            // Intent(getApplicationContext(),MainActivity.class));
+            // finish();
+            // }else{
+            finish();
+            // }
         }
+    }
+
+    protected void onNewIntent(Intent intent) {
+        // 点击notification bar进入聊天页面，保证只有一个聊天页面
+        String username = intent.getStringExtra("userId");
+        if (friend.name.equals(username)) {
+
+        } else {
+            finish();
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * 转发消息
+     *
+     * @param forward_msg_id
+     */
+    protected void forwardMessage(String forward_msg_id) {
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if(sentMessage) {
+        if (sentMessage) {
             sentMessage = false;
             AppConstant.conversationManager.addOrReplaceConversation(messageManager.getLastMessage());
         }

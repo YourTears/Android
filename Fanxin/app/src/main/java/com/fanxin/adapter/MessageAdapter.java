@@ -1,10 +1,10 @@
 package com.fanxin.adapter;
 
 import java.io.File;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.content.Context;
@@ -60,11 +60,11 @@ public class MessageAdapter extends BaseAdapter {
 
     private Context context;
 
-    private Map<String, Timer> timers = new Hashtable<String, Timer>();
-
     private List<Message> messages;
     private long lastShowTime;
     private long messageCountToLastShowTime;
+
+    Map<UUID, View> views;
 
     public MessageAdapter(Context context, String id, List<Message> messages) {
         this.context = context;
@@ -76,6 +76,8 @@ public class MessageAdapter extends BaseAdapter {
 
         lastShowTime = 0;
         messageCountToLastShowTime = 0;
+
+        views = new HashMap<>();
     }
 
     /**
@@ -138,14 +140,22 @@ public class MessageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Message message = (Message)getItem(position);
 
-        if(convertView == null) {
-            convertView = message.direction == Message.Direction.SEND ?
+        if(views.containsKey(message.id))
+            return views.get(message.id);
+
+        View view = message.direction == Message.Direction.SEND ?
                     inflater.inflate(R.layout.row_sent_message, null) : inflater.inflate(R.layout.row_received_message, null);
-        }
 
-        setMessageViewData(convertView, message);
+        setMessageViewData(view, message);
 
-        return convertView;
+        sendMessageInBackground(message);
+
+        views.put(message.id, view);
+        return view;
+    }
+
+    private void sendMessageInBackground(Message message){
+
     }
 
     /**
