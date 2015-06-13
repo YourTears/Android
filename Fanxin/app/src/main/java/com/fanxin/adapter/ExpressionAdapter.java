@@ -42,5 +42,4 @@ public class ExpressionAdapter extends ArrayAdapter<String>{
 		
 		return convertView;
 	}
-	
 }

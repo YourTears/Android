@@ -638,14 +638,22 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
                 time++;
 
             Message message = new Message(UUID.randomUUID(), friend.id, Message.Direction.SEND,
-                    content, time, Message.MessageType.TEXT, false);
+                    content, time, Message.MessageType.TEXT);
 
-            messageManager.addMessage(message);
+            messageManager.addOrReplaceMessage(message);
 
             conversationListView.setSelection(conversationListView.getCount() - 1);
             messageEditText.setText("");
+
+            sendMessageInBackground(message);
             setResult(RESULT_OK);
         }
+    }
+
+    private void sendMessageInBackground(Message message){
+        message.status = Message.MessageStatus.SUCCEED;
+
+        messageManager.addOrReplaceMessage(message);
     }
 
     /**

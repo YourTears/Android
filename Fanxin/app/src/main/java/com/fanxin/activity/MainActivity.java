@@ -20,6 +20,7 @@ import com.fanxin.activity.FragmentFriends;
 import com.fanxin.app.fx.LoginActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
+import com.fanxin.database.DbOpenHelper;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -156,6 +157,7 @@ public class MainActivity extends BaseActivity {
 
         AppConstant.meInfo = MeInfo.getInstance();
         AppConstant.friendManager = FriendManager.getInstance(this);
+        //AppConstant.friendManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
 
         AppConstant.defaultImageDrawable = getResources().getDrawable(R.drawable.default_boy_drawable);
 

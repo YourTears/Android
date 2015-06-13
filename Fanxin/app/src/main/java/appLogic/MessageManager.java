@@ -8,7 +8,10 @@ import com.fanxin.database.UnreadMessageTable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Long on 5/24/2015.
@@ -16,6 +19,7 @@ import java.util.List;
 public class MessageManager {
     public String friendId;
     public List<Message> messages;
+    public Map<UUID, Message> map;
     public long lastMessageTime;
     public MessageAdapter adapter;
 
@@ -29,13 +33,18 @@ public class MessageManager {
         messageTable = MessageTable.getInstance(context);
         messages = messageTable.getMessages(friendId, (new Date()).getTime());
 
+        map = new HashMap<>();
+
         adapter = new MessageAdapter(context, friendId, messages);
     }
 
-    public void addMessage(Message message) {
-        messages.add(message);
-        messageTable.insertMessage(message);
+    public synchronized void addOrReplaceMessage(Message message) {
+        if(!map.containsKey(message.id)) {
+            map.put(message.id, message);
+            messages.add(message);
+        }
 
+        messageTable.insertMessage(message);
         adapter.notifyDataSetChanged();
     }
 
@@ -48,7 +57,6 @@ public class MessageManager {
         message.friendId = friendId;
         message.body = "";
         message.time = (new Date()).getTime();
-        message.isSent = true;
 
         return message;
     }

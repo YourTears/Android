@@ -140,24 +140,39 @@ public class MessageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Message message = (Message)getItem(position);
 
-        if(views.containsKey(message.id))
-            return views.get(message.id);
+        View view = null;
 
-        View view = message.direction == Message.Direction.SEND ?
+        if(views.containsKey(message.id)) {
+            view = views.get(message.id);
+            updateMessageStatus(message, view);
+            return view;
+        }
+
+       view = message.direction == Message.Direction.SEND ?
                     inflater.inflate(R.layout.row_sent_message, null) : inflater.inflate(R.layout.row_received_message, null);
 
         setMessageViewData(view, message);
-
-        sendMessageInBackground(message);
+        updateMessageStatus(message, view);
 
         views.put(message.id, view);
         return view;
     }
 
-    private void sendMessageInBackground(Message message){
+    private void updateMessageStatus(Message message, View view){
+        if(message.direction == Message.Direction.SEND){
+            if(message.direction == Message.Direction.SEND){
+                if(message.status != Message.MessageStatus.INPROGRESS) {
+                    ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_sending);
+                    progressBar.setVisibility(View.GONE);
+                }
 
+                if(message.status != Message.MessageStatus.FAIL){
+                    ImageView statusView = (ImageView) view.findViewById(R.id.msg_status);
+                    statusView.setVisibility(View.GONE);
+                }
+            }
+        }
     }
-
     /**
      * 文本消息
      * @param holder
@@ -375,5 +390,9 @@ public class MessageAdapter extends BaseAdapter {
         @Override
         public void onClick(View v) {
         }
+    }
+
+    private interface SendMessageCallBack{
+        public void onComplete(int code);
     }
 }

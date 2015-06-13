@@ -31,12 +31,12 @@ public class ConversationManager {
         adapter = new ConversationAdapter(context, conversations);
     }
 
-    public void addOrReplaceConversation(Message message) {
+    public synchronized void addOrReplaceConversation(Message message) {
         Conversation conversation = new Conversation();
         conversation.friendId = message.friendId;
         conversation.body = message.body;
         conversation.time = message.time;
-        conversation.isSent = message.isSent;
+        //conversation.status = message.status;
 
         deleteConversationInternal(conversation.friendId);
 
@@ -48,7 +48,7 @@ public class ConversationManager {
         adapter.notifyDataSetChanged();
     }
 
-    public void refresh() {
+    public synchronized void refresh() {
         conversations = conversationTable.getConversations();
 
         for(int idx = 0; idx < conversations.size(); idx ++){
@@ -56,14 +56,14 @@ public class ConversationManager {
         }
     }
 
-    public void deleteConversation(String friendId){
+    public synchronized void deleteConversation(String friendId){
         deleteConversationInternal(friendId);
         conversationTable.deleteConversation(friendId);
         messageTable.deleteMessages(friendId);
         adapter.notifyDataSetChanged();
     }
 
-    public void saveConversations(){
+    public synchronized void saveConversations(){
         for(Conversation conversation : conversations){
             conversationTable.replaceConversation(conversation);
         }

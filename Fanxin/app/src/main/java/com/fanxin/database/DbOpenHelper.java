@@ -29,7 +29,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
             String.format("CREATE TABLE IF NOT EXISTS %s " +
                     "(%s TEXT PRIMARY KEY, %s TEXT, %s INTEGER, %s TEXT, %s BIGINT, %s INTEGER, %s INTEGER)",
                     MessageTable.TableName, MessageTable.ID, MessageTable.FriendId, MessageTable.Direction,
-                    MessageTable.Body, MessageTable.Time, MessageTable.MessageType, MessageTable.IsSent);
+                    MessageTable.Body, MessageTable.Time, MessageTable.MessageType, MessageTable.Status);
 	private static final String Messages_Index_Create =
             String.format("CREATE INDEX IF NOT EXISTS MESSAGEINDEX ON %s(%s, %s)",
                     MessageTable.TableName, MessageTable.FriendId, MessageTable.Time);
