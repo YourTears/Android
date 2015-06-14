@@ -14,11 +14,11 @@ import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.db.UserDao;
 import com.fanxin.app.domain.InviteMessage;
-import com.fanxin.app.fx.FriendPopupWindow;
 import com.fanxin.app.fx.FragmentFind;
 import com.fanxin.app.fx.LoginActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
+import com.fanxin.database.DbOpenHelper;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -32,7 +32,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,9 +39,9 @@ import android.widget.Toast;
 
 import appLogic.AppConstant;
 import appLogic.ConversationManager;
-import appLogic.FriendInfo;
-import appLogic.FriendManager;
-import appLogic.MeInfo;
+import appLogic.LoginInfo;
+import appLogic.UserInfo;
+import appLogic.UserManager;
 import common.ImageLoaderManager;
 import common.Util;
 
@@ -128,17 +127,20 @@ public class MainActivity extends BaseActivity {
         Util.createFolder(AppConstant.imageFolder);
         Util.createFolder(AppConstant.cacheFolder + "/images");
 
-        MeInfo.getMeInfo(Util.getAssertInputStream(this.getResources().getAssets(), "meInfo.json"));
+        //DbOpenHelper.getInstance(this).deleteDatabase(this);
 
-        AppConstant.meInfo = MeInfo.getInstance();
-        AppConstant.friendManager = FriendManager.getInstance(this);
-        //AppConstant.friendManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
+        AppConstant.userManager = UserManager.getInstance(this);
+        //AppConstant.userManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
+        AppConstant.meInfo = AppConstant.userManager.getUser(LoginInfo.getInstance().id);
+
+        if(AppConstant.meInfo.gender == UserInfo.Gender.Female){
+            AppConstant.it = "他";
+        }
 
         AppConstant.defaultImageDrawable = getResources().getDrawable(R.drawable.default_boy_drawable);
 
         AppConstant.inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        //DbOpenHelper.getInstance(this).deleteDatabase(this);
         AppConstant.conversationManager = new ConversationManager(this);
 
         AppConstant.imageLoaderManager = new ImageLoaderManager();
@@ -390,7 +392,7 @@ public class MainActivity extends BaseActivity {
         // 保存msg
         inviteMessgeDao.saveMessage(msg);
         // 未读数加1
-        FriendInfo user = null;
+        UserInfo user = null;
 //        if (user.getUnreadMsgCount() == 0)
 //            user.setUnreadMsgCount(user.getUnreadMsgCount() + 1);
     }
@@ -439,27 +441,12 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 获取未读申请与通知消息
-     *
-     * @return
-     */
-    public int getUnreadAddressCountTotal() {
-        int unreadAddressCountTotal = 8;
-//        if (DemoApplication.getInstance().getContactList()
-//                .get(Constant.NEW_FRIENDS_USERNAME) != null)
-//            unreadAddressCountTotal = DemoApplication.getInstance()
-//                    .getContactList().get(Constant.NEW_FRIENDS_USERNAME)
-//                    .getUnreadMsgCount();
-        return unreadAddressCountTotal;
-    }
-
-    /**
      * 刷新申请与通知消息数
      */
     public void updateUnreadAddressLable() {
         runOnUiThread(new Runnable() {
             public void run() {
-                int count = getUnreadAddressCountTotal();
+                int count = AppConstant.userManager.notificationCount;
                 if (count > 0) {
                     unreadAddressLable.setText(String.valueOf(count));
                     unreadAddressLable.setVisibility(View.VISIBLE);

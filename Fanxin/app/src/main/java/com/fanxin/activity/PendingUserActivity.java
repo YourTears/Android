@@ -10,14 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fanxin.app.R;
-import com.fanxin.app.fx.FriendPopupWindow;
 
 import appLogic.AppConstant;
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 import common.ImageLoaderManager;
 
 public class PendingUserActivity extends Activity {
-    private FriendInfo friend = null;
+    private UserInfo friend = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class PendingUserActivity extends Activity {
         setContentView(R.layout.activity_pendinguser);
 
         String id = this.getIntent().getStringExtra("id");
-        friend = AppConstant.friendManager.getFriend(id);
+        friend = AppConstant.userManager.getUser(id);
 
         ImageView imageView = (ImageView) this.findViewById(R.id.iv_avatar);
         imageView.setImageDrawable(AppConstant.defaultImageDrawable);
@@ -39,14 +38,14 @@ public class PendingUserActivity extends Activity {
         TextView friendStatusView = (TextView) this.findViewById(R.id.tv_friendstatus);
 
         if (friend != null) {
-            tv_name.setText(friend.name);
-            if (friend.gender == FriendInfo.Gender.Male) {
+            tv_name.setText(friend.nickName);
+            if (friend.gender == UserInfo.Gender.Male) {
                 iv_sex.setImageResource(R.drawable.ic_sex_male);
-            } else if (friend.gender == FriendInfo.Gender.Female) {
+            } else if (friend.gender == UserInfo.Gender.Female) {
                 iv_sex.setImageResource(R.drawable.ic_sex_female);
             }
 
-            if(friend.friendStatus == FriendInfo.FriendStatus.ToAccept){
+            if(friend.friendStatus == UserInfo.FriendStatus.ToAccept){
                 friendStatusView.setText("对方请求添加你为好友");
                 requestButton.setText("接受");
                 requestButton.setClickable(true);
@@ -54,16 +53,16 @@ public class PendingUserActivity extends Activity {
                 requestButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AppConstant.friendManager.acceptFriendInvitation(friend.id);
+                        AppConstant.userManager.acceptFriendInvitation(friend.id);
                         finish();
                     }
                 });
 
-            } else if(friend.friendStatus == FriendInfo.FriendStatus.PendingRequest){
+            } else if(friend.friendStatus == UserInfo.FriendStatus.PendingRequest){
                 friendStatusView.setText("未添加对方为好友");
                 requestButton.setText("申请加为好友");
                 requestButton.setClickable(true);
-            } else if(friend.friendStatus == FriendInfo.FriendStatus.PendingAccepted){
+            } else if(friend.friendStatus == UserInfo.FriendStatus.PendingAccepted){
                 friendStatusView.setText("已申请添加对方为好友");
                 requestButton.setText("等待对方确认");
             }

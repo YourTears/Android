@@ -577,7 +577,7 @@ ADDED from AndroidManifest.xml:345:9
 		ADDED from AndroidManifest.xml:348:13
 	android:name
 		ADDED from AndroidManifest.xml:346:13
-activity#com.fanxin.app.fx.UpdateNickActivity
+activity#com.fanxin.activity.UpdateNickNameActivity
 ADDED from AndroidManifest.xml:351:9
 	android:windowSoftInputMode
 		ADDED from AndroidManifest.xml:355:13
@@ -587,7 +587,7 @@ ADDED from AndroidManifest.xml:351:9
 		ADDED from AndroidManifest.xml:354:13
 	android:name
 		ADDED from AndroidManifest.xml:352:13
-activity#com.fanxin.app.fx.UpdateFxidActivity
+activity#com.fanxin.activity.UpdateSignActivity
 ADDED from AndroidManifest.xml:357:9
 	android:windowSoftInputMode
 		ADDED from AndroidManifest.xml:361:13

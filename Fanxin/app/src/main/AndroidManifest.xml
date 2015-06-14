@@ -349,13 +349,13 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.fanxin.app.fx.UpdateNickActivity"
+            android:name="com.fanxin.activity.UpdateNickNameActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.fanxin.app.fx.UpdateFxidActivity"
+            android:name="com.fanxin.activity.UpdateSignActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >

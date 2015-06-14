@@ -53,7 +53,7 @@ public class ConversationManager {
 
         for(int idx = conversations.size() - 1; idx >= 0; idx --){
             Conversation conversation = conversations.get(idx);
-            if(AppConstant.friendManager.containFriend(conversation.friendId)){
+            if(AppConstant.userManager.containFriend(conversation.friendId)){
                 map.put(conversation.friendId, conversation);
             } else{
                 conversationTable.deleteConversation(conversation.friendId);

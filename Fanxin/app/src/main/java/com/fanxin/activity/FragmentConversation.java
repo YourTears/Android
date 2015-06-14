@@ -14,10 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fanxin.app.R;
-import com.fanxin.adapter.ConversationAdapter;
 
 import appLogic.AppConstant;
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 
 public class FragmentConversation extends Fragment {
     private static String[] conversationItemLongClickItem = {"删除聊天"};
@@ -59,10 +58,10 @@ public class FragmentConversation extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 final String friendId = (String)view.getTag();
-                FriendInfo friend = AppConstant.friendManager.getFriend(friendId);
+                UserInfo friend = AppConstant.userManager.getUser(friendId);
 
                 new AlertDialog.Builder(getActivity())
-                        .setTitle(friend.name)
+                        .setTitle(friend.nickName)
                         .setItems(conversationItemLongClickItem, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int item) {

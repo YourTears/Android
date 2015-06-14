@@ -1,8 +1,6 @@
 package com.fanxin.app.fx;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +40,8 @@ import com.fanxin.activity.ChatActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
 
-import appLogic.FriendInfo;
-import appLogic.MeInfo;
-
+import appLogic.AppConstant;
+import appLogic.UserInfo;
 
 @SuppressLint({ "InflateParams", "SdCardPath" })
 public class CreatChatRoomActivity extends BaseActivity {
@@ -69,13 +66,11 @@ public class CreatChatRoomActivity extends BaseActivity {
     private String groupname;
     // 添加的列表
     private List<String> addList = new ArrayList<String>();
-    private String hxid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
-        hxid = MeInfo.getInstance().sys_id;
 
         progressDialog = new ProgressDialog(this);
         groupId = getIntent().getStringExtra("groupId");
@@ -98,7 +93,7 @@ public class CreatChatRoomActivity extends BaseActivity {
         }
 
         // 获取好友列表
-        final List<FriendInfo> alluserList = null;
+        final List<UserInfo> alluserList = null;
 //        for (User user : DemoApplication.getInstance().getContactList()
 //                .values()) {
 //            if (!user.getUsername().equals(Constant.NEW_FRIENDS_USERNAME)
@@ -131,8 +126,8 @@ public class CreatChatRoomActivity extends BaseActivity {
                                       int count) {
                 if (s.length() > 0) {
                     String str_s = et_search.getText().toString().trim();
-                    List<FriendInfo> users_temp = new ArrayList<FriendInfo>();
-                    for (FriendInfo user : alluserList) {
+                    List<UserInfo> users_temp = new ArrayList<UserInfo>();
+                    for (UserInfo user : alluserList) {
                         String usernick = user.nickName;
                         Log.e("usernick--->>>", usernick);
                         Log.e("str_s--->>>", str_s);
@@ -198,7 +193,7 @@ public class CreatChatRoomActivity extends BaseActivity {
 
     // 即时显示被选中用户的头像和昵称。
 
-    private void showCheckImage(Bitmap bitmap, FriendInfo glufineid) {
+    private void showCheckImage(Bitmap bitmap, UserInfo glufineid) {
 
         if (exitingMembers.contains(glufineid.id) && groupId != null) {
             return;
@@ -235,7 +230,7 @@ public class CreatChatRoomActivity extends BaseActivity {
         addList.add(glufineid.id);
     }
 
-    private void deleteImage(FriendInfo glufineid) {
+    private void deleteImage(UserInfo glufineid) {
         View view = (View) menuLinerLayout.findViewWithTag(glufineid);
 
         menuLinerLayout.removeView(view);
@@ -264,9 +259,9 @@ public class CreatChatRoomActivity extends BaseActivity {
         // 如果只有一个用户说明只是单聊,并且不是从群组加人
         if (addList.size() == 1 && isCreatingNewGroup) {
             String userId = addList.get(0);
-            FriendInfo user = null;
+            UserInfo user = null;
             if (user != null) {
-                String userNick = user.name;
+                String userNick = user.nickName;
                 String userAvatar = user.imageUrl;
                 startActivity(new Intent(getApplicationContext(),
                         ChatActivity.class).putExtra("userId", userId)
@@ -296,12 +291,11 @@ public class CreatChatRoomActivity extends BaseActivity {
      */
     private void creatNewGroup(List<String> members) {
 
-        String nick = MeInfo.getInstance().name;
+        String nick = AppConstant.meInfo.name;
 
-        String avatar = MeInfo.getInstance().imageUrl;
+        String avatar = AppConstant.meInfo.imageUrl;
         if (isCreatingNewGroup) {
             JSONObject myjson = new JSONObject();
-            myjson.put("hxid", hxid);
             myjson.put("nick", nick);
             myjson.put("avatar", avatar);
             JSONArray jsonArray = new JSONArray();
@@ -310,7 +304,7 @@ public class CreatChatRoomActivity extends BaseActivity {
             ;
             for (int i = 0; i < members.size(); i++) {
 
-                FriendInfo user = null;
+                UserInfo user = null;
                 if (user != null) {
                     JSONObject json_member = new JSONObject();
                     json_member.put("hxid", user.sys_id);
@@ -346,7 +340,7 @@ public class CreatChatRoomActivity extends BaseActivity {
                 String groupName = oldjson.getString("groupname");
                 for (int i = 0; i < members.size(); i++) {
 
-                    FriendInfo user = null;
+                    UserInfo user = null;
                     if (user != null) {
                         JSONObject json_member = new JSONObject();
                         json_member.put("hxid", user.sys_id);
@@ -415,11 +409,11 @@ public class CreatChatRoomActivity extends BaseActivity {
         private LayoutInflater layoutInflater;
         private boolean[] isCheckedArray;
         private Bitmap[] bitmaps;
-        private List<FriendInfo> list = new ArrayList<FriendInfo>();
+        private List<UserInfo> list = new ArrayList<UserInfo>();
         private int res;
 
         public PickContactAdapter(Context context, int resource,
-                                  List<FriendInfo> users) {
+                                  List<UserInfo> users) {
 
             layoutInflater = LayoutInflater.from(context);
 
@@ -447,7 +441,7 @@ public class CreatChatRoomActivity extends BaseActivity {
                     .findViewById(R.id.tv_name);
             TextView tvHeader = (TextView) convertView
                     .findViewById(R.id.header);
-            final FriendInfo user = list.get(position);
+            final UserInfo user = list.get(position);
 
             final String avater = user.imageUrl;
             String name = user.nickName;

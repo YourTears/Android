@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fanxin.database.DbOpenHelper;
 
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 
 @SuppressLint("DefaultLocale")
 public class UserDao {
@@ -39,7 +39,7 @@ public class UserDao {
 	 * 
 	 * @param contactList
 	 */
-	public void saveContactList(List<FriendInfo> contactList) {
+	public void saveContactList(List<UserInfo> contactList) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		if (db.isOpen()) {
 			db.delete(TABLE_NAME, null, null);
@@ -81,9 +81,9 @@ public class UserDao {
 	 * @return
 	 */
 	@SuppressLint("DefaultLocale")
-	public Map<String, FriendInfo> getContactList() {
+	public Map<String, UserInfo> getContactList() {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		Map<String, FriendInfo> users = new HashMap<String, FriendInfo>();
+		Map<String, UserInfo> users = new HashMap<String, UserInfo>();
 		if (db.isOpen()) {
 			Cursor cursor = db.rawQuery("select * from " + TABLE_NAME /* + " desc" */, null);
 //			while (cursor.moveToNext()) {
@@ -149,7 +149,7 @@ public class UserDao {
 	 * 保存一个联系人
 	 * @param user
 	 */
-	public void saveContact(FriendInfo user){
+	public void saveContact(UserInfo user){
 //		SQLiteDatabase db = dbHelper.getWritableDatabase();
 //		ContentValues values = new ContentValues();
 //		values.put(COLUMN_NAME_ID, user.getUsername());

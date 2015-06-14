@@ -3,25 +3,10 @@ package com.fanxin.app.fx;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
- 
 
-
-
-
-
-
-
-
-
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.fanxin.app.Constant;
+import com.fanxin.activity.UpdateNickNameActivity;
+import com.fanxin.activity.UpdateSignActivity;
 import com.fanxin.app.R;
-import com.fanxin.app.fx.others.LoadDataFromServer;
-import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,40 +20,30 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import appLogic.FriendInfo;
-import appLogic.MeInfo;
+import appLogic.AppConstant;
+import common.ImageLoaderManager;
 
 @SuppressLint("SdCardPath")
 public class MyUserInfoActivity extends Activity {
 
-    private RelativeLayout re_avatar;
+    private RelativeLayout re_image;
     private RelativeLayout re_name;
-    private RelativeLayout re_fxid;
-    private RelativeLayout re_sex;
-    private RelativeLayout re_region;
+    private RelativeLayout re_sign;
 
-    private ImageView iv_avatar;
+    private ImageView iv_image;
     private TextView tv_name;
-    private TextView tv_fxid;
-    private TextView tv_sex;
+    private TextView tv_id;
     private TextView tv_sign;
 
     private String imageName;
     private static final int PHOTO_REQUEST_TAKEPHOTO = 1;// 拍照
     private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
     private static final int PHOTO_REQUEST_CUT = 3;// 结果
-    private static final int UPDATE_FXID = 4;// 结果
+    private static final int UPDATE_SIGN = 4;// 结果
     private static final int UPDATE_NICK = 5;// 结果
-    String hxid;
-    String fxid;
-    String sex;
-    String sign;
-    String nick;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,53 +54,24 @@ public class MyUserInfoActivity extends Activity {
     }
 
     private void initView() {
-        hxid = MeInfo.getInstance().sys_id;
-        nick = MeInfo.getInstance().name;
-        fxid = MeInfo.getInstance().sys_id;
-        sex = MeInfo.getInstance().gender.toString();
-        sign = "";
-        String avatar = MeInfo.getInstance().imageUrl;
-
-        re_avatar = (RelativeLayout) this.findViewById(R.id.re_avatar);
+        re_image = (RelativeLayout) this.findViewById(R.id.re_image);
         re_name = (RelativeLayout) this.findViewById(R.id.re_name);
-        re_fxid = (RelativeLayout) this.findViewById(R.id.re_fxid);
-        re_sex = (RelativeLayout) this.findViewById(R.id.re_sex);
-        re_region = (RelativeLayout) this.findViewById(R.id.re_region);
-        re_avatar.setOnClickListener(new MyListener());
+        re_sign = (RelativeLayout) this.findViewById(R.id.re_sign);
+
+        re_image.setOnClickListener(new MyListener());
         re_name.setOnClickListener(new MyListener());
-        re_fxid.setOnClickListener(new MyListener());
-        re_sex.setOnClickListener(new MyListener());
-        re_region.setOnClickListener(new MyListener());
-        // 头像
-        iv_avatar = (ImageView) this.findViewById(R.id.iv_avatar);
+        re_sign.setOnClickListener(new MyListener());
+
+        iv_image = (ImageView) this.findViewById(R.id.iv_image);
         tv_name = (TextView) this.findViewById(R.id.tv_name);
-        tv_fxid = (TextView) this.findViewById(R.id.tv_fxid);
-        tv_sex = (TextView) this.findViewById(R.id.tv_sex);
+        tv_id = (TextView) this.findViewById(R.id.tv_id);
         tv_sign = (TextView) this.findViewById(R.id.tv_sign);
-        tv_name.setText(nick);
-        if (fxid.equals("0")) {
-            tv_fxid.setText("未设置");
 
-        } else {
-            tv_fxid.setText(fxid);
-        }
-        if (sex.equals("1")) {
-            tv_sex.setText("男");
+        tv_name.setText(AppConstant.meInfo.name);
+        tv_id.setText(AppConstant.meInfo.id);
+        tv_sign.setText(AppConstant.meInfo.sign);
 
-        } else if (sex.equals("2")) {
-            tv_sex.setText("女");
-
-        } else {
-            tv_sex.setText("");
-        }
-
-        if (sign.equals("0")) {
-            tv_sign.setText("未填写");
-        } else {
-            tv_sign.setText(sign);
-        }
-
-        showUserAvatar(iv_avatar, avatar);
+        AppConstant.imageLoaderManager.loadImage(iv_image, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.Memory);
     }
 
     class MyListener implements OnClickListener {
@@ -133,32 +79,22 @@ public class MyUserInfoActivity extends Activity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-            case R.id.re_avatar:
+                case R.id.re_image:
+                    showPhotoDialog();
+                    break;
 
-                showPhotoDialog();
+                case R.id.re_name:
+                    Intent intent = new Intent(MyUserInfoActivity.this, UpdateNickNameActivity.class);
+                    intent.putExtra("id", AppConstant.meInfo.id);
+                    startActivity(intent);
 
-                break;
-            case R.id.re_name:
-                startActivityForResult(new Intent(MyUserInfoActivity.this,
-                        UpdateNickActivity.class),UPDATE_NICK);
-                break;
-            case R.id.re_fxid:
-                if (MeInfo.getInstance().sys_id == "0") {
-                    startActivityForResult(new Intent(MyUserInfoActivity.this,
-                            UpdateFxidActivity.class),UPDATE_FXID);
+                    break;
 
-                }
-                break;
-            case R.id.re_sex:
-                showSexDialog();
-                break;
-            case R.id.re_region:
-
-                break;
-
+                case R.id.re_sign:
+                    startActivity(new Intent(MyUserInfoActivity.this, UpdateSignActivity.class));
+                    break;
             }
         }
-
     }
 
     private void showPhotoDialog() {
@@ -202,50 +138,6 @@ public class MyUserInfoActivity extends Activity {
 
     }
 
-    private void showSexDialog() {
-        final AlertDialog dlg = new AlertDialog.Builder(this).create();
-        dlg.show();
-        Window window = dlg.getWindow();
-        // *** 主要就是在这里实现这种效果的.
-        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
-        window.setContentView(R.layout.alertdialog);
-        LinearLayout ll_title = (LinearLayout) window
-                .findViewById(R.id.ll_title);
-        ll_title.setVisibility(View.VISIBLE);
-        TextView tv_title = (TextView) window.findViewById(R.id.tv_title);
-        tv_title.setText("性别");
-        // 为确认按钮添加事件,执行退出应用操作
-        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
-        tv_paizhao.setText("男");
-        tv_paizhao.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SdCardPath")
-            public void onClick(View v) {
-                if (!sex.equals("1")) {
-                    tv_sex.setText("男");
-
-                    updateSex("1");
-                }
-
-                dlg.cancel();
-            }
-        });
-        TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
-        tv_xiangce.setText("女");
-        tv_xiangce.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                if (!sex.equals("2")) {
-
-                    tv_sex.setText("女");
-                    updateSex("2");
-                }
-
-                dlg.cancel();
-            }
-        });
-
-    }
-
     @SuppressLint("SdCardPath")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -274,7 +166,7 @@ public class MyUserInfoActivity extends Activity {
                 // options.inJustDecodeBounds = true;
                 Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/fanxin/"
                         + imageName);
-                iv_avatar.setImageBitmap(bitmap);
+                iv_image.setImageBitmap(bitmap);
                 updateAvatarInServer(imageName);
                 break;
 
@@ -318,102 +210,7 @@ public class MyUserInfoActivity extends Activity {
         finish();
     }
 
-    private void showUserAvatar(ImageView iamgeView, String avatar) {
-        final String url_avatar = Constant.URL_Avatar + avatar;
-        iamgeView.setTag(url_avatar);
-        if (url_avatar != null && !url_avatar.equals("")) {
-
-        }
-    }
-
-    @SuppressLint("SdCardPath")
     private void updateAvatarInServer(final String image) {
-        Map<String, String> map = new HashMap<String, String>();
-        if ((new File("/sdcard/fanxin/" + image)).exists()) {
-            map.put("file", "/sdcard/fanxin/" + image);
-            map.put("image", image);
-        } else {
-            return;
-        }
-        map.put("hxid", hxid);
-
-        LoadDataFromServer task = new LoadDataFromServer(
-                MyUserInfoActivity.this, Constant.URL_UPDATE_Avatar, map);
-
-        task.getData(new DataCallBack() {
-
-            @SuppressLint("ShowToast")
-            @Override
-            public void onDataCallBack(JSONObject data) {
-                try {
-                    int code = data.getInteger("code");
-                    if (code == 1) {
-                        MeInfo.getInstance().imageUrl = image;
-                    } else if (code == 2) {
-
-                        Toast.makeText(MyUserInfoActivity.this, "更新失败...",
-                                Toast.LENGTH_SHORT).show();
-                    } else if (code == 3) {
-
-                        Toast.makeText(MyUserInfoActivity.this, "图片上传失败...",
-                                Toast.LENGTH_SHORT).show();
-
-                    } else {
-
-                        Toast.makeText(MyUserInfoActivity.this, "服务器繁忙请重试...",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-
-                    Toast.makeText(MyUserInfoActivity.this, "数据解析错误...",
-                            Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-
-            }
-
-        });
 
     }
-
-    public void updateSex(final String sexnum) {
-        Map<String, String> map = new HashMap<String, String>();
-
-        map.put("hxid", hxid);
-        map.put("sex", sexnum);
-        LoadDataFromServer task = new LoadDataFromServer(
-                MyUserInfoActivity.this, Constant.URL_UPDATE_Sex, map);
-
-        task.getData(new DataCallBack() {
-
-            @SuppressLint("ShowToast")
-            @Override
-            public void onDataCallBack(JSONObject data) {
-                try {
-                    int code = data.getInteger("code");
-                    if (code == 1) {
-                        MeInfo.getInstance().gender = FriendInfo.Gender.valueOf(sexnum);
-                    } else if (code == 2) {
-
-                        Toast.makeText(MyUserInfoActivity.this, "更新失败...",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-
-                        Toast.makeText(MyUserInfoActivity.this, "服务器繁忙请重试...",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                } catch (JSONException e) {
-
-                    Toast.makeText(MyUserInfoActivity.this, "数据解析错误...",
-                            Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-
-            }
-
-        });
-    }
-
 }

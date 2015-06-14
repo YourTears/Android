@@ -44,9 +44,9 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 
     private static final String Friends_Table_Create =
             String.format("CREATE TABLE IF NOT EXISTS %s " +
-                            "(%s TEXT PRIMARY KEY, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s TEXT, %s TEXT, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER)",
-                    FriendTable.TableName, FriendTable.SYS_ID, FriendTable.ID, FriendTable.Name, FriendTable.NickName, FriendTable.Phone, FriendTable.Gender,
-                    FriendTable.ImageUrl, FriendTable.Sign, FriendTable.FriendStatus, FriendTable.RegionProvinceId, FriendTable.RegionCityId, FriendTable.HomeProvinceId, FriendTable.HomeCityId);
+                            "(%s TEXT PRIMARY KEY, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s TEXT, %s TEXT, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER)",
+                    UserTable.TableName, UserTable.SYS_ID, UserTable.ID, UserTable.Name, UserTable.NickName, UserTable.Gender,
+                    UserTable.ImageUrl, UserTable.Sign, UserTable.FriendStatus, UserTable.RegionProvinceId, UserTable.RegionCityId, UserTable.HomeProvinceId, UserTable.HomeCityId);
 
 	private DbOpenHelper(Context context) {
 		super(context, getDatabasePath(), null, DATABASE_VERSION);

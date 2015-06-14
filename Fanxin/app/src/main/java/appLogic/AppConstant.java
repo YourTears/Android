@@ -1,6 +1,5 @@
 package appLogic;
 
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -12,9 +11,10 @@ import common.ImageLoaderManager;
  */
 public class AppConstant {
     public static boolean isLogin = true;
+    public static String it = "她";
 
-    public static FriendManager friendManager = null;
-    public static MeInfo meInfo = null;
+    public static UserManager userManager = null;
+    public static UserInfo meInfo = null;
 
     public static String dataFolder = null;
     public static String cacheFolder = null;

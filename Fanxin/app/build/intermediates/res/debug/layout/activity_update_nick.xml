@@ -41,7 +41,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/view_temp"
-            android:text="更改名字"
+            android:text="更改昵称"
             android:textColor="#ffffff"
             android:textSize="18sp" />
 
@@ -63,12 +63,16 @@
         android:id="@+id/et_nick"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-       android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/edittext_login"
+        android:minHeight="40dp"
+        android:paddingBottom="1dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
         android:singleLine="true"
-       
         android:textColor="#353535"
         android:textSize="16sp" />
 

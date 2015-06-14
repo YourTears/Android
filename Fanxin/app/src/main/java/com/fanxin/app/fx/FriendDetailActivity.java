@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 
 public class FriendDetailActivity extends Activity {
 
@@ -30,7 +30,7 @@ public class FriendDetailActivity extends Activity {
 
     private void initView() {
 
-        FriendInfo user = null;
+        UserInfo user = null;
         if (user != null) {
 
             TextView tv_name = (TextView) this.findViewById(R.id.tv_name);
@@ -43,7 +43,7 @@ public class FriendDetailActivity extends Activity {
             tv_region.setText(user.region);
             tv_fxid.setText(user.sys_id);
             tv_sign.setText(user.sign);
-            if (user.gender == FriendInfo.Gender.Male) {
+            if (user.gender == UserInfo.Gender.Male) {
                 iv_sex.setImageResource(R.drawable.ic_sex_male);
             } else {
                 iv_sex.setImageResource(R.drawable.ic_sex_female);

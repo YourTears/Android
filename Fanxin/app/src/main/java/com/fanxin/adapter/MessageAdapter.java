@@ -26,7 +26,7 @@ import com.fanxin.app.R;
 import com.fanxin.app.utils.ImageCache;
 
 import appLogic.AppConstant;
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 import appLogic.Message;
 import common.DateUtils;
 import common.ExpressionUtils;
@@ -54,7 +54,7 @@ public class MessageAdapter extends BaseAdapter {
     public static final String VOICE_DIR = "chat/audio/";
     public static final String VIDEO_DIR = "chat/video";
 
-    private FriendInfo friend;
+    private UserInfo friend;
     private LayoutInflater inflater;
     private Activity activity;
 
@@ -71,7 +71,7 @@ public class MessageAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
         activity = (Activity) context;
 
-        friend = AppConstant.friendManager.getFriend(id);
+        friend = AppConstant.userManager.getUser(id);
         this.messages = messages;
 
         lastShowTime = 0;
@@ -132,7 +132,7 @@ public class MessageAdapter extends BaseAdapter {
 
         TextView userNameView =(TextView) view.findViewById(R.id.tv_userid);
         if(userNameView != null)
-            userNameView.setText(friend.name);
+            userNameView.setText(friend.nickName);
 
         return view;
     }

@@ -1,7 +1,5 @@
 package com.fanxin.activity;
 
-import java.util.Comparator;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +14,9 @@ import android.widget.TextView;
 
 import com.fanxin.app.Constant;
 import com.fanxin.app.R;
-import com.fanxin.adapter.ContactAdapter;
 
 import appLogic.AppConstant;
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 
 /**
  * 联系人列表页
@@ -62,7 +59,7 @@ public class FragmentFriends extends Fragment {
         tv_total = (TextView) footerView.findViewById(R.id.tv_total);
 
 
-        listView.setAdapter(AppConstant.friendManager.adapter);
+        listView.setAdapter(AppConstant.userManager.adapter);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -72,9 +69,9 @@ public class FragmentFriends extends Fragment {
                 String friendId = (String)view.getTag();
                 if(friendId != null && !friendId.isEmpty()) {
 
-                    FriendInfo friend = AppConstant.friendManager.getFriend(friendId);
+                    UserInfo friend = AppConstant.userManager.getUser(friendId);
 
-                    if(friend.friendStatus == FriendInfo.FriendStatus.Friend)
+                    if(friend.friendStatus == UserInfo.FriendStatus.Friend)
                         startActivity(new Intent(getActivity(), UserInfoActivity.class).putExtra("id", friendId));
                     else
                         startActivity(new Intent(getActivity(), PendingUserActivity.class).putExtra("id", friendId));
@@ -82,7 +79,7 @@ public class FragmentFriends extends Fragment {
             }
         });
        
-        tv_total.setText(String.valueOf(AppConstant.friendManager.getFriendCount())+"位联系人");
+        tv_total.setText(String.valueOf(AppConstant.userManager.getFriendCount())+"位联系人");
     }
 
     @Override
@@ -102,48 +99,20 @@ public class FragmentFriends extends Fragment {
         }
     }
 
-    
-    
     // 刷新ui
     public void refresh() {
         try {
             // 可能会在子线程中调到这方法
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    AppConstant.friendManager.adapter.notifyDataSetChanged();
-                    tv_total.setText(String.valueOf(AppConstant.friendManager.getFriendCount())+"位联系人");
+                    AppConstant.userManager.adapter.notifyDataSetChanged();
+                    tv_total.setText(String.valueOf(AppConstant.userManager.getFriendCount())+"位联系人");
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    @SuppressLint("DefaultLocale")
-    public class PinyinComparator implements Comparator<FriendInfo> {
-
-        @SuppressLint("DefaultLocale")
-        @Override
-        public int compare(FriendInfo o1, FriendInfo o2) {
-            // TODO Auto-generated method stub
-            String py1 = o1.name;
-            String py2 = o2.name;
-            // 判断是否为空""
-            if (isEmpty(py1) && isEmpty(py2))
-                return 0;
-            if (isEmpty(py1))
-                return -1;
-            if (isEmpty(py2))
-                return 1;
-
-            return py1.compareTo(py2);
-        }
-
-        private boolean isEmpty(String str) {
-            return "".equals(str.trim());
-        }
-    }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

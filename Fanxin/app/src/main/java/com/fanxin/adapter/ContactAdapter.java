@@ -15,15 +15,15 @@ import android.widget.TextView;
 import com.fanxin.app.R;
 
 import appLogic.AppConstant;
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 import common.ImageLoaderManager;
 
 public class ContactAdapter extends BaseAdapter {
-    private List<FriendInfo> friends, pendingFriends;
+    private List<UserInfo> friends, pendingFriends;
     private LayoutInflater layoutInflater;
     private Map<String, View> views = null;
 
-	public ContactAdapter(Context context, List<FriendInfo> friends, List<FriendInfo> pendingFriends) {
+	public ContactAdapter(Context context, List<UserInfo> friends, List<UserInfo> pendingFriends) {
         this.friends = friends;
         this.pendingFriends = pendingFriends;
         layoutInflater = LayoutInflater.from(context);
@@ -33,7 +33,7 @@ public class ContactAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         String itemKey = getItemKey(position);
-        FriendInfo friend = getItem(position);
+        UserInfo friend = getItem(position);
 
         View view = null;
 
@@ -64,7 +64,7 @@ public class ContactAdapter extends BaseAdapter {
             TextView nameTextView = (TextView) view.findViewById(R.id.tv_name);
             TextView statusTextView = (TextView) view.findViewById(R.id.tv_status);
 
-            nameTextView.setText(friend.name);
+            nameTextView.setText(friend.nickName);
 
             updateStatusView(statusTextView, friend.friendStatus);
 
@@ -75,14 +75,14 @@ public class ContactAdapter extends BaseAdapter {
         return view;
     }
 
-    private void updateStatusView(TextView textView, FriendInfo.FriendStatus status){
-        if(status == FriendInfo.FriendStatus.Friend)
+    private void updateStatusView(TextView textView, UserInfo.FriendStatus status){
+        if(status == UserInfo.FriendStatus.Friend)
             textView.setVisibility(View.GONE);
-        else if(status == FriendInfo.FriendStatus.PendingRequest)
+        else if(status == UserInfo.FriendStatus.PendingRequest)
             textView.setText("未加为好友");
-        else if(status == FriendInfo.FriendStatus.ToAccept)
+        else if(status == UserInfo.FriendStatus.ToAccept)
             textView.setText("等待确认");
-        else if(status == FriendInfo.FriendStatus.PendingAccepted)
+        else if(status == UserInfo.FriendStatus.PendingAccepted)
             textView.setText("等待对方确认");
     }
 
@@ -92,7 +92,7 @@ public class ContactAdapter extends BaseAdapter {
     }
 
     @Override
-    public FriendInfo getItem(int position) {
+    public UserInfo getItem(int position) {
         if(position > 0 && position <= friends.size())
             return friends.get(position - 1);
 
@@ -113,8 +113,8 @@ public class ContactAdapter extends BaseAdapter {
         else if(position == friends.size() + 1)
             return "PendingFriends";
         else{
-            FriendInfo friendInfo = getItem(position);
-            return "ID" + friendInfo.id;
+            UserInfo userInfo = getItem(position);
+            return "ID" + userInfo.id;
         }
     }
 }

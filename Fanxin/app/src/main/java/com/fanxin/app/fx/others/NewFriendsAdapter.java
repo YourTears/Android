@@ -18,7 +18,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 
 @SuppressLint("ViewHolder")
 public class NewFriendsAdapter extends BaseAdapter {
@@ -252,7 +251,7 @@ public class NewFriendsAdapter extends BaseAdapter {
      * @param user
      */
     @SuppressLint("DefaultLocale")
-    protected void setUserHearder(String username, FriendInfo user) {
+    protected void setUserHearder(String username, UserInfo user) {
 //        String headerName = null;
 //        if (!TextUtils.isEmpty(user.nickName)) {
 //            headerName = user.getNick();

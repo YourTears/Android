@@ -5,26 +5,18 @@ import java.util.List;
 import java.util.Map;
 
 import com.fanxin.app.R;
-import com.fanxin.activity.ChatActivity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import appLogic.AppConstant;
 import appLogic.Conversation;
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 import common.DateUtils;
 import common.ImageLoaderManager;
 
@@ -60,7 +52,7 @@ public class ConversationAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         final Conversation conversation = (Conversation) getItem(position);
-        final FriendInfo friend = AppConstant.friendManager.getFriend(conversation.friendId);
+        final UserInfo friend = AppConstant.userManager.getUser(conversation.friendId);
 
         View view = null;
         if(views.containsKey(conversation.friendId)){
@@ -74,7 +66,7 @@ public class ConversationAdapter extends BaseAdapter {
             ImageView imageView = (ImageView) view.findViewById(R.id.iv_avatar);
 
             if (friend != null) {
-                nameView.setText(friend.name);
+                nameView.setText(friend.nickName);
 
                 AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
             }

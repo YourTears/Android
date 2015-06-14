@@ -10,14 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import appLogic.AppConstant;
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 import common.ImageLoaderManager;
 
 import com.fanxin.app.R;
-import com.fanxin.app.fx.FriendPopupWindow;
 
 public class UserInfoActivity extends Activity {
-    private FriendInfo friend = null;
+    private UserInfo friend = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class UserInfoActivity extends Activity {
         setContentView(R.layout.activity_userinfo);
 
         String id = this.getIntent().getStringExtra("id");
-        friend = AppConstant.friendManager.getFriend(id);
+        friend = AppConstant.userManager.getUser(id);
 
         ImageView imageView = (ImageView) this.findViewById(R.id.iv_avatar);
         imageView.setImageDrawable(AppConstant.defaultImageDrawable);
@@ -36,10 +35,10 @@ public class UserInfoActivity extends Activity {
         TextView tv_name = (TextView) this.findViewById(R.id.tv_name);
 
         if (friend != null) {
-            tv_name.setText(friend.name);
-            if (friend.gender == FriendInfo.Gender.Male) {
+            tv_name.setText(friend.nickName);
+            if (friend.gender == UserInfo.Gender.Male) {
                 iv_sex.setImageResource(R.drawable.ic_sex_male);
-            } else if (friend.gender == FriendInfo.Gender.Female) {
+            } else if (friend.gender == UserInfo.Gender.Female) {
                 iv_sex.setImageResource(R.drawable.ic_sex_female);
             }
         }

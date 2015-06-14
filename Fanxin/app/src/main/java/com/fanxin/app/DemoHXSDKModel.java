@@ -18,13 +18,12 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.fanxin.database.DbOpenHelper;
 import com.fanxin.app.db.UserDao;
 import com.fanxin.app.fx.others.TopUser;
 import com.fanxin.app.fx.others.TopUserDao;
 import com.fanxin.applib.model.DefaultHXSDKModel;
 
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 
 public class DemoHXSDKModel extends DefaultHXSDKModel{
 
@@ -44,14 +43,14 @@ public class DemoHXSDKModel extends DefaultHXSDKModel{
         return true;
     }
     
-    public boolean saveContactList(List<FriendInfo> contactList) {
+    public boolean saveContactList(List<UserInfo> contactList) {
         // TODO Auto-generated method stub
         UserDao dao = new UserDao(context);
         dao.saveContactList(contactList);
         return true;
     }
 
-    public Map<String, FriendInfo> getContactList() {
+    public Map<String, UserInfo> getContactList() {
         // TODO Auto-generated method stub
         UserDao dao = new UserDao(context);
         return dao.getContactList();

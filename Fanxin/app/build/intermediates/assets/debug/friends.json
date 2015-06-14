@@ -117,6 +117,15 @@
             "phone" : "13818085246",
             "friendStatus" : "2",
             "imageUrl":"http://pic4.nipic.com/20090825/2143781_194202065121_2.jpg"
+        },
+        {
+            "sys_id":"11224870",
+            "id":"longztc",
+            "name":"Long",
+            "gender":"1",
+            "phone" : "13818085246",
+            "friendStatus" : "0",
+            "imageUrl":"http://www.dongomusic.com/upload/2011/05/10/22403870.jpeg"
         }
     ]
 }

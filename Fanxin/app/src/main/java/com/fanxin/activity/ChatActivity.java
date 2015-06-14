@@ -62,7 +62,7 @@ import com.fanxin.app.widget.ExpandGridView;
 import com.fanxin.app.widget.PasteEditText;
 
 import appLogic.AppConstant;
-import appLogic.FriendInfo;
+import appLogic.UserInfo;
 import appLogic.Message;
 import appLogic.MessageManager;
 import common.ExpressionUtils;
@@ -125,7 +125,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private NewMessageBroadcastReceiver receiver;
     public static ChatActivity activityInstance = null;
     // 给谁发送消息
-    private FriendInfo friend;
+    private UserInfo friend;
 
     private File cameraFile;
     public static int resendPos;
@@ -163,7 +163,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.activity_chat);
 
         String friendId = this.getIntent().getStringExtra("id");
-        friend = AppConstant.friendManager.getFriend(friendId);
+        friend = AppConstant.userManager.getUser(friendId);
 
         wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
                 .newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "ForPressToTalk");
@@ -376,7 +376,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         // position = getIntent().getIntExtra("position", -1);
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
-        ((TextView) findViewById(R.id.textview_name)).setText(friend.name);
+        ((TextView) findViewById(R.id.textview_name)).setText(friend.nickName);
 
 
         // 显示消息
@@ -686,7 +686,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
      */
     private void sendPicture(final String filePath, boolean is_share) {
         Log.e("filePath------>>>>", filePath);
-        String to = friend.name;
+        String to = friend.id;
 
         conversationListView.setSelection(conversationListView.getCount() - 1);
         setResult(RESULT_OK);
@@ -1052,7 +1052,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     protected void onNewIntent(Intent intent) {
         // 点击notification bar进入聊天页面，保证只有一个聊天页面
         String username = intent.getStringExtra("userId");
-        if (friend.name.equals(username)) {
+        if (friend.id.equals(username)) {
 
         } else {
             finish();

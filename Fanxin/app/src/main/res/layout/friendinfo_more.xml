@@ -6,8 +6,8 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="212dp"
-        android:paddingRight="12dp"
+        android:layout_width="190dp"
+        android:paddingRight="10dp"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
