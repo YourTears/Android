@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fanxin.app.R;
+import com.fanxin.app.fx.FriendPopupWindow;
 
 import appLogic.AppConstant;
 import appLogic.FriendInfo;
@@ -77,6 +78,17 @@ public class PendingUserActivity extends Activity {
                 intent.setClass(PendingUserActivity.this, BigImageActivity.class);
                 startActivity(intent);
             }
+        });
+
+        final ImageView moreInfoView = (ImageView) this.findViewById(R.id.iv_detail);
+        moreInfoView.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FriendPopupWindow friendPopupWindow = new FriendPopupWindow(PendingUserActivity.this);
+                friendPopupWindow.showPopupWindow(friend.id, moreInfoView);
+            }
+
         });
     }
 

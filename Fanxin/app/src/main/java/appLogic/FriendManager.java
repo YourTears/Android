@@ -104,12 +104,24 @@ public class FriendManager {
 
                 friends.add(friend);
                 friendMapping.put(friendId, friend);
+                Collections.sort(friends, new FriendManager.PinyinComparator());
 
                 adapter.notifyDataSetChanged();
                 friendTable.addOrReplaceFriend(friend);
             } catch (Exception e) {
                 Log.e("加好友失败", e.getMessage());
             }
+        }
+    }
+
+    public void deleteFriend(String friendId){
+        FriendInfo friend = getFriend(friendId);
+
+        if(friend != null){
+            friends.remove(friend);
+            adapter.notifyDataSetChanged();
+
+            friendTable.deleteFriend(friendId);
         }
     }
 

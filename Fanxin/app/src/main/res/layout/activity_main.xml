@@ -18,25 +18,9 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:text="微信"
+            android:text="微恋"
             android:textColor="#ffffff"
             android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/iv_add"
-            android:layout_width="56dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:src="@drawable/main_activity_add" />
-
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="56dp"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/iv_add"
-            android:clickable="true"
-            android:src="@drawable/main_activity_search" />
     </RelativeLayout>
 
     <LinearLayout

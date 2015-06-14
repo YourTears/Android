@@ -14,13 +14,11 @@ import com.fanxin.app.activity.BaseActivity;
 import com.fanxin.app.db.InviteMessgeDao;
 import com.fanxin.app.db.UserDao;
 import com.fanxin.app.domain.InviteMessage;
-import com.fanxin.app.fx.AddPopWindow;
+import com.fanxin.app.fx.FriendPopupWindow;
 import com.fanxin.app.fx.FragmentFind;
-import com.fanxin.activity.FragmentFriends;
 import com.fanxin.app.fx.LoginActivity;
 import com.fanxin.app.fx.others.LoadDataFromServer;
 import com.fanxin.app.fx.others.LoadDataFromServer.DataCallBack;
-import com.fanxin.database.DbOpenHelper;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -79,9 +77,6 @@ public class MainActivity extends BaseActivity {
     private InviteMessgeDao inviteMessgeDao;
     private UserDao userDao;
 
-    private ImageView iv_add;
-    private ImageView iv_search;
-
     /**
      * 检查当前用户是否被删除
      */
@@ -121,26 +116,6 @@ public class MainActivity extends BaseActivity {
                 && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
         }
-        iv_add = (ImageView) this.findViewById(R.id.iv_add);
-        iv_search = (ImageView) this.findViewById(R.id.iv_search);
-        iv_add.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                AddPopWindow addPopWindow = new AddPopWindow(MainActivity.this);
-                addPopWindow.showPopupWindow(iv_add);
-            }
-
-        });
-        iv_search.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-            }
-
-        });
-
     }
 
     private void initMeInfo()

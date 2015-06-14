@@ -1,5 +1,6 @@
 package com.fanxin.app.fx;
 
+import com.fanxin.activity.MainActivity;
 import com.fanxin.app.R;
 
 import android.annotation.SuppressLint;
@@ -14,19 +15,20 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
- 
-public class AddPopWindow extends PopupWindow {
-    private View conentView;
+import appLogic.AppConstant;
 
-   
+
+public class FriendPopupWindow extends PopupWindow {
+    private String friendId = null;
+
 	@SuppressLint("InflateParams")
-	public AddPopWindow(final Activity context) {
+	public FriendPopupWindow(final Activity context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        conentView = inflater.inflate(R.layout.popupwindow_add, null);
+        View view = inflater.inflate(R.layout.friendinfo_more, null);
  
         // 设置SelectPicPopupWindow的View
-        this.setContentView(conentView);
+        this.setContentView(view);
         // 设置SelectPicPopupWindow弹出窗体的宽
         this.setWidth(LayoutParams.WRAP_CONTENT);
         // 设置SelectPicPopupWindow弹出窗体的高
@@ -45,29 +47,38 @@ public class AddPopWindow extends PopupWindow {
         this.setAnimationStyle(R.style.AnimationPreview);
         
         
-        RelativeLayout   re_addfriends =(RelativeLayout) conentView.findViewById(R.id.re_addfriends);
-        RelativeLayout   re_chatroom =(RelativeLayout) conentView.findViewById(R.id.re_chatroom);
-        re_addfriends.setOnClickListener(new OnClickListener(){
+        RelativeLayout remark =(RelativeLayout) view.findViewById(R.id.rl_remark);
+        RelativeLayout report =(RelativeLayout) view.findViewById(R.id.rl_report);
+        RelativeLayout deleteContact =(RelativeLayout) view.findViewById(R.id.rl_delete_contact);
+
+        remark.setOnClickListener(new OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                AddPopWindow.this.dismiss();
+                FriendPopupWindow.this.dismiss();
           
             }
             
         } );
-        re_chatroom.setOnClickListener(new OnClickListener(){
+        report.setOnClickListener(new OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context,CreatChatRoomActivity.class));  
-                AddPopWindow.this.dismiss();
-                
+                context.startActivity(new Intent(context,CreatChatRoomActivity.class));
+                FriendPopupWindow.this.dismiss();
             }
-            
+
         } );
-        
- 
+        deleteContact.setOnClickListener(new OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                AppConstant.friendManager.deleteFriend(friendId);
+                context.startActivity(new Intent(context, MainActivity.class));
+                FriendPopupWindow.this.dismiss();
+            }
+
+        } );
     }
 
     /**
@@ -75,7 +86,8 @@ public class AddPopWindow extends PopupWindow {
      * 
      * @param parent
      */
-    public void showPopupWindow(View parent) {
+    public void showPopupWindow(String friendId, View parent) {
+        this.friendId = friendId;
         if (!this.isShowing()) {
             // 以下拉方式显示popupwindow
             this.showAsDropDown(parent, 0, 0);

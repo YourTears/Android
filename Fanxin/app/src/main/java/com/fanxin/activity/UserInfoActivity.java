@@ -14,6 +14,7 @@ import appLogic.FriendInfo;
 import common.ImageLoaderManager;
 
 import com.fanxin.app.R;
+import com.fanxin.app.fx.FriendPopupWindow;
 
 public class UserInfoActivity extends Activity {
     private FriendInfo friend = null;
@@ -63,6 +64,17 @@ public class UserInfoActivity extends Activity {
                 intent.setClass(UserInfoActivity.this, BigImageActivity.class);
                 startActivity(intent);
             }
+        });
+
+        final ImageView moreInfoView = (ImageView) this.findViewById(R.id.iv_detail);
+        moreInfoView.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FriendPopupWindow friendPopupWindow = new FriendPopupWindow(UserInfoActivity.this);
+                friendPopupWindow.showPopupWindow(friend.id, moreInfoView);
+            }
+
         });
     }
 
