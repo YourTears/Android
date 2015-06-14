@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class ConversationManager {
     private List<Conversation> conversations;
-    private HashMap<String, Integer> indexMap;
+    private HashMap<String, Conversation> map;
     public ConversationAdapter adapter;
 
     public int totalUnreadCount = 0;
@@ -26,7 +26,7 @@ public class ConversationManager {
         conversationTable = ConversationTable.getInstance(context);
         messageTable = MessageTable.getInstance(context);
 
-        indexMap = new HashMap<>();
+        map = new HashMap<>();
         refresh();
         adapter = new ConversationAdapter(context, conversations);
     }
@@ -41,7 +41,7 @@ public class ConversationManager {
         deleteConversationInternal(conversation.friendId);
 
         conversations.add(0, conversation);
-        indexMap.put(conversation.friendId, 0);
+        map.put(conversation.friendId, conversation);
 
         conversationTable.replaceConversation(conversation);
 
@@ -51,8 +51,15 @@ public class ConversationManager {
     public synchronized void refresh() {
         conversations = conversationTable.getConversations();
 
-        for(int idx = 0; idx < conversations.size(); idx ++){
-            indexMap.put(conversations.get(idx).friendId, idx);
+        for(int idx = conversations.size() - 1; idx >= 0; idx --){
+            Conversation conversation = conversations.get(idx);
+            if(AppConstant.friendManager.containFriend(conversation.friendId)){
+                map.put(conversation.friendId, conversation);
+            } else{
+                conversationTable.deleteConversation(conversation.friendId);
+                messageTable.deleteMessages(conversation.friendId);
+                conversations.remove(idx);
+            }
         }
     }
 
@@ -70,10 +77,9 @@ public class ConversationManager {
     }
 
     private void deleteConversationInternal(String friendId){
-        if(indexMap.containsKey(friendId)){
-            int idx = indexMap.get(friendId);
-            conversations.remove(idx);
-            indexMap.remove(friendId);
+        if(map.containsKey(friendId)){
+            conversations.remove(map.get(friendId));
+            map.remove(friendId);
         }
     }
 }

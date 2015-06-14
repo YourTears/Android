@@ -29,8 +29,6 @@ import common.DateUtils;
 import common.ImageLoaderManager;
 
 public class ConversationAdapter extends BaseAdapter {
-    private static String[] conversationItemLongClickItem = {"删除聊天"};
-
     private LayoutInflater inflater;
     private Context context;
     private List<Conversation> conversations;

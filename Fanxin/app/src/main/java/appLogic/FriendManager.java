@@ -85,6 +85,10 @@ public class FriendManager {
         return null;
     }
 
+    public boolean containFriend(String id) {
+        return friendMapping.containsKey(id);
+    }
+
     public int getFriendCount() {
         return friends.size() + pendingFriends.size();
     }
@@ -114,11 +118,22 @@ public class FriendManager {
         }
     }
 
-    public void deleteFriend(String friendId){
-        FriendInfo friend = getFriend(friendId);
+    public synchronized void deleteFriend(String friendId) {
+        FriendInfo friend = null;
 
-        if(friend != null){
+        if (friendMapping.containsKey(friendId)) {
+            friend = friendMapping.get(friendId);
             friends.remove(friend);
+
+            AppConstant.conversationManager.deleteConversation(friendId);
+        }
+
+        if (pendingFriendMapping.containsKey(friendId)) {
+            friend = pendingFriendMapping.get(friendId);
+            pendingFriends.remove(friend);
+        }
+
+        if (friend != null) {
             adapter.notifyDataSetChanged();
 
             friendTable.deleteFriend(friendId);

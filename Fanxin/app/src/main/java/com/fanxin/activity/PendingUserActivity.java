@@ -86,7 +86,7 @@ public class PendingUserActivity extends Activity {
             @Override
             public void onClick(View v) {
                 FriendPopupWindow friendPopupWindow = new FriendPopupWindow(PendingUserActivity.this);
-                friendPopupWindow.showPopupWindow(friend.id, moreInfoView);
+                friendPopupWindow.showPopupWindow(friend, moreInfoView);
             }
 
         });

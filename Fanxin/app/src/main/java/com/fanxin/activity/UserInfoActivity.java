@@ -72,7 +72,7 @@ public class UserInfoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 FriendPopupWindow friendPopupWindow = new FriendPopupWindow(UserInfoActivity.this);
-                friendPopupWindow.showPopupWindow(friend.id, moreInfoView);
+                friendPopupWindow.showPopupWindow(friend, moreInfoView);
             }
 
         });

@@ -5,7 +5,9 @@ import com.fanxin.app.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -16,10 +18,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import appLogic.AppConstant;
+import appLogic.FriendInfo;
 
 
 public class FriendPopupWindow extends PopupWindow {
-    private String friendId = null;
+    private FriendInfo friend = null;
 
 	@SuppressLint("InflateParams")
 	public FriendPopupWindow(final Activity context) {
@@ -64,7 +67,6 @@ public class FriendPopupWindow extends PopupWindow {
 
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context,CreatChatRoomActivity.class));
                 FriendPopupWindow.this.dismiss();
             }
 
@@ -73,8 +75,20 @@ public class FriendPopupWindow extends PopupWindow {
 
             @Override
             public void onClick(View v) {
-                AppConstant.friendManager.deleteFriend(friendId);
-                context.startActivity(new Intent(context, MainActivity.class));
+                if(friend != null) {
+                    new AlertDialog.Builder(context)
+                            .setTitle("确认删除 " + friend.name + " ?")
+                            .setPositiveButton("是", new DialogInterface.OnClickListener(){
+
+                                public void onClick(DialogInterface dialog, int item) {
+                                    AppConstant.friendManager.deleteFriend(friend.id);
+                                    context.startActivity(new Intent(context, MainActivity.class));
+                                }
+                            })
+                            .setNegativeButton("否", null)
+                            .show();
+                }
+
                 FriendPopupWindow.this.dismiss();
             }
 
@@ -86,8 +100,8 @@ public class FriendPopupWindow extends PopupWindow {
      * 
      * @param parent
      */
-    public void showPopupWindow(String friendId, View parent) {
-        this.friendId = friendId;
+    public void showPopupWindow(FriendInfo friend, View parent) {
+        this.friend = friend;
         if (!this.isShowing()) {
             // 以下拉方式显示popupwindow
             this.showAsDropDown(parent, 0, 0);
