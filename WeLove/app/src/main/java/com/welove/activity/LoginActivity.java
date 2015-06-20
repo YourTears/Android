@@ -1,5 +1,5 @@
  
-package com.welove.app.fx;
+package com.welove.activity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +18,8 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.welove.activity.MainActivity;
 import com.welove.app.Constant;
 import com.welove.app.R;
-import com.welove.app.activity.BaseActivity;
 import com.welove.app.fx.others.LoadDataFromServer;
 import com.welove.app.fx.others.LoadDataFromServer.DataCallBack;
 

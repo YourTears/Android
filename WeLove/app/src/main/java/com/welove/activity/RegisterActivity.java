@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.welove.app.fx;
+package com.welove.activity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -26,7 +26,6 @@ import java.util.Map;
 
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,7 +42,6 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +53,6 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.welove.app.Constant;
 import com.welove.app.R;
-import com.welove.app.activity.BaseActivity;
 import com.welove.app.fx.others.LoadDataFromServer;
 import com.welove.app.fx.others.LoadDataFromServer.DataCallBack;
 
@@ -232,44 +229,6 @@ public class RegisterActivity extends BaseActivity {
 
     // 拍照部分
     private void showCamera() {
-
-        final AlertDialog dlg = new AlertDialog.Builder(this).create();
-        dlg.show();
-        Window window = dlg.getWindow();
-        // *** 主要就是在这里实现这种效果的.
-        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
-        window.setContentView(R.layout.alertdialog);
-        // 为确认按钮添加事件,执行退出应用操作
-        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
-        tv_paizhao.setText("拍照");
-        tv_paizhao.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SdCardPath")
-            public void onClick(View v) {
-
-                imageName = getNowTime() + ".png";
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                // 指定调用相机拍照后照片的储存路径
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(new File("/sdcard/fanxin/", imageName)));
-                startActivityForResult(intent, PHOTO_REQUEST_TAKEPHOTO);
-                dlg.cancel();
-            }
-        });
-        TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
-        tv_xiangce.setText("相册");
-        tv_xiangce.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                getNowTime();
-                imageName = getNowTime() + ".png";
-                Intent intent = new Intent(Intent.ACTION_PICK, null);
-                intent.setDataAndType(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
-
-                dlg.cancel();
-            }
-        });
 
     }
 

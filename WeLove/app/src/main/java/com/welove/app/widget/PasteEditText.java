@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-import com.welove.app.activity.FXAlertDialog;
 import com.welove.activity.ChatActivity;
 
 /**
@@ -59,12 +58,6 @@ public class PasteEditText extends EditText{
             if(text.startsWith(ChatActivity.COPY_IMAGE)){
 //                intent.setDataAndType(Uri.fromFile(new File("/sdcard/mn1.jpg")), "image/*");     
                 text = text.replace(ChatActivity.COPY_IMAGE, "");
-                Intent intent = new Intent(context,FXAlertDialog.class);
-                intent.putExtra("title", "发送以下图片？");
-                intent.putExtra("forwardImage", text);
-                intent.putExtra("cancel", true);
-                ((Activity)context).startActivityForResult(intent,ChatActivity.REQUEST_CODE_COPY_AND_PASTE);
-//                clip.setText("");
             }
         }
         return super.onTextContextMenuItem(id);

@@ -8,8 +8,6 @@ import android.view.animation.AlphaAnimation;
 import appLogic.AppConstant;
 
 import com.welove.app.R;
-import com.welove.app.activity.BaseActivity;
-import com.welove.app.fx.LoginActivity;
 
 /**
  * 开屏页

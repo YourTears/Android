@@ -58,14 +58,14 @@
 
         <!-- 登陆 -->
         <activity
-            android:name="com.welove.app.fx.LoginActivity"
+            android:name="com.welove.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
 
         <!-- 注册 -->
         <activity
-            android:name="com.welove.app.fx.RegisterActivity"
+            android:name="com.welove.activity.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" >
         </activity>
@@ -210,7 +210,7 @@
         choose video
         -->
         <activity
-            android:name="com.welove.app.activity.ImageGridActivity"
+            android:name="com.welove.activity.ImageGridActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="stateAlwaysHidden" >
@@ -325,7 +325,7 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name="com.welove.app.fx.MyUserInfoActivity"
+            android:name="com.welove.activity.MeInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >

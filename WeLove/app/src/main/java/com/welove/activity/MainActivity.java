@@ -10,12 +10,6 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.welove.app.Constant;
 import com.welove.app.R;
-import com.welove.app.activity.BaseActivity;
-import com.welove.app.db.InviteMessgeDao;
-import com.welove.app.db.UserDao;
-import com.welove.app.domain.InviteMessage;
-import com.welove.app.fx.FragmentFind;
-import com.welove.app.fx.LoginActivity;
 import com.welove.app.fx.others.LoadDataFromServer;
 import com.welove.app.fx.others.LoadDataFromServer.DataCallBack;
 
@@ -72,9 +66,6 @@ public class MainActivity extends BaseActivity {
     // 账号被移除
     private boolean isCurrentAccountRemoved = false;
 
-    private InviteMessgeDao inviteMessgeDao;
-    private UserDao userDao;
-
     /**
      * 检查当前用户是否被删除
      */
@@ -129,7 +120,10 @@ public class MainActivity extends BaseActivity {
         //DbOpenHelper.getInstance(this).deleteDatabase(this);
 
         AppConstant.userManager = UserManager.getInstance(this);
-        //AppConstant.userManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
+
+        if(AppConstant.userManager.friends.size() == 0)
+            AppConstant.userManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
+
         AppConstant.meInfo = AppConstant.userManager.getUser(LoginInfo.getInstance().id);
 
         if(AppConstant.meInfo.gender == UserInfo.Gender.Female){
@@ -175,8 +169,6 @@ public class MainActivity extends BaseActivity {
                 .add(R.id.fragment_container, findfragment)
                 .hide(contactlistfragment).hide(profilefragment)
                 .hide(conversationfragment).show(findfragment).commit();
-        inviteMessgeDao = new InviteMessgeDao(this);
-        userDao = new UserDao(this);
 
         // 注册一个接收消息的BroadcastReceiver
         msgReceiver = new NewMessageBroadcastReceiver();
@@ -366,35 +358,6 @@ public class MainActivity extends BaseActivity {
             // .show();
         }
     };
-
-    /**
-     * 保存提示新消息
-     * 
-     * @param msg
-     */
-    private void notifyNewIviteMessage(InviteMessage msg) {
-        saveInviteMsg(msg);
-
-        // 刷新bottom bar消息未读数
-        updateUnreadAddressLable();
-        // 刷新好友页面ui
-        if (currentTabIndex == 1)
-            contactlistfragment.refresh();
-    }
-
-    /**
-     * 保存邀请等msg
-     * 
-     * @param msg
-     */
-    private void saveInviteMsg(InviteMessage msg) {
-        // 保存msg
-        inviteMessgeDao.saveMessage(msg);
-        // 未读数加1
-        UserInfo user = null;
-//        if (user.getUnreadMsgCount() == 0)
-//            user.setUnreadMsgCount(user.getUnreadMsgCount() + 1);
-    }
 
     @Override
     protected void onResume() {

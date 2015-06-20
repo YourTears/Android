@@ -55,8 +55,6 @@ import android.widget.Toast;
 
 import com.welove.adapter.ExpressionAdapter;
 import com.welove.app.R;
-import com.welove.app.activity.BaseActivity;
-import com.welove.app.activity.ImageGridActivity;
 import com.welove.adapter.ExpressionPagerAdapter;
 import com.welove.app.widget.ExpandGridView;
 import com.welove.app.widget.PasteEditText;
@@ -587,10 +585,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
         } else if (id == R.id.iv_expression_checked) { // 点击隐藏表情框
             editTextMode();
         } else if (id == R.id.btn_video) {
-            // 点击摄像图标
-            Intent intent = new Intent(ChatActivity.this,
-                    ImageGridActivity.class);
-            startActivityForResult(intent, REQUEST_CODE_SELECT_VIDEO);
         } else if (id == R.id.btn_voice_call) { // 点击语音电话图标
         } else if (id == R.id.button_voice_mode) {
             speakMode();

@@ -1,7 +1,6 @@
 package com.welove.activity;
 
 import com.welove.app.R;
-import com.welove.app.fx.MyUserInfoActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +32,7 @@ public class FragmentProfile extends Fragment {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MyUserInfoActivity.class));
+                startActivity(new Intent(getActivity(), MeInfoActivity.class));
             }
 
         });

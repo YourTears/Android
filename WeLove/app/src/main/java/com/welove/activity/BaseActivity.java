@@ -1,4 +1,4 @@
-package com.welove.app.activity;
+package com.welove.activity;
 
 import android.app.NotificationManager;
 import android.content.Context;

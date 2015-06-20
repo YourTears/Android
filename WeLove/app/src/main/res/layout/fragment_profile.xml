@@ -59,16 +59,7 @@
             android:text="ID:"
             android:textColor="#AAAAAA"
             android:textSize="14sp" />
-        
-        <ImageView
-            android:layout_marginRight="32dp"
-            android:src="@drawable/a_5"
-              android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            
-            />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -121,7 +112,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
-            android:src="@drawable/ake" />
+            android:src="@drawable/setting" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -150,7 +141,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
-            android:src="@drawable/akf" />
+            android:src="@drawable/setting" />
 
         <TextView
             android:layout_width="wrap_content"

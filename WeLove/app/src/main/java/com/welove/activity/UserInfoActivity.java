@@ -21,7 +21,7 @@ public class UserInfoActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_userinfo);
+        setContentView(R.layout.activity_user_info);
 
         String id = this.getIntent().getStringExtra("id");
         friend = AppConstant.userManager.getUser(id);

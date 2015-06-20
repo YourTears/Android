@@ -1,15 +1,12 @@
-package com.welove.app.fx;
+package com.welove.activity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.welove.activity.UpdateNickNameActivity;
-import com.welove.activity.UpdateSignActivity;
 import com.welove.app.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -27,7 +23,7 @@ import appLogic.AppConstant;
 import common.ImageLoaderManager;
 
 @SuppressLint("SdCardPath")
-public class MyUserInfoActivity extends Activity {
+public class MeInfoActivity extends Activity {
 
     private RelativeLayout re_image;
     private RelativeLayout re_name;
@@ -48,7 +44,7 @@ public class MyUserInfoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_myinfo);
+        setContentView(R.layout.activity_me_detail);
         initView();
 
     }
@@ -84,58 +80,25 @@ public class MyUserInfoActivity extends Activity {
                     break;
 
                 case R.id.re_name:
-                    Intent intent = new Intent(MyUserInfoActivity.this, UpdateNickNameActivity.class);
+                    Intent intent = new Intent(MeInfoActivity.this, UpdateNickNameActivity.class);
                     intent.putExtra("id", AppConstant.meInfo.id);
                     startActivity(intent);
 
                     break;
 
                 case R.id.re_sign:
-                    startActivity(new Intent(MyUserInfoActivity.this, UpdateSignActivity.class));
+                    startActivity(new Intent(MeInfoActivity.this, UpdateSignActivity.class));
                     break;
             }
         }
     }
 
     private void showPhotoDialog() {
-        final AlertDialog dlg = new AlertDialog.Builder(this).create();
-        dlg.show();
-        Window window = dlg.getWindow();
-        // *** 主要就是在这里实现这种效果的.
-        // 设置窗口的内容页面,shrew_exit_dialog.xml文件中定义view内容
-        window.setContentView(R.layout.alertdialog);
-        // 为确认按钮添加事件,执行退出应用操作
-        TextView tv_paizhao = (TextView) window.findViewById(R.id.tv_content1);
-        tv_paizhao.setText("拍照");
-        tv_paizhao.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SdCardPath")
-            public void onClick(View v) {
-
-                imageName = getNowTime() + ".png";
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                // 指定调用相机拍照后照片的储存路径
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(new File("/sdcard/fanxin/", imageName)));
-                startActivityForResult(intent, PHOTO_REQUEST_TAKEPHOTO);
-                dlg.cancel();
-            }
-        });
-        TextView tv_xiangce = (TextView) window.findViewById(R.id.tv_content2);
-        tv_xiangce.setText("相册");
-        tv_xiangce.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                getNowTime();
-                imageName = getNowTime() + ".png";
-                Intent intent = new Intent(Intent.ACTION_PICK, null);
-                intent.setDataAndType(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
-
-                dlg.cancel();
-            }
-        });
-
+        imageName = getNowTime() + ".png";
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
     }
 
     @SuppressLint("SdCardPath")
