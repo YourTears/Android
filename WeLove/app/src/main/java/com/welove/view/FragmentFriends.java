@@ -1,9 +1,9 @@
 package com.welove.view;
 
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,13 +107,17 @@ public class FragmentFriends extends Fragment {
             // 可能会在子线程中调到这方法
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    AppConstant.userManager.adapter.notifyDataSetChanged();
+                    AppConstant.userManager.refreshListView();
                     tv_total.setText(String.valueOf(AppConstant.userManager.getFriendCount())+"位联系人");
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void refreshListView(){
+        AppConstant.userManager.refreshListView();
     }
 
     @Override
@@ -124,6 +128,5 @@ public class FragmentFriends extends Fragment {
         } else if (((MainActivity) getActivity()).getCurrentAccountRemoved()) {
             outState.putBoolean("", true);
         }
-
     }
 }

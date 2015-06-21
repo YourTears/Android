@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -65,7 +66,7 @@ import appLogic.Message;
 import appLogic.MessageManager;
 import common.ExpressionUtils;
 
-public class ChatActivity extends BaseActivity implements OnClickListener {
+public class ChatActivity extends Activity implements OnClickListener {
 
     private static final int REQUEST_CODE_EMPTY_HISTORY = 2;
     public static final int REQUEST_CODE_CONTEXT_MENU = 3;

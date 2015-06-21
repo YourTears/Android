@@ -1,12 +1,14 @@
 package com.welove.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.welove.app.R;
+import com.welove.broadcast.UpdateInfoService;
 
 import appLogic.AppConstant;
 
@@ -32,6 +34,13 @@ public class UpdateSignActivity extends Activity {
             public void onClick(View v) {
                 AppConstant.meInfo.sign = et_sign.getText().toString().trim();
                 AppConstant.userManager.updateUserInfo(AppConstant.meInfo.id);
+
+                Intent intent = new Intent(UpdateInfoService.ServiceName);
+                intent.putExtra(UpdateInfoService.UpdateUserDetail, true);
+                intent.putExtra("id", AppConstant.meInfo.id);
+
+                sendBroadcast(intent);
+
                 finish();
             }
         });

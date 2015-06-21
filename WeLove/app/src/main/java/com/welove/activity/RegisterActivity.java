@@ -26,6 +26,7 @@ import java.util.Map;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -55,7 +56,7 @@ import com.welove.app.R;
 import common.LoadDataFromServer;
 import common.LoadDataFromServer.DataCallBack;
 
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends Activity {
     private EditText et_usernick;
     private EditText et_usertel;
     private EditText et_password;

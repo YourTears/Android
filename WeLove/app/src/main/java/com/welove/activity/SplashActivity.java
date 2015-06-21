@@ -1,5 +1,6 @@
 package com.welove.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +13,7 @@ import com.welove.app.R;
 /**
  * 开屏页
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends Activity {
 
 	private static final int sleepTime = 2000;
 

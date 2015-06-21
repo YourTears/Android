@@ -63,6 +63,10 @@ public class ConversationManager {
         }
     }
 
+    public synchronized void refreshListView(){
+        adapter.notifyDataSetChanged();
+    }
+
     public synchronized void deleteConversation(String friendId){
         deleteConversationInternal(friendId);
         conversationTable.deleteConversation(friendId);

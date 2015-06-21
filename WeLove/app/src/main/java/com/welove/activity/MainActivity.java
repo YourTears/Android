@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.welove.app.R;
+import com.welove.broadcast.UpdateInfoService;
 import com.welove.view.FragmentConversation;
 import com.welove.view.FragmentFind;
 import com.welove.view.FragmentFriends;
@@ -18,14 +19,18 @@ import common.LoadDataFromServer;
 import common.LoadDataFromServer.DataCallBack;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -43,7 +48,7 @@ import common.ImageLoaderManager;
 import common.Util;
 
 @SuppressLint("DefaultLocale")
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BroadcastActivity {
     // 未读消息textview
     private TextView unreadLabel;
     // 未读通讯录textview
@@ -69,13 +74,11 @@ public class MainActivity extends BaseActivity {
     public boolean isConflict = false;
     // 账号被移除
     private boolean isCurrentAccountRemoved = false;
-
-    /**
-     * 检查当前用户是否被删除
-     */
     public boolean getCurrentAccountRemoved() {
         return isCurrentAccountRemoved;
     }
+
+    private UpdateInfoService updateInfoService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +112,56 @@ public class MainActivity extends BaseActivity {
                 && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
         }
+
+        Intent updateInfoIntent = new Intent(MainActivity.this, UpdateInfoService.class);
+        bindService(updateInfoIntent, new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                updateInfoService = ((UpdateInfoService.UpdateInfoBinder) service).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                updateInfoService = null;
+
+            }
+        }, Context.BIND_AUTO_CREATE);
+
+        initBroadcastService();
+    }
+
+    private void initBroadcastService(){
+        broadServiceName = UpdateInfoService.ServiceName;
+        broadcastIntent = new Intent(MainActivity.this, UpdateInfoService.class);
+        broadcastReceiver = new BroadcastReceiver(){
+            public void onReceive(Context context, Intent intent) {
+                boolean updateProfile = intent.getBooleanExtra(UpdateInfoService.UpdateProfile, false);
+                if(updateProfile){
+                    profilefragment.updateProfile();
+                }
+
+                boolean updateContactList = intent.getBooleanExtra(UpdateInfoService.UpdateContactList, false);
+                if(updateContactList){
+                    contactlistfragment.refreshListView();
+                }
+
+                boolean updateConversationList = intent.getBooleanExtra(UpdateInfoService.UpdateConversationList, false);
+                if(updateConversationList){
+                    conversationfragment.refreshListView();
+                }
+            }
+        };
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder binder) {
+                broadcastService = ((UpdateInfoService.UpdateInfoBinder) binder).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                broadcastService = null;
+            }
+        };
     }
 
     private void initMeInfo()
@@ -166,7 +219,7 @@ public class MainActivity extends BaseActivity {
         textviews[3] = (TextView) findViewById(R.id.tv_profile);
         textviews[0].setTextColor(0xFF45C01A);
         // 添加显示第一个fragment
-        getSupportFragmentManager().beginTransaction()
+        getFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, conversationfragment)
                 .add(R.id.fragment_container, contactlistfragment)
                 .add(R.id.fragment_container, profilefragment)
@@ -189,6 +242,8 @@ public class MainActivity extends BaseActivity {
         IntentFilter cmdMessageIntentFilter = new IntentFilter();
         cmdMessageIntentFilter.setPriority(3);
         registerReceiver(cmdMessageReceiver, cmdMessageIntentFilter);
+
+
 
         // 注册一个离线消息的BroadcastReceiver
         // IntentFilter offlineMessageIntentFilter = new
@@ -215,8 +270,7 @@ public class MainActivity extends BaseActivity {
         }
 
         if (currentTabIndex != index) {
-            FragmentTransaction trx = getSupportFragmentManager()
-                    .beginTransaction();
+            FragmentTransaction trx = getFragmentManager().beginTransaction();
             trx.hide(fragments[currentTabIndex]);
             if (!fragments[index].isAdded()) {
                 trx.add(R.id.fragment_container, fragments[index]);
@@ -364,7 +418,7 @@ public class MainActivity extends BaseActivity {
     };
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (!isConflict || !isCurrentAccountRemoved) {
             // initView();
@@ -372,6 +426,15 @@ public class MainActivity extends BaseActivity {
             updateUnreadAddressLable();
         }
 
+        IntentFilter updateInfoFilter = new IntentFilter(UpdateInfoService.ServiceName);
+        registerReceiver(new BroadcastReceiver(){
+            public void onReceive(Context context, Intent intent) {
+//                int counter = intent.get
+//                String text = String.valueOf(counter);
+//                counterText.setText(text);
+
+            }
+        }, updateInfoFilter);
     }
 
     @Override

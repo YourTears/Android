@@ -1,8 +1,12 @@
 package com.welove.activity;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,10 +18,12 @@ import appLogic.UserInfo;
 import common.ImageLoaderManager;
 
 import com.welove.app.R;
+import com.welove.broadcast.UpdateInfoService;
 import com.welove.view.FriendPopupWindow;
 
-public class UserInfoActivity extends Activity {
-    private UserInfo friend = null;
+public class UserInfoActivity extends BroadcastActivity {
+    private UserInfo user = null;
+    private TextView nameView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,21 +31,21 @@ public class UserInfoActivity extends Activity {
         setContentView(R.layout.activity_user_info);
 
         String id = this.getIntent().getStringExtra("id");
-        friend = AppConstant.userManager.getUser(id);
+        user = AppConstant.userManager.getUser(id);
 
         ImageView imageView = (ImageView) this.findViewById(R.id.iv_avatar);
         imageView.setImageDrawable(AppConstant.defaultImageDrawable);
-        AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
+        AppConstant.imageLoaderManager.loadImage(imageView, user.id, user.imageUrl, ImageLoaderManager.CacheMode.Memory);
 
         Button btn_sendmsg = (Button) this.findViewById(R.id.btn_sendmsg);
         ImageView iv_sex = (ImageView) this.findViewById(R.id.iv_sex);
-        TextView tv_name = (TextView) this.findViewById(R.id.tv_name);
+        nameView = (TextView) this.findViewById(R.id.tv_name);
 
-        if (friend != null) {
-            tv_name.setText(friend.nickName);
-            if (friend.gender == UserInfo.Gender.Male) {
+        if (user != null) {
+            nameView.setText(user.nickName);
+            if (user.gender == UserInfo.Gender.Male) {
                 iv_sex.setImageResource(R.drawable.ic_sex_male);
-            } else if (friend.gender == UserInfo.Gender.Female) {
+            } else if (user.gender == UserInfo.Gender.Female) {
                 iv_sex.setImageResource(R.drawable.ic_sex_female);
             }
         }
@@ -49,7 +55,7 @@ public class UserInfoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("id", friend.id);
+                intent.putExtra("id", user.id);
                 intent.setClass(UserInfoActivity.this, ChatActivity.class);
                 startActivity(intent);
             }
@@ -59,8 +65,8 @@ public class UserInfoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("cacheId", friend.id);
-                intent.putExtra("imageUrl", friend.imageUrl);
+                intent.putExtra("cacheId", user.id);
+                intent.putExtra("imageUrl", user.imageUrl);
                 intent.setClass(UserInfoActivity.this, BigImageActivity.class);
                 startActivity(intent);
             }
@@ -72,10 +78,42 @@ public class UserInfoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 FriendPopupWindow friendPopupWindow = new FriendPopupWindow(UserInfoActivity.this);
-                friendPopupWindow.showPopupWindow(friend, moreInfoView);
+                friendPopupWindow.showPopupWindow(user, moreInfoView);
             }
 
         });
+
+        initBroadcastService();
+    }
+
+    private void initBroadcastService(){
+        broadServiceName = UpdateInfoService.ServiceName;
+        broadcastIntent = new Intent(UserInfoActivity.this, UpdateInfoService.class);
+        broadcastReceiver = new BroadcastReceiver(){
+            public void onReceive(Context context, Intent intent) {
+                boolean updateUserDetail = intent.getBooleanExtra(UpdateInfoService.UpdateUserDetail, false);
+
+                if(updateUserDetail){
+                    String userId = intent.getStringExtra("id");
+                    if(userId.equals(user.id)){
+                        if(nameView != null){
+                            nameView.setText(user.nickName);
+                        }
+                    }
+                }
+            }
+        };
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder binder) {
+                broadcastService = ((UpdateInfoService.UpdateInfoBinder) binder).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                broadcastService = null;
+            }
+        };
     }
 
     public void back(View view) {

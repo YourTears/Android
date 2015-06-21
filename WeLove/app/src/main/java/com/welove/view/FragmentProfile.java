@@ -3,9 +3,9 @@ package com.welove.view;
 import com.welove.activity.MeInfoActivity;
 import com.welove.app.R;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +18,9 @@ import appLogic.AppConstant;
 import common.ImageLoaderManager;
 
 public class FragmentProfile extends Fragment {
+    private ImageView imageView = null;
+    private TextView nameTextView = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,13 +51,23 @@ public class FragmentProfile extends Fragment {
 
         });
 
-        ImageView imageView = (ImageView) re_myinfo.findViewById(R.id.iv_avatar);
-        TextView nameTextView = (TextView) re_myinfo.findViewById(R.id.tv_name);
+        imageView = (ImageView) re_myinfo.findViewById(R.id.iv_avatar);
+        nameTextView = (TextView) re_myinfo.findViewById(R.id.tv_name);
         TextView idTextView = (TextView) re_myinfo.findViewById(R.id.tv_id);
 
         nameTextView.setText(AppConstant.meInfo.name);
         idTextView.setText("ID:" + AppConstant.meInfo.id);
 
         AppConstant.imageLoaderManager.loadImage(imageView, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.Memory);
+    }
+
+    public void updateProfile(){
+        if(nameTextView != null){
+            nameTextView.setText(AppConstant.meInfo.name);
+        }
+
+        if(imageView != null) {
+            AppConstant.imageLoaderManager.loadImage(imageView, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.Memory);
+        }
     }
 }

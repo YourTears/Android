@@ -5,13 +5,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.welove.app.R;
+import com.welove.broadcast.UpdateInfoService;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,23 +29,21 @@ import appLogic.AppConstant;
 import common.ImageLoaderManager;
 
 @SuppressLint("SdCardPath")
-public class MeInfoActivity extends Activity {
+public class MeInfoActivity extends BroadcastActivity {
 
     private RelativeLayout re_image;
     private RelativeLayout re_name;
     private RelativeLayout re_sign;
 
-    private ImageView iv_image;
-    private TextView tv_name;
-    private TextView tv_id;
-    private TextView tv_sign;
+    private ImageView imageView;
+    private TextView nameView;
+    private TextView idView;
+    private TextView signView;
 
     private String imageName;
-    private static final int PHOTO_REQUEST_TAKEPHOTO = 1;// 拍照
-    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
-    private static final int PHOTO_REQUEST_CUT = 3;// 结果
-    private static final int UPDATE_SIGN = 4;// 结果
-    private static final int UPDATE_NICK = 5;// 结果
+    private static final int PHOTO_REQUEST_TAKEPHOTO = 1;
+    private static final int PHOTO_REQUEST_GALLERY = 2;
+    private static final int PHOTO_REQUEST_CUT = 3;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,41 @@ public class MeInfoActivity extends Activity {
         setContentView(R.layout.activity_me_detail);
         initView();
 
+        initBroadcastService();
+    }
+
+    private void initBroadcastService(){
+        broadServiceName = UpdateInfoService.ServiceName;
+        broadcastIntent = new Intent(MeInfoActivity.this, UpdateInfoService.class);
+        broadcastReceiver = new BroadcastReceiver(){
+            public void onReceive(Context context, Intent intent) {
+                boolean updateUserDetail = intent.getBooleanExtra(UpdateInfoService.UpdateUserDetail, false);
+
+                if(updateUserDetail){
+                    String userId = intent.getStringExtra("id");
+                    if(userId.equals(AppConstant.meInfo.id)){
+                        if(nameView != null){
+                            nameView.setText(AppConstant.meInfo.name);
+                        }
+
+                        if(signView != null){
+                            signView.setText(AppConstant.meInfo.sign);
+                        }
+                    }
+                }
+            }
+        };
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder binder) {
+                broadcastService = ((UpdateInfoService.UpdateInfoBinder) binder).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                broadcastService = null;
+            }
+        };
     }
 
     private void initView() {
@@ -58,16 +97,16 @@ public class MeInfoActivity extends Activity {
         re_name.setOnClickListener(new MyListener());
         re_sign.setOnClickListener(new MyListener());
 
-        iv_image = (ImageView) this.findViewById(R.id.iv_image);
-        tv_name = (TextView) this.findViewById(R.id.tv_name);
-        tv_id = (TextView) this.findViewById(R.id.tv_id);
-        tv_sign = (TextView) this.findViewById(R.id.tv_sign);
+        imageView = (ImageView) this.findViewById(R.id.iv_image);
+        nameView = (TextView) this.findViewById(R.id.tv_name);
+        idView = (TextView) this.findViewById(R.id.tv_id);
+        signView = (TextView) this.findViewById(R.id.tv_sign);
 
-        tv_name.setText(AppConstant.meInfo.name);
-        tv_id.setText(AppConstant.meInfo.id);
-        tv_sign.setText(AppConstant.meInfo.sign);
+        nameView.setText(AppConstant.meInfo.name);
+        idView.setText(AppConstant.meInfo.id);
+        signView.setText(AppConstant.meInfo.sign);
 
-        AppConstant.imageLoaderManager.loadImage(iv_image, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.Memory);
+        AppConstant.imageLoaderManager.loadImage(imageView, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.Memory);
     }
 
     class MyListener implements OnClickListener {
@@ -129,7 +168,7 @@ public class MeInfoActivity extends Activity {
                 // options.inJustDecodeBounds = true;
                 Bitmap bitmap = BitmapFactory.decodeFile("/sdcard/fanxin/"
                         + imageName);
-                iv_image.setImageBitmap(bitmap);
+                imageView.setImageBitmap(bitmap);
                 updateAvatarInServer(imageName);
                 break;
 

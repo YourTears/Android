@@ -1,7 +1,10 @@
 package com.welove.activity;
 
 import com.welove.app.R;
+import com.welove.broadcast.UpdateInfoService;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -29,7 +32,11 @@ public class UpdateNickNameActivity extends Activity {
         final EditText et_nick = (EditText) this.findViewById(R.id.et_nick);
         final TextView tv_save = (TextView) this.findViewById(R.id.tv_save);
 
-        et_nick.setText(user.nickName);
+        if(userId.equals(AppConstant.meInfo.id)) {
+            et_nick.setText(user.name);
+        }else{
+            et_nick.setText(user.nickName);
+        }
 
         if(user.nickName != null)
             et_nick.setSelection(user.nickName.length());
@@ -61,13 +68,23 @@ public class UpdateNickNameActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(UpdateInfoService.ServiceName);
+                intent.putExtra(UpdateInfoService.UpdateUserDetail, true);
+                intent.putExtra("id", userId);
+
                 if(userId.equals(AppConstant.meInfo.id)){
-                    user.name = et_nick.getText().toString();
+                    user.name = et_nick.getText().toString().trim();
+                    intent.putExtra(UpdateInfoService.UpdateProfile, true);
                 } else{
-                    user.nickName = et_nick.getText().toString();
+                    user.nickName = et_nick.getText().toString().trim();
+                    intent.putExtra(UpdateInfoService.UpdateContactList, true);
+                    intent.putExtra(UpdateInfoService.UpdateConversationList, true);
                 }
 
                 AppConstant.userManager.updateUserInfo(userId);
+
+                sendBroadcast(intent);
+
                 finish();
             }
         });

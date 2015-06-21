@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import common.LoadDataFromServer.DataCallBack;
  * 登陆页面
  * 
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends Activity {
     private EditText et_usertel;
     private EditText et_password;
     private Button btn_login;

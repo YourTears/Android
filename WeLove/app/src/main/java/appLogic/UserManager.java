@@ -69,6 +69,10 @@ public class UserManager {
         Collections.sort(friends, new UserManager.PinyinComparator());
     }
 
+    public void refreshListView(){
+        adapter.notifyDataSetChanged();
+    }
+
     private static UserManager instance = null;
 
     public static UserManager getInstance(Context context) {
@@ -165,22 +169,26 @@ public class UserManager {
                 JSONArray array = json.getJSONArray("users");
 
                 for (int idx = 0; idx < array.length(); idx++) {
-                    UserInfo friend = getFriendInfo(array.getJSONObject(idx));
+                    UserInfo user = getFriendInfo(array.getJSONObject(idx));
+                    if(user.nickName == null || user.nickName.isEmpty()){
+                        user.nickName = user.name;
+                    }
+                    user.name_pinyin = HanziToPinyin.getPinYin(user.nickName);
 
-                    if (friend != null) {
-                        if (friend.friendStatus != UserInfo.FriendStatus.Blocked) {
-                            if (friend.friendStatus == UserInfo.FriendStatus.Friend) {
-                                friends.add(friend);
-                                friendMapping.put(friend.id, friend);
+                    if (user != null) {
+                        if (user.friendStatus != UserInfo.FriendStatus.Blocked) {
+                            if (user.friendStatus == UserInfo.FriendStatus.Friend) {
+                                friends.add(user);
+                                friendMapping.put(user.id, user);
                             } else {
-                                pendingFriends.add(friend);
-                                pendingFriendMapping.put(friend.id, friend);
+                                pendingFriends.add(user);
+                                pendingFriendMapping.put(user.id, user);
                             }
                         } else {
-                            blockIds.add(friend.id);
+                            blockIds.add(user.id);
                         }
 
-                        userTable.addOrReplaceFriend(friend);
+                        userTable.addOrReplaceFriend(user);
                     }
                 }
             }
