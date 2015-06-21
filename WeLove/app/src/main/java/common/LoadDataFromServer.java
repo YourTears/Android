@@ -1,4 +1,4 @@
-package com.welove.app.fx.others;
+package common;
 
 import java.io.BufferedReader;
 import java.io.IOException;

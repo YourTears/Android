@@ -1,4 +1,4 @@
-package com.welove.activity;
+package com.welove.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.welove.activity.ChatActivity;
 import com.welove.app.R;
 
 import appLogic.AppConstant;

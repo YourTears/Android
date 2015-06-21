@@ -14,6 +14,7 @@ import appLogic.UserInfo;
 import common.ImageLoaderManager;
 
 import com.welove.app.R;
+import com.welove.view.FriendPopupWindow;
 
 public class UserInfoActivity extends Activity {
     private UserInfo friend = null;

@@ -18,10 +18,9 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.welove.app.Constant;
 import com.welove.app.R;
-import com.welove.app.fx.others.LoadDataFromServer;
-import com.welove.app.fx.others.LoadDataFromServer.DataCallBack;
+import common.LoadDataFromServer;
+import common.LoadDataFromServer.DataCallBack;
 
 /**
  * 登陆页面
@@ -63,7 +62,7 @@ public class LoginActivity extends BaseActivity {
                 map.put("usertel", usertel);
 
                 LoadDataFromServer task = new LoadDataFromServer(
-                        LoginActivity.this, Constant.URL_Login, map);
+                        LoginActivity.this, "", map);
 
                 task.getData(new DataCallBack() {
 

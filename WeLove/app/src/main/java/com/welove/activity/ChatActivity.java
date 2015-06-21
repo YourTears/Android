@@ -56,8 +56,8 @@ import android.widget.Toast;
 import com.welove.adapter.ExpressionAdapter;
 import com.welove.app.R;
 import com.welove.adapter.ExpressionPagerAdapter;
-import com.welove.app.widget.ExpandGridView;
-import com.welove.app.widget.PasteEditText;
+import com.welove.view.ExpandGridView;
+import common.PasteEditText;
 
 import appLogic.AppConstant;
 import appLogic.UserInfo;

@@ -1,5 +1,7 @@
-package com.welove.activity;
+package com.welove.view;
 
+import com.welove.activity.MainActivity;
+import com.welove.activity.UpdateNickNameActivity;
 import com.welove.app.R;
 
 import android.annotation.SuppressLint;

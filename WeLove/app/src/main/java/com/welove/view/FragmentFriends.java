@@ -1,4 +1,4 @@
-package com.welove.activity;
+package com.welove.view;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,7 +12,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.welove.app.Constant;
+import com.welove.activity.MainActivity;
+import com.welove.activity.PendingUserActivity;
+import com.welove.activity.UserInfoActivity;
 import com.welove.app.R;
 
 import appLogic.AppConstant;
@@ -120,7 +122,7 @@ public class FragmentFriends extends Fragment {
         if (((MainActivity) getActivity()).isConflict) {
             outState.putBoolean("isConflict", true);
         } else if (((MainActivity) getActivity()).getCurrentAccountRemoved()) {
-            outState.putBoolean(Constant.ACCOUNT_REMOVED, true);
+            outState.putBoolean("", true);
         }
 
     }

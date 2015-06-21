@@ -23,7 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 
 import com.welove.app.R;
-import com.welove.app.widget.photoview.PhotoView;
+import common.photoview.PhotoView;
 
 import appLogic.AppConstant;
 import common.ImageLoaderManager;

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.welove.app.R;
+import com.welove.view.FriendPopupWindow;
 
 import appLogic.AppConstant;
 import appLogic.UserInfo;

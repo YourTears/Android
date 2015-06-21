@@ -1,5 +1,6 @@
-package com.welove.activity;
+package com.welove.view;
 
+import com.welove.activity.MeInfoActivity;
 import com.welove.app.R;
 
 import android.content.Intent;

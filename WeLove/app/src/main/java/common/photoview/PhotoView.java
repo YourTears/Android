@@ -26,7 +26,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package com.welove.app.widget.photoview;
+package common.photoview;
 
 import android.content.Context;
 import android.graphics.RectF;
@@ -35,9 +35,9 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.welove.app.widget.photoview.PhotoViewAttacher.OnMatrixChangedListener;
-import com.welove.app.widget.photoview.PhotoViewAttacher.OnPhotoTapListener;
-import com.welove.app.widget.photoview.PhotoViewAttacher.OnViewTapListener;
+import common.photoview.PhotoViewAttacher.OnMatrixChangedListener;
+import common.photoview.PhotoViewAttacher.OnPhotoTapListener;
+import common.photoview.PhotoViewAttacher.OnViewTapListener;
 
 public class PhotoView extends ImageView implements IPhotoView {
 

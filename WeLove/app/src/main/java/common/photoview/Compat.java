@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.welove.app.widget.photoview;
+package common.photoview;
 
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;

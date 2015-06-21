@@ -8,10 +8,14 @@ import java.util.Map;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.welove.app.Constant;
 import com.welove.app.R;
-import com.welove.app.fx.others.LoadDataFromServer;
-import com.welove.app.fx.others.LoadDataFromServer.DataCallBack;
+import com.welove.view.FragmentConversation;
+import com.welove.view.FragmentFind;
+import com.welove.view.FragmentFriends;
+import com.welove.view.FragmentProfile;
+
+import common.LoadDataFromServer;
+import common.LoadDataFromServer.DataCallBack;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -80,7 +84,7 @@ public class MainActivity extends BaseActivity {
         initMeInfo();
 
         if (savedInstanceState != null
-                && savedInstanceState.getBoolean(Constant.ACCOUNT_REMOVED,
+                && savedInstanceState.getBoolean("",
                         false)) {
             // 防止被移除后，没点确定按钮然后按了home键，长期在后台又进app导致的crash
             // 三个fragment里加的判断同理
@@ -101,7 +105,7 @@ public class MainActivity extends BaseActivity {
         if (getIntent().getBooleanExtra("conflict", false)
                 && !isConflictDialogShow) {
             showConflictDialog();
-        } else if (getIntent().getBooleanExtra(Constant.ACCOUNT_REMOVED, false)
+        } else if (getIntent().getBooleanExtra("", false)
                 && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
         }
@@ -373,7 +377,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("isConflict", isConflict);
-        outState.putBoolean(Constant.ACCOUNT_REMOVED, isCurrentAccountRemoved);
+        outState.putBoolean("", isCurrentAccountRemoved);
         super.onSaveInstanceState(outState);
     }
 
@@ -383,7 +387,7 @@ public class MainActivity extends BaseActivity {
         if (getIntent().getBooleanExtra("conflict", false)
                 && !isConflictDialogShow) {
             showConflictDialog();
-        } else if (getIntent().getBooleanExtra(Constant.ACCOUNT_REMOVED, false)
+        } else if (getIntent().getBooleanExtra("", false)
                 && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
         }
@@ -429,15 +433,15 @@ public class MainActivity extends BaseActivity {
                 final String split = "66split88";
                 totaluser += split + usernames.get(i);
             }
-            totaluser = totaluser.replace(Constant.NEW_FRIENDS_USERNAME, "");
-            totaluser = totaluser.replace(Constant.GROUP_USERNAME, "");
+            totaluser = totaluser.replace("", "");
+            totaluser = totaluser.replace("", "");
 
             Map<String, String> map = new HashMap<String, String>();
 
             map.put("uids", totaluser);
 
             LoadDataFromServer task = new LoadDataFromServer(MainActivity.this,
-                    Constant.URL_Friends, map);
+                    "", map);
 
             task.getData(new DataCallBack() {
 
@@ -544,7 +548,7 @@ public class MainActivity extends BaseActivity {
         Map<String, String> map_uf = new HashMap<String, String>();
         map_uf.put("hxid", hxid);
         LoadDataFromServer task = new LoadDataFromServer(null,
-                Constant.URL_Get_UserInfo, map_uf);
+                "", map_uf);
         task.getData(new DataCallBack() {
             @Override
             public void onDataCallBack(JSONObject data) {

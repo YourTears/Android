@@ -51,15 +51,10 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.welove.app.Constant;
 import com.welove.app.R;
-import com.welove.app.fx.others.LoadDataFromServer;
-import com.welove.app.fx.others.LoadDataFromServer.DataCallBack;
+import common.LoadDataFromServer;
+import common.LoadDataFromServer.DataCallBack;
 
-/**
- * 注册页
- * 
- */
 public class RegisterActivity extends BaseActivity {
     private EditText et_usernick;
     private EditText et_usertel;
@@ -173,7 +168,7 @@ public class RegisterActivity extends BaseActivity {
                 map.put("usertel", usertel);
                 map.put("password", password);
                 LoadDataFromServer registerTask = new LoadDataFromServer(
-                        RegisterActivity.this, Constant.URL_Register_Tel, map);
+                        RegisterActivity.this, "", map);
 
                 registerTask.getData(new DataCallBack() {
 

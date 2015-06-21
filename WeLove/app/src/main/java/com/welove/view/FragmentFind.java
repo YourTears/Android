@@ -1,4 +1,4 @@
-package com.welove.activity;
+package com.welove.view;
 
 
 
