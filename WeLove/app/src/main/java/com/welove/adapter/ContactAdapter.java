@@ -42,6 +42,7 @@ public class ContactAdapter extends BaseAdapter {
 
             if(friend != null){
                 updateStatusView((TextView)view.findViewById(R.id.tv_status), friend.friendStatus);
+                ((TextView) view.findViewById(R.id.tv_name)).setText(friend.nickName);
             }
 
             return view;

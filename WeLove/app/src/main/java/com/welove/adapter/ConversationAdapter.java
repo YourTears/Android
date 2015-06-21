@@ -62,21 +62,21 @@ public class ConversationAdapter extends BaseAdapter {
             view.setTag(conversation.friendId);
             views.put(conversation.friendId, view);
 
-            TextView nameView = (TextView) view.findViewById(R.id.tv_name);
+
             ImageView imageView = (ImageView) view.findViewById(R.id.iv_avatar);
 
             if (friend != null) {
-                nameView.setText(friend.nickName);
-
                 AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
             }
         }
 
+        TextView nameView = (TextView) view.findViewById(R.id.tv_name);
         TextView unreadView = (TextView) view.findViewById(R.id.tv_unread);
         TextView contentView = (TextView) view.findViewById(R.id.tv_content);
         TextView timeView = (TextView) view.findViewById(R.id.tv_time);
         ImageView statusView = (ImageView) view.findViewById(R.id.msg_state);
 
+        nameView.setText(friend.nickName);
         contentView.setText(conversation.body);
         timeView.setText(DateUtils.getDateTimeStringForConversation(conversation.time));
 
