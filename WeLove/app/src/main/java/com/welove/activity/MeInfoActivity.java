@@ -105,6 +105,7 @@ public class MeInfoActivity extends BroadcastActivity {
         nameView.setText(AppConstant.meInfo.name);
         idView.setText(AppConstant.meInfo.id);
         signView.setText(AppConstant.meInfo.sign);
+        imageView.setImageDrawable(AppConstant.defaultImageDrawable);
 
         AppConstant.imageLoaderManager.loadImage(imageView, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.Memory);
     }

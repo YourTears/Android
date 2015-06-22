@@ -1,5 +1,6 @@
 package appLogic;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -7,6 +8,7 @@ import java.util.UUID;
  */
 public class Message {
     public UUID id = null;
+    public String externalId = null;
     public String friendId = null;
     public Direction direction;
     public String body = null;
@@ -16,7 +18,7 @@ public class Message {
     public MessageType type;
 
     public Message() {
-
+        time = (new Date()).getTime();
     }
 
     public Message(UUID id, String friendId, Direction direction, String body, long time, MessageType type) {

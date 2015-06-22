@@ -34,6 +34,7 @@ public class UserManager {
     private HashSet<String> blockIds;
     private HashMap<String, UserInfo> friendMapping;
     private HashMap<String, UserInfo> pendingFriendMapping;
+    private HashMap<String, UserInfo> externalMapping;
     private UserTable userTable;
 
     private UserManager(Context context) {
@@ -42,12 +43,16 @@ public class UserManager {
         blockIds = new HashSet<String>();
         friendMapping = new HashMap<String, UserInfo>();
         pendingFriendMapping = new HashMap<String, UserInfo>();
+        externalMapping = new HashMap<>();
 
         adapter = new ContactAdapter(context, friends, pendingFriends);
 
         userTable = UserTable.getInstance(context);
 
         for(UserInfo user : userTable.getFriends()){
+            if(user.id == null || user.id.isEmpty() || user.externalId == null || user.externalId.isEmpty())
+                continue;
+
             if(user.nickName == null || user.nickName.isEmpty()){
                 user.nickName = user.name;
             }
@@ -57,6 +62,7 @@ public class UserManager {
                 if (user.friendStatus == UserInfo.FriendStatus.Friend) {
                     friends.add(user);
                     friendMapping.put(user.id, user);
+                    externalMapping.put(user.externalId, user);
                 } else {
                     pendingFriends.add(user);
                     pendingFriendMapping.put(user.id, user);
@@ -98,6 +104,18 @@ public class UserManager {
         return friendMapping.containsKey(id);
     }
 
+    public boolean containExternalId(String externalId){
+        return externalMapping.containsKey(externalId);
+    }
+
+    public UserInfo getUserByExternal(String externalId){
+        if(externalMapping.containsKey(externalId)){
+            return externalMapping.get(externalId);
+        }
+
+        return null;
+    }
+
     public int getFriendCount() {
         return friends.size() + pendingFriends.size();
     }
@@ -117,6 +135,9 @@ public class UserManager {
 
                 friends.add(user);
                 friendMapping.put(userId, user);
+
+                externalMapping.put(user.externalId, user);
+
                 Collections.sort(friends, new UserManager.PinyinComparator());
 
                 adapter.notifyDataSetChanged();

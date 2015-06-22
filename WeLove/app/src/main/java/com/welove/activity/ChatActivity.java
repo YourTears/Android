@@ -58,6 +58,8 @@ import com.welove.adapter.ExpressionAdapter;
 import com.welove.app.R;
 import com.welove.adapter.ExpressionPagerAdapter;
 import com.welove.view.ExpandGridView;
+
+import chat.ConversationProxy;
 import common.PasteEditText;
 
 import appLogic.AppConstant;
@@ -139,6 +141,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     public String playMsgId;
 
     private MessageManager messageManager;
+    private ConversationProxy conversationProxy;
 
     private boolean sentMessage = false;
 
@@ -206,6 +209,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         messageLayout.setBackgroundResource(R.drawable.input_bar_bg_normal);
 
         messageManager = new MessageManager(this, friend.id);
+        conversationProxy = new ConversationProxy(friend, messageManager);
 
         // 动画资源文件,用于录制语音时
         micImages = new Drawable[]{

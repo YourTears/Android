@@ -87,8 +87,12 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="fastjson-1.1.34.android" level="project" />
+    <orderEntry type="library" exported="" name="eventbus-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="avoscloud-push-v3.1.4" level="project" />
+    <orderEntry type="library" exported="" name="avoscloud-sdk-v3.1.4" level="project" />
     <orderEntry type="library" exported="" name="libjingle_peerconnection" level="project" />
     <orderEntry type="library" exported="" name="autobanh" level="project" />
+    <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
     <orderEntry type="library" exported="" name="locSDK_3.3" level="project" />
   </component>
 </module>

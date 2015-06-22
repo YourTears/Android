@@ -2,11 +2,25 @@
 <items version="2" >
 
     <item
+        jar="D:\Project\Android\WeLove\app\libs\universal-image-loader-1.9.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
+        <dex dex="D:\Project\Android\WeLove\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.3-bcaa3002a7436d0bb980067bb71b9dad8a13cd10.jar" />
+    </item>
+    <item
         jar="D:\Project\Android\WeLove\app\libs\fastjson-1.1.34.android.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="bef1d1224be099c387794bce1bdf81b38f37c6ce">
         <dex dex="D:\Project\Android\WeLove\app\build\intermediates\pre-dexed\debug\fastjson-1.1.34.android-27a925c360371307766940bd8b53d840f5764da7.jar" />
+    </item>
+    <item
+        jar="D:\Project\Android\WeLove\app\libs\eventbus-2.4.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
+        <dex dex="D:\Project\Android\WeLove\app\build\intermediates\pre-dexed\debug\eventbus-2.4.0-a12cc63ecc54914c6c414ef3e4d018df85e31add.jar" />
     </item>
     <item
         jar="D:\Project\Android\WeLove\app\libs\locSDK_3.3.jar"
@@ -35,6 +49,20 @@
         revision="21.1.2"
         sha1="9b51fb848b29a3e41b8474ce2d4360f4d7d144c5">
         <dex dex="D:\Project\Android\WeLove\app\build\intermediates\pre-dexed\debug\autobanh-c6d683cf2962560bc178c60519f7cc436c187878.jar" />
+    </item>
+    <item
+        jar="D:\Project\Android\WeLove\app\libs\avoscloud-sdk-v3.1.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9ff080ea0930132c1073a97e8c0d728ef1e1a9ea">
+        <dex dex="D:\Project\Android\WeLove\app\build\intermediates\pre-dexed\debug\avoscloud-sdk-v3.1.4-a7d5bfe8812e73626de3e402b76c38a338d2c59e.jar" />
+    </item>
+    <item
+        jar="D:\Project\Android\WeLove\app\libs\avoscloud-push-v3.1.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="571a7476eaa1ad0284e64ceb0d48d5a100cce8e8">
+        <dex dex="D:\Project\Android\WeLove\app\build\intermediates\pre-dexed\debug\avoscloud-push-v3.1.4-f6adeaf0092e5c7afa7863ecd1fd1cabe00a1036.jar" />
     </item>
 
 </items>

@@ -19,6 +19,7 @@ public class MessageManager {
     public String friendId;
     public List<Message> messages;
     public Map<UUID, Message> map;
+    public Map<String, Message> externalMap;
     public long lastMessageTime;
     public MessageAdapter adapter;
 
@@ -33,13 +34,23 @@ public class MessageManager {
         messages = messageTable.getMessages(friendId, (new Date()).getTime());
 
         map = new HashMap<>();
+        externalMap = new HashMap<>();
 
         adapter = new MessageAdapter(context, friendId, messages);
+    }
+
+    public Message getMessageByExternal(String externalId){
+        if(externalMap.containsKey(externalId))
+            return externalMap.get(externalId);
+
+        return null;
     }
 
     public synchronized void addOrReplaceMessage(Message message) {
         if(!map.containsKey(message.id)) {
             map.put(message.id, message);
+            externalMap.put(message.externalId, message);
+
             messages.add(message);
         }
 

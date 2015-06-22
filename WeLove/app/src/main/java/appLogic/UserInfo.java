@@ -6,6 +6,7 @@ package appLogic;
 public class UserInfo {
     public String sys_id;
     public String id;
+    public String externalId;
     public String name;
     public String name_pinyin;
     public String nickName;
