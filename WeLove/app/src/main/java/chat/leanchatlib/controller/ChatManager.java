@@ -129,12 +129,8 @@ public class ChatManager extends AVIMClientEventHandler {
   }
 
   public void openClientWithSelfId(String selfId, final AVIMClientCallback callback) {
-    if (this.selfId == null) {
-      throw new IllegalStateException("please call setupDatabaseWithSelfId() first");
-    }
-    if (!this.selfId.equals(selfId)) {
-      throw new IllegalStateException("setupDatabaseWithSelfId and openClient's selfId should be equal");
-    }
+    this.selfId = selfId;
+
     imClient = AVIMClient.getInstance(selfId);
     imClient.open(new AVIMClientCallback() {
       @Override

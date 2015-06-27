@@ -33,6 +33,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
+        android:name="com.welove.activity.WeLoveApp"
         android:allowBackup="true"
         android:icon="@drawable/logo_welove"
         android:label="@string/app_name" >

@@ -10,11 +10,13 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.welove.app.R;
 import com.welove.broadcast.UpdateInfoService;
+import com.welove.database.DbOpenHelper;
 import com.welove.view.FragmentConversation;
 import com.welove.view.FragmentFind;
 import com.welove.view.FragmentFriends;
 import com.welove.view.FragmentProfile;
 
+import chat.ConversationProxy;
 import common.LoadDataFromServer;
 import common.LoadDataFromServer.DataCallBack;
 
@@ -85,6 +87,8 @@ public class MainActivity extends BroadcastActivity {
         super.onCreate(savedInstanceState);
 
         initMeInfo();
+
+        ConversationProxy.connectChatServer();
 
         if (savedInstanceState != null
                 && savedInstanceState.getBoolean("",
