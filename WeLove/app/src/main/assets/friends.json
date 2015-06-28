@@ -14,7 +14,7 @@
         {
             "sys_id":"1122324870",
             "id":"jianglu",
-            "externalId":"test1",
+            "externalId":"test2",
             "name":"Long",
             "gender":"1",
             "phone" : "13818085246",
@@ -24,7 +24,7 @@
         {
             "sys_id":"2029870",
             "id":"maomao",
-            "externalId":"test1",
+            "externalId":"test3",
             "name":"Mao Mao",
             "gender":"0",
             "phone" : "13818085246",
@@ -34,7 +34,7 @@
         {
             "sys_id":"112364870",
             "id":"Yuanyuan",
-            "externalId":"test1",
+            "externalId":"test4",
             "name":"Yuan Yuan",
             "gender":"1",
             "phone" : "13818085246",
@@ -44,7 +44,7 @@
         {
             "sys_id":"20311870",
             "id":"Shuanshuan",
-            "externalId":"test1",
+            "externalId":"test5",
             "name":"ShuanShuan",
             "gender":"0",
             "phone" : "13818085246",
@@ -54,7 +54,7 @@
         {
             "sys_id":"10294870",
             "id":"jiasong",
-            "externalId":"test1",
+            "externalId":"test6",
             "name":"Song Jia",
             "gender":"1",
             "phone" : "13818085246",
@@ -64,7 +64,7 @@
         {
             "sys_id":"20272870",
             "id":"Boxue",
-            "externalId":"test1",
+            "externalId":"test7",
             "name":"Bo xue",
             "gender":"0",
             "phone" : "13818085246",
@@ -74,7 +74,7 @@
         {
             "sys_id":"11384870",
             "id":"Bingbing123",
-            "externalId":"test1",
+            "externalId":"test8",
             "name":"Bing",
             "gender":"1",
             "phone" : "13818085246",
@@ -84,7 +84,7 @@
         {
             "sys_id":"203227870",
             "id":"songqian",
-            "externalId":"test1",
+            "externalId":"test9",
             "name":"Qian",
             "gender":"0",
             "phone" : "13818085246",
@@ -94,7 +94,7 @@
         {
             "sys_id":"2076545870",
             "id":"Kunling",
-            "externalId":"test1",
+            "externalId":"test10",
             "name":"Kun L",
             "gender":"0",
             "phone" : "13818085246",
@@ -104,7 +104,7 @@
         {
             "sys_id":"11563270",
             "id":"Lengleng",
-            "externalId":"test1",
+            "externalId":"test11",
             "name":"Leng",
             "gender":"1",
             "phone" : "13818085246",
@@ -114,7 +114,7 @@
         {
             "sys_id":"3332870",
             "id":"Shishi",
-            "externalId":"test1",
+            "externalId":"test12",
             "name":"Shi_Shi",
             "gender":"0",
             "phone" : "13818085246",
@@ -124,7 +124,7 @@
         {
             "sys_id":"11123870",
             "id":"lan",
-            "externalId":"test1",
+            "externalId":"test13",
             "name":"A Lan",
             "gender":"0",
             "phone" : "13818085246",

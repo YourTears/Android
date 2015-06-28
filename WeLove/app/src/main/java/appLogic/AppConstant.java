@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import chat.ConversationProxy;
 import common.ImageLoaderManager;
 
 /**
@@ -31,4 +32,6 @@ public class AppConstant {
     public static ImageLoaderManager imageLoaderManager = null;
 
     public static String imageExtension = ".PNG";
+
+    public static ConversationProxy conversationProxy = null;
 }

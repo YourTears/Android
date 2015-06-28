@@ -11,10 +11,8 @@ import java.util.UUID;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -54,12 +52,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.welove.adapter.ExpressionAdapter;
 import com.welove.app.R;
 import com.welove.adapter.ExpressionPagerAdapter;
 import com.welove.view.ExpandGridView;
 
 import chat.ConversationProxy;
+import chat.MessageEvent;
 import common.PasteEditText;
 
 import appLogic.AppConstant;
@@ -67,6 +67,7 @@ import appLogic.UserInfo;
 import appLogic.Message;
 import appLogic.MessageManager;
 import common.ExpressionUtils;
+import de.greenrobot.event.EventBus;
 
 public class ChatActivity extends Activity implements OnClickListener {
 
@@ -123,7 +124,6 @@ public class ChatActivity extends Activity implements OnClickListener {
     private ClipboardManager clipboard;
     private ViewPager expressionView;
     private Drawable[] micImages;
-    private NewMessageBroadcastReceiver receiver;
     public static ChatActivity activityInstance = null;
     // 给谁发送消息
     private UserInfo friend;
@@ -175,6 +175,8 @@ public class ChatActivity extends Activity implements OnClickListener {
 
         readingMessageMode();
         conversationListView.requestFocus();
+
+        EventBus.getDefault().register(this);
     }
 
     /**
@@ -399,20 +401,6 @@ public class ChatActivity extends Activity implements OnClickListener {
                 return false;
             }
         });
-        // 注册接收消息广播
-        receiver = new NewMessageBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        // 设置广播的优先级别大于Mainacitivity,这样如果消息来的时候正好在chat页面，直接显示消息，而不是提示消息未读
-        intentFilter.setPriority(5);
-        registerReceiver(receiver, intentFilter);
-
-        // 注册一个ack回执消息的BroadcastReceiver
-        IntentFilter ackMessageIntentFilter = new IntentFilter();
-        ackMessageIntentFilter.setPriority(5);
-
-        // 注册一个消息送达的BroadcastReceiver
-        IntentFilter deliveryAckMessageIntentFilter = new IntentFilter();
-        deliveryAckMessageIntentFilter.setPriority(5);
 
         // show forward message if the message is not null
         String forward_msg_id = getIntent().getStringExtra("forward_msg_id");
@@ -653,6 +641,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         message.status = Message.MessageStatus.SUCCEED;
 
         messageManager.addOrReplaceMessage(message);
+        conversationProxy.sendMessage(message);
     }
 
     /**
@@ -853,49 +842,10 @@ public class ChatActivity extends Activity implements OnClickListener {
         startActivity(intent);
     }
 
-    /**
-     * 消息广播接收者
-     */
-    private class NewMessageBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // 记得把广播给终结掉
-            abortBroadcast();
-
-            String username = intent.getStringExtra("from");
-
-            String msgid = intent.getStringExtra("msgid");
-            // 收到这个广播的时候，message已经在db和内存里了，可以通过id获取mesage对象
-
-        }
+    public void onEventBackgroundThread(MessageEvent messageEvent) {
+        conversationProxy.handleMessageEvent(messageEvent);
     }
 
-    /**
-     * 消息回执BroadcastReceiver
-     */
-    private BroadcastReceiver ackMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            abortBroadcast();
-
-            String msgid = intent.getStringExtra("msgid");
-            String from = intent.getStringExtra("from");
-
-        }
-    };
-
-    /**
-     * 消息送达BroadcastReceiver
-     */
-    private BroadcastReceiver deliveryAckMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            abortBroadcast();
-
-            String msgid = intent.getStringExtra("msgid");
-            String from = intent.getStringExtra("from");
-        }
-    };
     private PowerManager.WakeLock wakeLock;
 
     /**
@@ -992,19 +942,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         super.onDestroy();
         activityInstance = null;
 
-        // 注销广播
-        try {
-            unregisterReceiver(receiver);
-            receiver = null;
-        } catch (Exception e) {
-        }
-        try {
-            unregisterReceiver(ackMessageReceiver);
-            ackMessageReceiver = null;
-            unregisterReceiver(deliveryAckMessageReceiver);
-            deliveryAckMessageReceiver = null;
-        } catch (Exception e) {
-        }
+        EventBus.getDefault().unregister(this);
     }
 
     protected void onPause() {

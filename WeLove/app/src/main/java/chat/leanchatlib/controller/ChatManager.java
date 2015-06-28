@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import chat.leanchatlib.model.ConversationType;
-import chat.leanchatlib.model.MessageEvent;
-import chat.leanchatlib.model.Room;
+import chat.MessageEvent;
 import chat.leanchatlib.utils.Utils;
 import de.greenrobot.event.EventBus;
 

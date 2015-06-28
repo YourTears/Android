@@ -62,6 +62,7 @@ public class UserManager {
                 if (user.friendStatus == UserInfo.FriendStatus.Friend) {
                     friends.add(user);
                     friendMapping.put(user.id, user);
+
                     externalMapping.put(user.externalId, user);
                 } else {
                     pendingFriends.add(user);
@@ -201,6 +202,8 @@ public class UserManager {
                             if (user.friendStatus == UserInfo.FriendStatus.Friend) {
                                 friends.add(user);
                                 friendMapping.put(user.id, user);
+
+                                externalMapping.put(user.externalId, user);
                             } else {
                                 pendingFriends.add(user);
                                 pendingFriendMapping.put(user.id, user);
@@ -223,21 +226,22 @@ public class UserManager {
     }
 
     private UserInfo getFriendInfo(JSONObject json) {
-        UserInfo friend = new UserInfo();
+        UserInfo user = new UserInfo();
 
         try {
-            friend.sys_id = json.getString("sys_id");
-            friend.id = json.getString("id");
-            friend.gender = UserInfo.parseGender(json.getInt("gender"));
-            friend.name = json.getString("name");
-            friend.imageUrl = json.getString("imageUrl");
-            friend.friendStatus = UserInfo.parseFriendStatus(json.getInt("friendStatus"));
+            user.sys_id = json.getString("sys_id");
+            user.id = json.getString("id");
+            user.externalId = json.getString("externalId");
+            user.gender = UserInfo.parseGender(json.getInt("gender"));
+            user.name = json.getString("name");
+            user.imageUrl = json.getString("imageUrl");
+            user.friendStatus = UserInfo.parseFriendStatus(json.getInt("friendStatus"));
 
         } catch (JSONException e) {
             return null;
         }
 
-        return friend;
+        return user;
     }
 
     @SuppressLint("DefaultLocale")

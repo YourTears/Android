@@ -1,9 +1,9 @@
-package chat.leanchatlib.model;
+package chat;
 
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 
 /**
- * Created by lzw on 15/3/4.
+ * Created by Long on 15/6/28.
  */
 public class MessageEvent {
   public enum Type {

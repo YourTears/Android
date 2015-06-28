@@ -1,10 +1,6 @@
 package chat;
 
-import android.content.Intent;
-import android.widget.Switch;
-
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
@@ -20,10 +16,8 @@ import appLogic.AppConstant;
 import appLogic.Message;
 import appLogic.MessageManager;
 import appLogic.UserInfo;
-import appLogic.UserManager;
 import chat.leanchatlib.controller.ChatManager;
 import chat.leanchatlib.controller.MessageAgent;
-import chat.leanchatlib.model.MessageEvent;
 
 /**
  * Created by Long on 6/22/2015.
@@ -33,14 +27,12 @@ public class ConversationProxy {
     private AVIMConversation conversation = null;
     private MessageManager messageManager = null;
     private static ChatManager chatManager = ChatManager.getInstance();
-    private static boolean isConnected = false;
 
     public ConversationProxy(UserInfo user, MessageManager messageManager){
         chatManager.fetchConversationWithUserId(user.externalId, new AVIMConversationCreatedCallback() {
             @Override
             public void done(AVIMConversation avimConversation, AVException e) {
                 chatManager.registerConversation(avimConversation);
-                isConnected = true;
                 conversation = avimConversation;
                 messageAgent = new MessageAgent(conversation);
             }
@@ -49,21 +41,21 @@ public class ConversationProxy {
         this.messageManager = messageManager;
     }
 
-    public static void connectChatServer(){
+    public static void connectChatServer() {
         chatManager.openClientWithSelfId(AppConstant.meInfo.externalId, new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVException e) {
-                if (e != null) {
-                    e.printStackTrace();
-                }
-
-                isConnected = true;
+                int a = 2;
             }
         });
     }
 
+    public boolean isConnected(){
+        return chatManager.isConnect();
+    }
+
     public void sendMessage(Message message){
-        if(!isConnected)
+        if(!isConnected())
             return;
 
         AVIMTextMessage avimTextMessage = null;
@@ -72,7 +64,7 @@ public class ConversationProxy {
         }
     }
 
-    public void onEvent(MessageEvent messageEvent) {
+    public void handleMessageEvent(MessageEvent messageEvent) {
         AVIMTypedMessage avimTypedMessage = messageEvent.getMessage();
         if(avimTypedMessage == null)
             return;
@@ -110,7 +102,7 @@ public class ConversationProxy {
         if (message != null) {
             message.id = UUID.randomUUID();
             message.externalId = avimTypedMessage.getMessageId();
-            message.friendId = AppConstant.userManager.getUserByExternal(message.externalId).id;
+            message.friendId = AppConstant.userManager.getUserByExternal(avimTypedMessage.getFrom()).id;
             message.isRead = true;
             message.time = avimTypedMessage.getTimestamp();
             message.direction = Message.Direction.RECEIVE;
