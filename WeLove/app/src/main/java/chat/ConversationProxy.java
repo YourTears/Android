@@ -97,6 +97,7 @@ public class ConversationProxy {
                 message = new Message();
                 AVIMTextMessage textMessage = (AVIMTextMessage) avimTypedMessage;
                 message.body = textMessage.getText();
+                message.type = Message.MessageType.TEXT;
         }
 
         if (message != null) {
@@ -126,6 +127,7 @@ public class ConversationProxy {
 
             case AVIMMessageStatusSending:
                 status = Message.MessageStatus.INPROGRESS;
+                break;
 
             default:
                 status = Message.MessageStatus.SUCCEED;
