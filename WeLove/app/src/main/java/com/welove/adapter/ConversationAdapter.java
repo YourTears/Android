@@ -24,13 +24,11 @@ public class ConversationAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
     private List<Conversation> conversations;
-    private Map<String, View> views = null;
 
     public ConversationAdapter(Context context, List<Conversation> conversations) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.conversations = conversations;
-        views = new HashMap<>();
     }
 
     @Override
@@ -49,25 +47,18 @@ public class ConversationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent) {
 
-        final Conversation conversation = (Conversation) getItem(position);
-        final UserInfo friend = AppConstant.userManager.getUser(conversation.friendId);
+        Conversation conversation = (Conversation) getItem(position);
 
-        View view = null;
-        if(views.containsKey(conversation.friendId)){
-            view = views.get(conversation.friendId);
-        }else{
-            view = inflater.inflate(R.layout.item_conversation_single, parent, false);
-            view.setTag(conversation.friendId);
-            views.put(conversation.friendId, view);
+        view = inflater.inflate(R.layout.item_conversation_single, parent, false);
+        view.setTag(conversation.friendId);
 
+        ImageView imageView = (ImageView) view.findViewById(R.id.iv_avatar);
 
-            ImageView imageView = (ImageView) view.findViewById(R.id.iv_avatar);
-
-            if (friend != null) {
-                AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
-            }
+        UserInfo friend = AppConstant.userManager.getUser(conversation.friendId);
+        if (friend != null) {
+            AppConstant.imageLoaderManager.loadImage(imageView, friend.id, friend.imageUrl, ImageLoaderManager.CacheMode.Memory);
         }
 
         TextView nameView = (TextView) view.findViewById(R.id.tv_name);

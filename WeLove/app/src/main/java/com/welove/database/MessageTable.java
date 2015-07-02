@@ -18,6 +18,7 @@ import appLogic.Message;
 public class MessageTable {
     public static final String TableName = "Messages";
     public static final String ID = "ID";
+    public static final String ExternalID = "ExternalID";
     public static final String FriendId = "FriendId";
     public static final String Direction = "Direction";
     public static final String Body = "Body";
@@ -49,6 +50,7 @@ public class MessageTable {
             if (dbWriter.isOpen()) {
                 ContentValues content = new ContentValues();
                 content.put(ID, message.id.toString());
+                content.put(ExternalID, message.externalId);
                 content.put(FriendId, message.friendId);
                 content.put(Direction, Message.parseDirection(message.direction));
                 content.put(Body, message.body);
@@ -83,6 +85,7 @@ public class MessageTable {
                     Message message = new Message();
 
                     message.id = UUID.fromString(cursor.getString(cursor.getColumnIndex(ID)));
+                    message.externalId = cursor.getString(cursor.getColumnIndex(ExternalID));
                     message.friendId = cursor.getString(cursor.getColumnIndex(FriendId));
                     message.direction = Message.parseDirection(cursor.getInt(cursor.getColumnIndex(Direction)));
                     message.body = cursor.getString(cursor.getColumnIndex(Body));
@@ -135,5 +138,41 @@ public class MessageTable {
             dbWriter.close();
             dbWriter = null;
         }
+    }
+
+    public Message getMessageByExternalId(String externalId){
+        try {
+            dbReader = dbHelper.getReadableDatabase();
+            if (dbReader.isOpen()) {
+                String query = String.format("SELECT * FROM " + TableName + " WHERE ExternalId = '" + externalId + "'",
+                        MessageCount);
+
+                Cursor cursor = dbReader.rawQuery(query, null);
+
+                while (cursor.moveToNext()) {
+                    Message message = new Message();
+
+                    message.id = UUID.fromString(cursor.getString(cursor.getColumnIndex(ID)));
+                    message.externalId = cursor.getString(cursor.getColumnIndex(ExternalID));
+                    message.friendId = cursor.getString(cursor.getColumnIndex(FriendId));
+                    message.direction = Message.parseDirection(cursor.getInt(cursor.getColumnIndex(Direction)));
+                    message.body = cursor.getString(cursor.getColumnIndex(Body));
+                    message.type = Message.parseType(cursor.getInt(cursor.getColumnIndex(MessageType)));
+                    message.time = cursor.getLong(cursor.getColumnIndex(Time));
+                    message.status = Message.parseStatus(cursor.getInt(cursor.getColumnIndex(Status)));
+
+                    return message;
+                }
+
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("MessageTable", e.getMessage());
+        } finally {
+            dbReader.close();
+            dbReader = null;
+        }
+
+        return null;
     }
 }

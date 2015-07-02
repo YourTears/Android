@@ -27,12 +27,12 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	 
 	private static final String Messages_Table_Create =
             String.format("CREATE TABLE IF NOT EXISTS %s " +
-                    "(%s TEXT PRIMARY KEY, %s TEXT, %s INTEGER, %s TEXT, %s BIGINT, %s INTEGER, %s INTEGER)",
-                    MessageTable.TableName, MessageTable.ID, MessageTable.FriendId, MessageTable.Direction,
+                    "(%s TEXT PRIMARY KEY, %s TEXT, %s TEXT, %s INTEGER, %s TEXT, %s BIGINT, %s INTEGER, %s INTEGER)",
+                    MessageTable.TableName, MessageTable.ID, MessageTable.ExternalID, MessageTable.FriendId, MessageTable.Direction,
                     MessageTable.Body, MessageTable.Time, MessageTable.MessageType, MessageTable.Status);
 	private static final String Messages_Index_Create =
-            String.format("CREATE INDEX IF NOT EXISTS MESSAGEINDEX ON %s(%s, %s)",
-                    MessageTable.TableName, MessageTable.FriendId, MessageTable.Time);
+            String.format("CREATE INDEX IF NOT EXISTS MESSAGEINDEX ON %s(%s, %s, %s)",
+                    MessageTable.TableName, MessageTable.FriendId, MessageTable.ExternalID, MessageTable.Time);
 
     private static final String UnreadMessageCount_Table_Create =
             String.format("CREATE TABLE IF NOT EXISTS %s (%s TEXT PRIMARY KEY, %s INTEGER)",

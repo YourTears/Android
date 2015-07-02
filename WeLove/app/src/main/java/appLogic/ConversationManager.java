@@ -17,61 +17,85 @@ public class ConversationManager {
     private HashMap<String, Conversation> map;
     public ConversationAdapter adapter;
 
-    public int totalUnreadCount = 0;
+    private int totalUnreadCount = 0;
+    private boolean needRefresh = false;
 
     ConversationTable conversationTable = null;
-    MessageTable messageTable = null;
 
     public ConversationManager(Context context) {
         conversationTable = ConversationTable.getInstance(context);
-        messageTable = MessageTable.getInstance(context);
 
         map = new HashMap<>();
-        refresh();
+        refreshData();
         adapter = new ConversationAdapter(context, conversations);
     }
 
     public synchronized void addOrReplaceConversation(Message message) {
-        Conversation conversation = new Conversation();
+        Conversation conversation = null;
+
+        if(map.containsKey(message.friendId)) {
+            conversation = map.get(message.friendId);
+            conversations.remove(conversation);
+        }
+        else{
+            conversation = new Conversation();
+            map.put(conversation.friendId, conversation);
+        }
         conversation.friendId = message.friendId;
         conversation.body = message.body;
         conversation.time = message.time;
         //conversation.status = message.status;
 
-        deleteConversationInternal(conversation.friendId);
+        if(!message.isRead) {
+            conversation.unreadCount ++;
+            addUnreadCount(1);
+        }
 
         conversations.add(0, conversation);
-        map.put(conversation.friendId, conversation);
 
         conversationTable.replaceConversation(conversation);
 
-        adapter.notifyDataSetChanged();
+        needRefresh = true;
     }
 
-    public synchronized void refresh() {
+    public synchronized void refreshData() {
         conversations = conversationTable.getConversations();
+
+        totalUnreadCount = 0;
 
         for(int idx = conversations.size() - 1; idx >= 0; idx --){
             Conversation conversation = conversations.get(idx);
             if(AppConstant.userManager.containFriend(conversation.friendId)){
                 map.put(conversation.friendId, conversation);
+                addUnreadCount(conversation.unreadCount);
             } else{
                 conversationTable.deleteConversation(conversation.friendId);
-                messageTable.deleteMessages(conversation.friendId);
+                AppConstant.messageTable.deleteMessages(conversation.friendId);
                 conversations.remove(idx);
             }
         }
+
+        needRefresh = true;
     }
 
-    public synchronized void refreshListView(){
-        adapter.notifyDataSetChanged();
+    public synchronized void refreshView(){
+        if(needRefresh) {
+            adapter.notifyDataSetChanged();
+        }
+
+        needRefresh = false;
     }
 
     public synchronized void deleteConversation(String friendId){
-        deleteConversationInternal(friendId);
+        if(map.containsKey(friendId)){
+            conversations.remove(map.get(friendId));
+            map.remove(friendId);
+
+            needRefresh = true;
+        }
+
         conversationTable.deleteConversation(friendId);
-        messageTable.deleteMessages(friendId);
-        adapter.notifyDataSetChanged();
+        AppConstant.messageTable.deleteMessages(friendId);
     }
 
     public synchronized void saveConversations(){
@@ -80,10 +104,31 @@ public class ConversationManager {
         }
     }
 
-    private void deleteConversationInternal(String friendId){
-        if(map.containsKey(friendId)){
-            conversations.remove(map.get(friendId));
-            map.remove(friendId);
+    public int getUnreadCount(){
+        return totalUnreadCount;
+    }
+
+    private synchronized void addUnreadCount(int count){
+        totalUnreadCount += count;
+
+        // Something is wrong
+        if(totalUnreadCount < 0)
+            totalUnreadCount = 0;
+    }
+
+    public void cleanUnread(String friendId){
+        if(!map.containsKey(friendId)){
+            return;
+        }
+
+        Conversation conversation = map.get(friendId);
+
+        int unread = conversation.unreadCount;
+
+        if(unread != 0){
+            conversation.unreadCount = 0;
+            addUnreadCount(-unread);
+            needRefresh = true;
         }
     }
 }

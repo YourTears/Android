@@ -157,6 +157,7 @@ public class UserManager {
             friends.remove(user);
 
             AppConstant.conversationManager.deleteConversation(userId);
+            AppConstant.conversationManager.refreshView();
         }
 
         if (pendingFriendMapping.containsKey(userId)) {

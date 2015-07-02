@@ -23,15 +23,12 @@ public class MessageManager {
     public long lastMessageTime;
     public MessageAdapter adapter;
 
-    private MessageTable messageTable = null;
-
     public MessageManager(Context context, String friendId) {
         this.friendId = friendId;
         messages = new ArrayList<>();
         lastMessageTime = (new Date()).getTime();
 
-        messageTable = MessageTable.getInstance(context);
-        messages = messageTable.getMessages(friendId, (new Date()).getTime());
+        messages = AppConstant.messageTable.getMessages(friendId, (new Date()).getTime());
 
         map = new HashMap<>();
         externalMap = new HashMap<>();
@@ -54,7 +51,7 @@ public class MessageManager {
             messages.add(message);
         }
 
-        messageTable.insertMessage(message);
+        AppConstant.messageTable.insertMessage(message);
         adapter.notifyDataSetChanged();
     }
 

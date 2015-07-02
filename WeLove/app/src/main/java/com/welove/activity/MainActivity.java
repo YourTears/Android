@@ -11,12 +11,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.welove.app.R;
 import com.welove.broadcast.UpdateInfoService;
 import com.welove.database.DbOpenHelper;
+import com.welove.database.MessageTable;
 import com.welove.view.FragmentConversation;
 import com.welove.view.FragmentFind;
 import com.welove.view.FragmentFriends;
 import com.welove.view.FragmentProfile;
 
+import appLogic.Message;
 import chat.ConversationProxy;
+import chat.MessageEvent;
 import common.LoadDataFromServer;
 import common.LoadDataFromServer.DataCallBack;
 
@@ -48,6 +51,7 @@ import appLogic.UserInfo;
 import appLogic.UserManager;
 import common.ImageLoaderManager;
 import common.Util;
+import de.greenrobot.event.EventBus;
 
 @SuppressLint("DefaultLocale")
 public class MainActivity extends BroadcastActivity {
@@ -67,7 +71,6 @@ public class MainActivity extends BroadcastActivity {
     private int index;
     // 当前fragment的index
     private int currentTabIndex;
-    private NewMessageBroadcastReceiver msgReceiver;
     private android.app.AlertDialog.Builder conflictBuilder;
     private android.app.AlertDialog.Builder accountRemovedBuilder;
     private boolean isConflictDialogShow;
@@ -89,6 +92,7 @@ public class MainActivity extends BroadcastActivity {
         initMeInfo();
 
         ConversationProxy.connectChatServer();
+        AppConstant.conversationProxy = new ConversationProxy();
 
         if (savedInstanceState != null
                 && savedInstanceState.getBoolean("",
@@ -132,6 +136,8 @@ public class MainActivity extends BroadcastActivity {
         }, Context.BIND_AUTO_CREATE);
 
         initBroadcastService();
+
+        EventBus.getDefault().register(this);
     }
 
     private void initBroadcastService(){
@@ -198,6 +204,8 @@ public class MainActivity extends BroadcastActivity {
         AppConstant.conversationManager = new ConversationManager(this);
 
         AppConstant.imageLoaderManager = new ImageLoaderManager();
+
+        AppConstant.messageTable = MessageTable.getInstance(this);
     }
 
     private void initView() {
@@ -230,30 +238,6 @@ public class MainActivity extends BroadcastActivity {
                 .add(R.id.fragment_container, findfragment)
                 .hide(contactlistfragment).hide(profilefragment)
                 .hide(conversationfragment).show(findfragment).commit();
-
-        // 注册一个接收消息的BroadcastReceiver
-        msgReceiver = new NewMessageBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.setPriority(3);
-        registerReceiver(msgReceiver, intentFilter);
-
-        // 注册一个ack回执消息的BroadcastReceiver
-        IntentFilter ackMessageIntentFilter = new IntentFilter();
-        ackMessageIntentFilter.setPriority(3);
-        registerReceiver(ackMessageReceiver, ackMessageIntentFilter);
-
-        // 注册一个透传消息的BroadcastReceiver
-        IntentFilter cmdMessageIntentFilter = new IntentFilter();
-        cmdMessageIntentFilter.setPriority(3);
-        registerReceiver(cmdMessageReceiver, cmdMessageIntentFilter);
-
-
-
-        // 注册一个离线消息的BroadcastReceiver
-        // IntentFilter offlineMessageIntentFilter = new
-        // IntentFilter(EMChatManager.getInstance()
-        // .getOfflineMessageBroadcastAction());
-        // registerReceiver(offlineMessageReceiver, offlineMessageIntentFilter);
     }
 
     public void onTabClicked(View view) {
@@ -287,6 +271,17 @@ public class MainActivity extends BroadcastActivity {
         textviews[currentTabIndex].setTextColor(0xFF999999);
         textviews[index].setTextColor(0xFF45C01A);
         currentTabIndex = index;
+    }
+
+    public void onEventBackgroundThread(MessageEvent messageEvent) {
+        Message message = AppConstant.conversationProxy.getMessageByEvent(messageEvent);
+
+        if(ChatActivity.instance != null && ChatActivity.instance.friend.id == message.friendId){
+            ChatActivity.instance.addChatMessage(message);
+        }else {
+            AppConstant.conversationManager.addOrReplaceConversation(message);
+            AppConstant.messageTable.insertMessage(message);
+        }
     }
 
     /**
@@ -360,66 +355,8 @@ public class MainActivity extends BroadcastActivity {
             } catch (Exception e) {
 
             }
-
-        }
-
-    }
-
-    /**
-     * 新消息广播接收者
-     * 
-     * 
-     */
-    private class NewMessageBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // 主页面收到消息后，主要为了提示未读，实际消息内容需要到chat页面查看
-
         }
     }
-
-    /**
-     * 消息回执BroadcastReceiver
-     */
-    private BroadcastReceiver ackMessageReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            abortBroadcast();
-
-            String msgid = intent.getStringExtra("msgid");
-            String from = intent.getStringExtra("from");
-        }
-    };
-
-    /**
-     * 透传消息BroadcastReceiver
-     */
-    private BroadcastReceiver cmdMessageReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            abortBroadcast();
-            // EMLog.d(TAG, "收到透传消息");
-            // // 获取cmd message对象
-            //
-            // EMMessage message = intent.getParcelableExtra("message");
-            // // 获取消息body
-            // CmdMessageBody cmdMsgBody = (CmdMessageBody) message.getBody();
-            // String action = cmdMsgBody.action;// 获取自定义action
-            //
-            // // 获取扩展属性 此处省略
-            // // message.getStringAttribute("");
-            // EMLog.d(TAG,
-            // String.format("透传消息：action:%s,message:%s", action,
-            // message.toString()));
-            // String st9 = getResources().getString(
-            // R.string.receive_the_passthrough);
-            // Toast.makeText(MainActivity.this, st9 + action,
-            // Toast.LENGTH_SHORT)
-            // .show();
-        }
-    };
 
     @Override
     public void onResume() {
@@ -431,12 +368,11 @@ public class MainActivity extends BroadcastActivity {
         }
 
         IntentFilter updateInfoFilter = new IntentFilter(UpdateInfoService.ServiceName);
-        registerReceiver(new BroadcastReceiver(){
+        registerReceiver(new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
 //                int counter = intent.get
 //                String text = String.valueOf(counter);
 //                counterText.setText(text);
-
             }
         }, updateInfoFilter);
     }
@@ -460,11 +396,18 @@ public class MainActivity extends BroadcastActivity {
         }
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
+    }
+
     /**
      * 刷新未读消息数
      */
     public void updateUnreadLabel() {
-        int count = AppConstant.conversationManager.totalUnreadCount;
+        int count = AppConstant.conversationManager.getUnreadCount();
         if (count > 0) {
             unreadLabel.setText(String.valueOf(count));
             unreadLabel.setVisibility(View.VISIBLE);
@@ -490,228 +433,4 @@ public class MainActivity extends BroadcastActivity {
         });
 
     }
-
-    public void refreshFriendsList() {
-        List<String> usernames = new ArrayList<String>();
-
-        if (usernames != null && usernames.size() > 0) {
-            String totaluser = usernames.get(0);
-            for (int i = 1; i < usernames.size(); i++) {
-                final String split = "66split88";
-                totaluser += split + usernames.get(i);
-            }
-            totaluser = totaluser.replace("", "");
-            totaluser = totaluser.replace("", "");
-
-            Map<String, String> map = new HashMap<String, String>();
-
-            map.put("uids", totaluser);
-
-            LoadDataFromServer task = new LoadDataFromServer(MainActivity.this,
-                    "", map);
-
-            task.getData(new DataCallBack() {
-
-                @Override
-                public void onDataCallBack(JSONObject data) {
-                    try {
-                        int code = data.getInteger("code");
-                        if (code == 1) {
-                            JSONArray josnArray = data.getJSONArray("friends");
-
-                            saveFriends(josnArray);
-
-                        }
-
-                    } catch (JSONException e) {
-                        Log.e("MainActivity", "update friendsLiST ERROR");
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
-    }
-
-    private void saveFriends(JSONArray josnArray) {
-
-//        Map<String, FriendInfo> map = new HashMap<String, FriendInfo>();
-//
-//        if (josnArray != null) {
-//            for (int i = 0; i < josnArray.size(); i++) {
-//                JSONObject json = (JSONObject) josnArray.getJSONObject(i);
-//                try {
-//                    String hxid = json.getString("hxid");
-//                    String fxid = json.getString("fxid");
-//                    String nick = json.getString("nick");
-//                    String avatar = json.getString("avatar");
-//                    String sex = json.getString("sex");
-//                    String region = json.getString("region");
-//                    String sign = json.getString("sign");
-//                    String tel = json.getString("tel");
-//
-//                    User user = new User();
-//                    user.setFxid(fxid);
-//                    user.setUsername(hxid);
-//                    user.setBeizhu("");
-//                    user.setNick(nick);
-//                    user.setRegion(region);
-//                    user.setSex(sex);
-//                    user.setTel(tel);
-//                    user.setSign(sign);
-//                    user.setAvatar(avatar);
-//                    setUserHearder(hxid, user);
-//                    map.put(hxid, user);
-//
-//                } catch (JSONException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }
-//        // 添加user"申请与通知"
-//        User newFriends = new User();
-//        newFriends.setUsername(Constant.NEW_FRIENDS_USERNAME);
-//        String strChat = getResources().getString(
-//                R.string.Application_and_notify);
-//        newFriends.setNick(strChat);
-//        newFriends.setBeizhu("");
-//        newFriends.setFxid("");
-//        newFriends.setHeader("");
-//        newFriends.setRegion("");
-//        newFriends.setSex("");
-//        newFriends.setTel("");
-//        newFriends.setSign("");
-//        newFriends.setAvatar("");
-//        map.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
-//        // 添加"群聊"
-//        User groupUser = new User();
-//        String strGroup = getResources().getString(R.string.group_chat);
-//        groupUser.setUsername(Constant.GROUP_USERNAME);
-//        groupUser.setNick(strGroup);
-//        groupUser.setHeader("");
-//        groupUser.setNick(strChat);
-//        groupUser.setBeizhu("");
-//        groupUser.setFxid("");
-//        groupUser.setHeader("");
-//        groupUser.setRegion("");
-//        groupUser.setSex("");
-//        groupUser.setTel("");
-//        groupUser.setSign("");
-//        groupUser.setAvatar("");
-//        map.put(Constant.GROUP_USERNAME, groupUser);
-//
-//        // 存入内存
-//        DemoApplication.getInstance().setContactList(map);
-//        // 存入db
-//        UserDao dao = new UserDao(MainActivity.this);
-//        List<User> users = new ArrayList<User>(map.values());
-//        dao.saveContactList(users);
-
-    }
-
-    private void addFriendToList(final String hxid) {
-        Map<String, String> map_uf = new HashMap<String, String>();
-        map_uf.put("hxid", hxid);
-        LoadDataFromServer task = new LoadDataFromServer(null,
-                "", map_uf);
-        task.getData(new DataCallBack() {
-            @Override
-            public void onDataCallBack(JSONObject data) {
-                try {
-
-//                    int code = data.getInteger("code");
-//                    if (code == 1) {
-//
-//                        JSONObject json = data.getJSONObject("user");
-//                        if (json != null && json.size() != 0) {
-//
-//                        }
-//                        String nick = json.getString("nick");
-//                        String avatar = json.getString("avatar");
-//
-//                        String hxid = json.getString("hxid");
-//                        String fxid = json.getString("fxid");
-//                        String region = json.getString("region");
-//                        String sex = json.getString("sex");
-//                        String sign = json.getString("sign");
-//                        String tel = json.getString("tel");
-//                        FriendInfo user = new FriendInfo();
-//
-//                        user.sys_id = hxid;
-//                        user.
-//                        user.setAvatar(avatar);
-//                        user.setFxid(fxid);
-//                        user.setRegion(region);
-//                        user.setSex(sex);
-//                        user.setSign(sign);
-//                        user.setTel(tel);
-//                        setUserHearder(hxid, user);
-//                        Map<String, User> userlist = DemoApplication
-//                                .getInstance().getContactList();
-//                        Map<String, User> map_temp = new HashMap<String, User>();
-//                        map_temp.put(hxid, user);
-//                        userlist.putAll(map_temp);
-//                        // 存入内存
-//                        DemoApplication.getInstance().setContactList(userlist);
-//                        // 存入db
-//                        UserDao dao = new UserDao(MainActivity.this);
-//
-//                        dao.saveContact(user);
-//
-//                        // 自己封装的javabean
-//                        InviteMessage msg = new InviteMessage();
-//                        msg.setFrom(hxid);
-//                        msg.setTime(System.currentTimeMillis());
-//
-//                        String reason_temp = nick + "66split88" + avatar
-//                                + "66split88"
-//                                + String.valueOf(System.currentTimeMillis())
-//                                + "66split88" + "已经同意请求";
-//                        msg.setReason(reason_temp);
-//
-//                        msg.setStatus(InviteMesageStatus.BEAGREED);
-//                        User userTemp = DemoApplication.getInstance()
-//                                .getContactList()
-//                                .get(Constant.NEW_FRIENDS_USERNAME);
-//                        if (userTemp != null
-//                                && userTemp.getUnreadMsgCount() == 0) {
-//                            userTemp.setUnreadMsgCount(userTemp
-//                                    .getUnreadMsgCount() + 1);
-//                        }
-//                        notifyNewIviteMessage(msg);
-//                    }
-//
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
-
-            }
-
-        });
-
-    }
-
-    private long exitTime = 0;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(getApplicationContext(), "再按一次退出程序",
-                        Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-                moveTaskToBack(false);
-                finish();
-
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
 }

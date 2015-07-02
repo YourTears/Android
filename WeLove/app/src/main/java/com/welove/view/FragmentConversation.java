@@ -68,6 +68,7 @@ public class FragmentConversation extends Fragment {
                             public void onClick(DialogInterface dialog, int item) {
                                 if (item == 0) {
                                     AppConstant.conversationManager.deleteConversation(friendId);
+                                    AppConstant.conversationManager.refreshView();
                                 }
                             }
                         })
@@ -79,6 +80,6 @@ public class FragmentConversation extends Fragment {
     }
 
     public void refreshListView(){
-        AppConstant.conversationManager.refreshListView();
+        AppConstant.conversationManager.refreshView();
     }
 }

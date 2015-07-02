@@ -10,9 +10,11 @@ import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import appLogic.Message;
 import chat.leanchatlib.model.ConversationType;
 import chat.MessageEvent;
 import chat.leanchatlib.utils.Utils;
@@ -38,13 +40,16 @@ public class ChatManager extends AVIMClientEventHandler {
   };
   private ConnectionListener connectionListener = defaultConnectListener;
   private static boolean setupDatabase = false;
-  private Map<String, AVIMConversation> cachedConversations = new HashMap<>();
+
+  private Map<String, MessageAgent> messageAgents = new Hashtable<>();
+
   private AVIMClient imClient;
   private String selfId;
   private boolean connect = false;
   private MessageHandler messageHandler;
   private EventBus eventBus = EventBus.getDefault();
   private static boolean debugEnabled;
+  private MessageAgent.SendCallback sendCallback;
 
   private ChatManager() {
   }
@@ -164,13 +169,35 @@ public class ChatManager extends AVIMClientEventHandler {
     if (!ConversationHelper.isValidConversation(conversation)) {
       throw new IllegalStateException("receive msg from invalid conversation");
     }
-    if (lookUpConversationById(conversation.getConversationId()) == null) {
-      registerConversation(conversation);
+    if (!messageAgents.containsKey(message.getFrom())) {
+      MessageAgent agent = new MessageAgent(conversation);
+      messageAgents.put(message.getFrom(), agent);
     }
     MessageEvent messageEvent = new MessageEvent(message, MessageEvent.Type.Come);
     eventBus.post(messageEvent);
   }
 
+  public void setSendCallback(MessageAgent.SendCallback sendCallback) {
+    this.sendCallback = sendCallback;
+  }
+
+  public void sendMessage(final String userId, final AVIMTypedMessage message){
+
+    if(messageAgents.containsKey(userId)){
+      MessageAgent agent = messageAgents.get(userId);
+      agent.sendMessage(message);
+    } else{
+      chatManager.fetchConversationWithUserId(userId, new AVIMConversationCreatedCallback() {
+        @Override
+        public void done(AVIMConversation conversation, AVException e) {
+          MessageAgent agent = new MessageAgent(conversation);
+          agent.sendMessage(message);
+
+          messageAgents.put(userId, agent);
+        }
+      });
+    }
+  }
 
   public void closeWithCallback(final AVIMClientCallback callback) {
     imClient.close(new AVIMClientCallback() {
@@ -209,15 +236,6 @@ public class ChatManager extends AVIMClientEventHandler {
 
   public boolean isConnect() {
     return connect;
-  }
-
-  //cache
-  public void registerConversation(AVIMConversation conversation) {
-    cachedConversations.put(conversation.getConversationId(), conversation);
-  }
-
-  public AVIMConversation lookUpConversationById(String conversationId) {
-    return cachedConversations.get(conversationId);
   }
 
   public interface ConnectionListener {

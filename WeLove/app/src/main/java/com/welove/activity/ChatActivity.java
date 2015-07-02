@@ -124,9 +124,9 @@ public class ChatActivity extends Activity implements OnClickListener {
     private ClipboardManager clipboard;
     private ViewPager expressionView;
     private Drawable[] micImages;
-    public static ChatActivity activityInstance = null;
+    public UserInfo friend = null;
+    public static ChatActivity instance = null;
     // 给谁发送消息
-    private UserInfo friend;
 
     private File cameraFile;
     public static int resendPos;
@@ -162,6 +162,7 @@ public class ChatActivity extends Activity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_chat);
 
         String friendId = this.getIntent().getStringExtra("id");
@@ -176,7 +177,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         readingMessageMode();
         conversationListView.requestFocus();
 
-        EventBus.getDefault().register(this);
+        instance = this;
     }
 
     /**
@@ -211,7 +212,6 @@ public class ChatActivity extends Activity implements OnClickListener {
         messageLayout.setBackgroundResource(R.drawable.input_bar_bg_normal);
 
         messageManager = new MessageManager(this, friend.id);
-        conversationProxy = new ConversationProxy(friend, messageManager);
 
         // 动画资源文件,用于录制语音时
         micImages = new Drawable[]{
@@ -371,7 +371,6 @@ public class ChatActivity extends Activity implements OnClickListener {
     }
 
     private void setUpView() {
-        activityInstance = this;
         normalExpressionView.setOnClickListener(this);
         checkedExpressionView.setOnClickListener(this);
         voiceModeButton.setOnClickListener(this);
@@ -641,7 +640,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         message.status = Message.MessageStatus.SUCCEED;
 
         messageManager.addOrReplaceMessage(message);
-        conversationProxy.sendMessage(message);
+        AppConstant.conversationProxy.sendMessage(friend.externalId, message);
     }
 
     /**
@@ -842,8 +841,13 @@ public class ChatActivity extends Activity implements OnClickListener {
         startActivity(intent);
     }
 
-    public void onEventBackgroundThread(MessageEvent messageEvent) {
-        conversationProxy.handleMessageEvent(messageEvent);
+    public void addChatMessage(Message message) {
+        if(friend != null && friend.id == message.friendId){
+            if(messageManager != null){
+                message.isRead = true;
+                messageManager.addOrReplaceMessage(message);
+            }
+        }
     }
 
     private PowerManager.WakeLock wakeLock;
@@ -940,9 +944,7 @@ public class ChatActivity extends Activity implements OnClickListener {
 
     protected void onDestroy() {
         super.onDestroy();
-        activityInstance = null;
-
-        EventBus.getDefault().unregister(this);
+        instance = null;
     }
 
     protected void onPause() {
@@ -1013,5 +1015,7 @@ public class ChatActivity extends Activity implements OnClickListener {
             sentMessage = false;
             AppConstant.conversationManager.addOrReplaceConversation(messageManager.getLastMessage());
         }
+
+        AppConstant.conversationManager.cleanUnread(friend.id);
     }
 }

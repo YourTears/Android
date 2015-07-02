@@ -9,6 +9,7 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.welove.activity.ChatActivity;
 
 import java.util.UUID;
 
@@ -23,29 +24,15 @@ import chat.leanchatlib.controller.MessageAgent;
  * Created by Long on 6/22/2015.
  */
 public class ConversationProxy {
-    private MessageAgent messageAgent;
-    private AVIMConversation conversation = null;
-    private MessageManager messageManager = null;
     private static ChatManager chatManager = ChatManager.getInstance();
 
-    public ConversationProxy(UserInfo user, MessageManager messageManager){
-        chatManager.fetchConversationWithUserId(user.externalId, new AVIMConversationCreatedCallback() {
-            @Override
-            public void done(AVIMConversation avimConversation, AVException e) {
-                chatManager.registerConversation(avimConversation);
-                conversation = avimConversation;
-                messageAgent = new MessageAgent(conversation);
-            }
-        });
-
-        this.messageManager = messageManager;
+    public ConversationProxy(){
     }
 
     public static void connectChatServer() {
         chatManager.openClientWithSelfId(AppConstant.meInfo.externalId, new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVException e) {
-                int a = 2;
             }
         });
     }
@@ -54,39 +41,29 @@ public class ConversationProxy {
         return chatManager.isConnect();
     }
 
-    public void sendMessage(Message message){
+    public void sendMessage(String externalId, Message message){
         if(!isConnected())
             return;
 
-        AVIMTextMessage avimTextMessage = null;
-        if(messageAgent != null) {
-            message.externalId = messageAgent.sendText(message.body);
-        }
+        chatManager.sendMessage(externalId, convertMessage(message));
     }
 
-    public void handleMessageEvent(MessageEvent messageEvent) {
+    public Message getMessageByEvent(MessageEvent messageEvent) {
         AVIMTypedMessage avimTypedMessage = messageEvent.getMessage();
-        if(avimTypedMessage == null)
-            return;
+        if (avimTypedMessage == null)
+            return null;
 
         Message message = null;
 
-        if (avimTypedMessage.getConversationId().equals(conversation
-                .getConversationId())) {
-            if (messageEvent.getType() == MessageEvent.Type.Come) {
-                if(AppConstant.userManager.containExternalId(avimTypedMessage.getFrom())){
-                    message = convertMessage(avimTypedMessage);
-                }
-            } else if (messageEvent.getType() == MessageEvent.Type.Receipt) {
-                message = messageManager.getMessageByExternal(avimTypedMessage.getMessageId());
-                if(message != null)
-                    message.status = convertMessageStatus(avimTypedMessage.getMessageStatus());
-            }
+        if (messageEvent.getType() == MessageEvent.Type.Come) {
+            message = convertMessage(avimTypedMessage);
+        } else if (messageEvent.getType() == MessageEvent.Type.Receipt) {
+            message = AppConstant.messageTable.getMessageByExternalId(avimTypedMessage.getMessageId());
+            if (message != null)
+                message.status = convertMessageStatus(avimTypedMessage.getMessageStatus());
         }
 
-        if(message != null){
-            messageManager.addOrReplaceMessage(message);
-        }
+        return message;
     }
 
     private Message convertMessage(AVIMTypedMessage avimTypedMessage) {
@@ -104,13 +81,28 @@ public class ConversationProxy {
             message.id = UUID.randomUUID();
             message.externalId = avimTypedMessage.getMessageId();
             message.friendId = AppConstant.userManager.getUserByExternal(avimTypedMessage.getFrom()).id;
-            message.isRead = true;
+            message.isRead = false;
             message.time = avimTypedMessage.getTimestamp();
             message.direction = Message.Direction.RECEIVE;
             message.status = convertMessageStatus(avimTypedMessage.getMessageStatus());
         }
 
         return message;
+    }
+
+    private AVIMTypedMessage convertMessage(Message message) {
+        AVIMTypedMessage typedMessage = null;
+
+        switch (message.type){
+            case TEXT:
+                AVIMTextMessage textMessage = new AVIMTextMessage();
+                textMessage.setText(message.body);
+                textMessage.setTimestamp(message.time);
+                typedMessage = textMessage;
+                break;
+        }
+
+        return typedMessage;
     }
 
     private Message.MessageStatus convertMessageStatus(AVIMMessage.AVIMMessageStatus avimMessageStatus){

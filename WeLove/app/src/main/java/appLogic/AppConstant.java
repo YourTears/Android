@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.welove.database.MessageTable;
+
 import chat.ConversationProxy;
 import common.ImageLoaderManager;
 
@@ -34,4 +36,5 @@ public class AppConstant {
     public static String imageExtension = ".PNG";
 
     public static ConversationProxy conversationProxy = null;
+    public static MessageTable messageTable = null;
 }

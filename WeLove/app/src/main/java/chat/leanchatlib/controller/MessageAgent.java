@@ -30,10 +30,6 @@ public class MessageAgent {
     chatManager = ChatManager.getInstance();
   }
 
-  public void setSendCallback(SendCallback sendCallback) {
-    this.sendCallback = sendCallback;
-  }
-
   private void sendMsg(final AVIMTypedMessage msg, final String originPath, final SendCallback callback) {
     if (!chatManager.isConnect()) {
       Utils.log("im not connect");
@@ -58,6 +54,10 @@ public class MessageAgent {
         }
       }
     });
+  }
+
+  public void sendMessage(AVIMTypedMessage msg){
+    sendMsg(msg, null, sendCallback);
   }
 
   public void resendMessage(final AVIMTypedMessage msg, final SendCallback sendCallback) {
