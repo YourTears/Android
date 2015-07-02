@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.welove.activity.ChatActivity;
+import com.welove.activity.MainActivity;
 import com.welove.app.R;
 
 import appLogic.AppConstant;
@@ -69,6 +70,10 @@ public class FragmentConversation extends Fragment {
                                 if (item == 0) {
                                     AppConstant.conversationManager.deleteConversation(friendId);
                                     AppConstant.conversationManager.refreshView();
+
+                                    if(MainActivity.instance != null){
+                                        MainActivity.instance.updateUnreadMessageLabel();
+                                    }
                                 }
                             }
                         })

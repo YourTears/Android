@@ -1017,5 +1017,6 @@ public class ChatActivity extends Activity implements OnClickListener {
         }
 
         AppConstant.conversationManager.cleanUnread(friend.id);
+        AppConstant.conversationManager.refreshView();
     }
 }

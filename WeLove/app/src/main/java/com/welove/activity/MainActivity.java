@@ -1,13 +1,4 @@
 package com.welove.activity;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
 import com.welove.app.R;
 import com.welove.broadcast.UpdateInfoService;
 import com.welove.database.DbOpenHelper;
@@ -20,11 +11,8 @@ import com.welove.view.FragmentProfile;
 import appLogic.Message;
 import chat.ConversationProxy;
 import chat.MessageEvent;
-import common.LoadDataFromServer;
-import common.LoadDataFromServer.DataCallBack;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -85,6 +73,8 @@ public class MainActivity extends BroadcastActivity {
 
     private UpdateInfoService updateInfoService = null;
 
+    public static MainActivity instance = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +128,8 @@ public class MainActivity extends BroadcastActivity {
         initBroadcastService();
 
         EventBus.getDefault().register(this);
+
+        instance = this;
     }
 
     private void initBroadcastService(){
@@ -184,7 +176,7 @@ public class MainActivity extends BroadcastActivity {
         Util.createFolder(AppConstant.imageFolder);
         Util.createFolder(AppConstant.cacheFolder + "/images");
 
-        //DbOpenHelper.getInstance(this).deleteDatabase(this);
+        DbOpenHelper.getInstance(this).deleteDatabase(this);
 
         AppConstant.userManager = UserManager.getInstance(this);
 
@@ -280,7 +272,10 @@ public class MainActivity extends BroadcastActivity {
             ChatActivity.instance.addChatMessage(message);
         }else {
             AppConstant.conversationManager.addOrReplaceConversation(message);
+            AppConstant.conversationManager.refreshView();
             AppConstant.messageTable.insertMessage(message);
+
+            updateUnreadAddressLabel();
         }
     }
 
@@ -363,8 +358,9 @@ public class MainActivity extends BroadcastActivity {
         super.onResume();
         if (!isConflict || !isCurrentAccountRemoved) {
             // initView();
-            updateUnreadLabel();
-            updateUnreadAddressLable();
+
+            updateUnreadMessageLabel();
+            updateUnreadAddressLabel();
         }
 
         IntentFilter updateInfoFilter = new IntentFilter(UpdateInfoService.ServiceName);
@@ -401,12 +397,10 @@ public class MainActivity extends BroadcastActivity {
         super.onDestroy();
 
         EventBus.getDefault().unregister(this);
+        instance = null;
     }
 
-    /**
-     * 刷新未读消息数
-     */
-    public void updateUnreadLabel() {
+    public void updateUnreadMessageLabel() {
         int count = AppConstant.conversationManager.getUnreadCount();
         if (count > 0) {
             unreadLabel.setText(String.valueOf(count));
@@ -419,7 +413,7 @@ public class MainActivity extends BroadcastActivity {
     /**
      * 刷新申请与通知消息数
      */
-    public void updateUnreadAddressLable() {
+    public void updateUnreadAddressLabel() {
         runOnUiThread(new Runnable() {
             public void run() {
                 int count = AppConstant.userManager.notificationCount;
@@ -431,6 +425,5 @@ public class MainActivity extends BroadcastActivity {
                 }
             }
         });
-
     }
 }
