@@ -52,14 +52,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.welove.adapter.ExpressionAdapter;
 import com.welove.app.R;
 import com.welove.adapter.ExpressionPagerAdapter;
 import com.welove.view.ExpandGridView;
 
 import chat.ConversationProxy;
-import chat.MessageEvent;
 import common.PasteEditText;
 
 import appLogic.AppConstant;
@@ -67,7 +65,6 @@ import appLogic.UserInfo;
 import appLogic.Message;
 import appLogic.MessageManager;
 import common.ExpressionUtils;
-import de.greenrobot.event.EventBus;
 
 public class ChatActivity extends Activity implements OnClickListener {
 
@@ -142,8 +139,6 @@ public class ChatActivity extends Activity implements OnClickListener {
 
     private MessageManager messageManager;
     private ConversationProxy conversationProxy;
-
-    private boolean sentMessage = false;
 
     // 分享的照片
     String iamge_path = null;
@@ -566,7 +561,6 @@ public class ChatActivity extends Activity implements OnClickListener {
             String content = messageEditText.getText().toString().trim();
             if (!content.isEmpty()) {
                 sendText(content);
-                sentMessage = true;
             }
         } else if (id == R.id.btn_take_picture) {
             selectPicFromCamera();// 点击照相图标
@@ -636,7 +630,7 @@ public class ChatActivity extends Activity implements OnClickListener {
         }
     }
 
-    private void sendMessageInBackground(Message message){
+    private void sendMessageInBackground(Message message) {
         message.status = Message.MessageStatus.SUCCEED;
 
         messageManager.addOrReplaceMessage(message);
@@ -842,8 +836,8 @@ public class ChatActivity extends Activity implements OnClickListener {
     }
 
     public void addChatMessage(Message message) {
-        if(friend != null && friend.id == message.friendId){
-            if(messageManager != null){
+        if (friend != null && friend.id == message.friendId) {
+            if (messageManager != null) {
                 message.isRead = true;
                 messageManager.addOrReplaceMessage(message);
             }
@@ -951,14 +945,14 @@ public class ChatActivity extends Activity implements OnClickListener {
         super.onPause();
         if (wakeLock.isHeld())
             wakeLock.release();
-    }
 
-    /**
-     * 加入到黑名单
-     *
-     * @param username
-     */
-    private void addUserToBlacklist(String username) {
+        Message message = messageManager.getLastNewMessage();
+
+        if (message != null)
+            AppConstant.conversationManager.addOrReplaceConversation(message);
+
+        AppConstant.conversationManager.cleanUnread(friend.id);
+        AppConstant.conversationManager.refreshView();
     }
 
     /**
@@ -997,26 +991,5 @@ public class ChatActivity extends Activity implements OnClickListener {
             finish();
             startActivity(intent);
         }
-    }
-
-    /**
-     * 转发消息
-     *
-     * @param forward_msg_id
-     */
-    protected void forwardMessage(String forward_msg_id) {
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (sentMessage) {
-            sentMessage = false;
-            AppConstant.conversationManager.addOrReplaceConversation(messageManager.getLastMessage());
-        }
-
-        AppConstant.conversationManager.cleanUnread(friend.id);
-        AppConstant.conversationManager.refreshView();
     }
 }

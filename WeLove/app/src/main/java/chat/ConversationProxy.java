@@ -67,6 +67,10 @@ public class ConversationProxy {
     }
 
     private Message convertMessage(AVIMTypedMessage avimTypedMessage) {
+        UserInfo user = AppConstant.userManager.getUserByExternal(avimTypedMessage.getFrom());
+        if(user == null)
+            return null;
+
         Message message = null;
 
         switch (AVIMReservedMessageType.getAVIMReservedMessageType(avimTypedMessage.getMessageType())) {
@@ -80,7 +84,7 @@ public class ConversationProxy {
         if (message != null) {
             message.id = UUID.randomUUID();
             message.externalId = avimTypedMessage.getMessageId();
-            message.friendId = AppConstant.userManager.getUserByExternal(avimTypedMessage.getFrom()).id;
+            message.friendId = user.id;
             message.isRead = false;
             message.time = avimTypedMessage.getTimestamp();
             message.direction = Message.Direction.RECEIVE;

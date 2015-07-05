@@ -230,6 +230,8 @@ public class MainActivity extends BroadcastActivity {
                 .add(R.id.fragment_container, findfragment)
                 .hide(contactlistfragment).hide(profilefragment)
                 .hide(conversationfragment).show(findfragment).commit();
+
+        currentTabIndex = 0;
     }
 
     public void onTabClicked(View view) {
@@ -268,14 +270,23 @@ public class MainActivity extends BroadcastActivity {
     public void onEventBackgroundThread(MessageEvent messageEvent) {
         Message message = AppConstant.conversationProxy.getMessageByEvent(messageEvent);
 
-        if(ChatActivity.instance != null && ChatActivity.instance.friend.id == message.friendId){
+        if (message == null)
+            return;
+
+        if (ChatActivity.instance != null && ChatActivity.instance.friend.id == message.friendId) {
             ChatActivity.instance.addChatMessage(message);
-        }else {
-            AppConstant.conversationManager.addOrReplaceConversation(message);
-            AppConstant.conversationManager.refreshView();
+        } else {
             AppConstant.messageTable.insertMessage(message);
 
-            updateUnreadAddressLabel();
+            AppConstant.conversationManager.addOrReplaceConversation(message);
+
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    AppConstant.conversationManager.refreshView();
+                }
+            });
+
+            updateUnreadMessageLabel();
         }
     }
 
@@ -360,7 +371,7 @@ public class MainActivity extends BroadcastActivity {
             // initView();
 
             updateUnreadMessageLabel();
-            updateUnreadAddressLabel();
+            updateNewFriendsLabel();
         }
 
         IntentFilter updateInfoFilter = new IntentFilter(UpdateInfoService.ServiceName);
@@ -400,20 +411,7 @@ public class MainActivity extends BroadcastActivity {
         instance = null;
     }
 
-    public void updateUnreadMessageLabel() {
-        int count = AppConstant.conversationManager.getUnreadCount();
-        if (count > 0) {
-            unreadLabel.setText(String.valueOf(count));
-            unreadLabel.setVisibility(View.VISIBLE);
-        } else {
-            unreadLabel.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    /**
-     * 刷新申请与通知消息数
-     */
-    public void updateUnreadAddressLabel() {
+    public void updateNewFriendsLabel() {
         runOnUiThread(new Runnable() {
             public void run() {
                 int count = AppConstant.userManager.notificationCount;
@@ -425,5 +423,15 @@ public class MainActivity extends BroadcastActivity {
                 }
             }
         });
+    }
+
+    public void updateUnreadMessageLabel() {
+        int count = AppConstant.conversationManager.getUnreadCount();
+        if (count > 0) {
+            unreadLabel.setText(String.valueOf(count));
+            unreadLabel.setVisibility(View.VISIBLE);
+        } else {
+            unreadLabel.setVisibility(View.INVISIBLE);
+        }
     }
 }

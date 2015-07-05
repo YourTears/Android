@@ -13,10 +13,10 @@ import java.util.List;
  * Created by Long on 5/26/2015.
  */
 public class ConversationManager {
-    private List<Conversation> conversations;
-    private HashMap<String, Conversation> map;
     public ConversationAdapter adapter;
 
+    private List<Conversation> conversations;
+    private HashMap<String, Conversation> map;
     private int totalUnreadCount = 0;
     private boolean needRefresh = false;
 
@@ -39,8 +39,9 @@ public class ConversationManager {
         }
         else{
             conversation = new Conversation();
-            map.put(conversation.friendId, conversation);
+            map.put(message.friendId, conversation);
         }
+
         conversation.friendId = message.friendId;
         conversation.body = message.body;
         conversation.time = message.time;
@@ -88,14 +89,18 @@ public class ConversationManager {
 
     public synchronized void deleteConversation(String friendId){
         if(map.containsKey(friendId)){
-            conversations.remove(map.get(friendId));
+            Conversation conversation = map.get(friendId);
+            conversations.remove(conversation);
             map.remove(friendId);
+
+            conversationTable.deleteConversation(friendId);
+
+            addUnreadCount(-conversation.unreadCount);
+
+            AppConstant.messageTable.deleteMessages(friendId);
 
             needRefresh = true;
         }
-
-        conversationTable.deleteConversation(friendId);
-        AppConstant.messageTable.deleteMessages(friendId);
     }
 
     public synchronized void saveConversations(){

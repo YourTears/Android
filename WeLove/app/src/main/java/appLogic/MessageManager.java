@@ -23,6 +23,8 @@ public class MessageManager {
     public long lastMessageTime;
     public MessageAdapter adapter;
 
+    private boolean newMessage = false;
+
     public MessageManager(Context context, String friendId) {
         this.friendId = friendId;
         messages = new ArrayList<>();
@@ -49,22 +51,22 @@ public class MessageManager {
             externalMap.put(message.externalId, message);
 
             messages.add(message);
+
+            newMessage = true;
         }
 
         AppConstant.messageTable.insertMessage(message);
         adapter.notifyDataSetChanged();
     }
 
-    public Message getLastMessage(){
+    public Message getLastNewMessage(){
+        if(!newMessage)
+            return null;
+
         int size = messages.size();
         if(size > 0)
             return messages.get(size - 1);
 
-        Message message = new Message();
-        message.friendId = friendId;
-        message.body = "";
-        message.time = (new Date()).getTime();
-
-        return message;
+        return null;
     }
 }
