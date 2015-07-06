@@ -16,7 +16,6 @@ import appLogic.UserInfo;
  */
 public class UserTable {
     public static final String TableName = "Friends";
-    public static final String SYS_ID = "SYS_ID";
     public static final String ID = "ID";
     public static final String Name = "Name";
     public static final String NickName = "NickName";
@@ -50,7 +49,6 @@ public class UserTable {
 
             if (dbWriter.isOpen()) {
                 ContentValues content = new ContentValues();
-                content.put(SYS_ID, friend.sys_id);
                 content.put(ID, friend.id);
                 content.put(Name, friend.name);
                 content.put(NickName, friend.nickName);
@@ -88,7 +86,6 @@ public class UserTable {
                 while (cursor.moveToNext()) {
                     UserInfo friend = new UserInfo();
 
-                    friend.sys_id = cursor.getString(cursor.getColumnIndex(SYS_ID));
                     friend.id = cursor.getString(cursor.getColumnIndex(ID));
                     friend.name = cursor.getString(cursor.getColumnIndex(Name));
                     friend.nickName = cursor.getString(cursor.getColumnIndex(NickName));

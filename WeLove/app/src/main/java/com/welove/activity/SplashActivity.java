@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 
 import appLogic.AppConstant;
+import common.Util;
 
 import com.welove.app.R;
+import com.welove.database.DbOpenHelper;
+import com.welove.database.LoginTable;
 
 /**
  * 开屏页
@@ -32,6 +35,10 @@ public class SplashActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 
+		initialize();
+
+		AppConstant.id = LoginTable.getInstance(this).getLoginId();
+
 		new Thread(new Runnable() {
 			public void run() {
                 try {
@@ -39,14 +46,27 @@ public class SplashActivity extends Activity {
                 } catch (InterruptedException e) {
                 }
 
-				if (AppConstant.isLogin) {
-					startActivity(new Intent(SplashActivity.this, MainActivity.class));
-				}else {
+				if (AppConstant.id == null) {
 					startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+				}else {
+					startActivity(new Intent(SplashActivity.this, MainActivity.class));
 				}
 
-                finish();
+				finish();
 			}
 		}).start();
+	}
+
+	private void initialize()
+	{
+		AppConstant.dataFolder = Util.getAppFilePath(this);
+		AppConstant.cacheFolder = Util.getAppCachePath(this);
+		AppConstant.imageFolder = AppConstant.dataFolder + "/images/";
+
+		Util.createFolder(AppConstant.dataFolder);
+		Util.createFolder(AppConstant.imageFolder);
+		Util.createFolder(AppConstant.cacheFolder + "/images");
+
+		DbOpenHelper.getInstance(this).deleteDatabase(this);
 	}
 }

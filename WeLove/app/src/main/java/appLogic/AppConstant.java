@@ -13,7 +13,7 @@ import common.ImageLoaderManager;
  * Created by tiazh on 4/22/2015.
  */
 public class AppConstant {
-    public static boolean isLogin = true;
+    public static String id = null;
     public static String it = "她";
 
     public static UserManager userManager = null;

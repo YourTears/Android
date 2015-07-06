@@ -168,16 +168,6 @@ public class MainActivity extends BroadcastActivity {
 
     private void initMeInfo()
     {
-        AppConstant.dataFolder = Util.getAppFilePath(this);
-        AppConstant.cacheFolder = Util.getAppCachePath(this);
-        AppConstant.imageFolder = AppConstant.dataFolder + "/images/";
-
-        Util.createFolder(AppConstant.dataFolder);
-        Util.createFolder(AppConstant.imageFolder);
-        Util.createFolder(AppConstant.cacheFolder + "/images");
-
-        DbOpenHelper.getInstance(this).deleteDatabase(this);
-
         AppConstant.userManager = UserManager.getInstance(this);
 
         if(AppConstant.userManager.friends.size() == 0)

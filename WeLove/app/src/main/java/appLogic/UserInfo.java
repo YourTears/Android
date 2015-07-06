@@ -4,7 +4,6 @@ package appLogic;
  * Created by Long on 4/21/2015.
  */
 public class UserInfo {
-    public String sys_id;
     public String id;
     public String externalId;
     public String name;

@@ -230,7 +230,6 @@ public class UserManager {
         UserInfo user = new UserInfo();
 
         try {
-            user.sys_id = json.getString("sys_id");
             user.id = json.getString("id");
             user.externalId = json.getString("externalId");
             user.gender = UserInfo.parseGender(json.getInt("gender"));

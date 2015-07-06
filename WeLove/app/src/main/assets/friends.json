@@ -2,7 +2,6 @@
     "users":
     [
         {
-            "sys_id":"202287660",
             "id":"feifei",
             "externalId":"test1",
             "name":"Fei Fei",
@@ -12,7 +11,6 @@
             "imageUrl":"http://img5.imgtn.bdimg.com/it/u=4037265137,1594734448&fm=11&gp=0.jpg"
         },
         {
-            "sys_id":"1122324870",
             "id":"jianglu",
             "externalId":"test2",
             "name":"Long",
@@ -22,7 +20,6 @@
             "imageUrl":"http://img2.imgtn.bdimg.com/it/u=3047741947,4037352593&fm=21&gp=0.jpg"
         },
         {
-            "sys_id":"2029870",
             "id":"maomao",
             "externalId":"test3",
             "name":"Mao Mao",
@@ -32,7 +29,6 @@
             "imageUrl":"http://img4q.duitang.com/uploads/item/201312/28/20131228162545_kFuGB.thumb.700_0.jpeg"
         },
         {
-            "sys_id":"112364870",
             "id":"Yuanyuan",
             "externalId":"test4",
             "name":"Yuan Yuan",
@@ -42,7 +38,6 @@
             "imageUrl":"http://cdn.neonan.com/uploads/964fab5a-71ad-4259-8c7d-c00e2bca51e5.jpg"
         },
         {
-            "sys_id":"20311870",
             "id":"Shuanshuan",
             "externalId":"test5",
             "name":"ShuanShuan",
@@ -52,7 +47,6 @@
             "imageUrl":"http://img4.imgtn.bdimg.com/it/u=2214862682,3607935918&fm=21&gp=0.jpg"
         },
         {
-            "sys_id":"10294870",
             "id":"jiasong",
             "externalId":"test6",
             "name":"Song Jia",
@@ -62,7 +56,6 @@
             "imageUrl":"http://img0.imgtn.bdimg.com/it/u=3512869393,3666053781&fm=21&gp=0.jpg"
         },
         {
-            "sys_id":"20272870",
             "id":"Boxue",
             "externalId":"test7",
             "name":"Bo xue",
@@ -72,7 +65,6 @@
             "imageUrl":"http://a4.att.hudong.com/84/78/01300000219264121978786231184.jpg"
         },
         {
-            "sys_id":"11384870",
             "id":"Bingbing123",
             "externalId":"test8",
             "name":"Bing",
@@ -82,7 +74,6 @@
             "imageUrl":"http://img4.duitang.com/uploads/item/201203/03/20120303234549_MaCk5.jpeg"
         },
         {
-            "sys_id":"203227870",
             "id":"songqian",
             "externalId":"test9",
             "name":"Qian",
@@ -92,7 +83,6 @@
             "imageUrl":"http://img3.imgtn.bdimg.com/it/u=601141556,398617747&fm=21&gp=0.jpg"
         },
         {
-            "sys_id":"2076545870",
             "id":"Kunling",
             "externalId":"test10",
             "name":"Kun L",
@@ -102,7 +92,6 @@
             "imageUrl":"http://img5.imgtn.bdimg.com/it/u=1530141476,2377406349&fm=11&gp=0.jpg"
         },
         {
-            "sys_id":"11563270",
             "id":"Lengleng",
             "externalId":"test11",
             "name":"Leng",
@@ -112,7 +101,6 @@
             "imageUrl":"http://p5.qhimg.com/t017cd9ad5a194988f6.jpg"
         },
         {
-            "sys_id":"3332870",
             "id":"Shishi",
             "externalId":"test12",
             "name":"Shi_Shi",
@@ -122,7 +110,6 @@
             "imageUrl":"http://img.67.com/upload/images/2012/03/18/bGljaGFuZ3dlaTEzMzIwODE4ODg=_10.jpg"
         },
         {
-            "sys_id":"11123870",
             "id":"lan",
             "externalId":"test13",
             "name":"A Lan",
@@ -132,7 +119,6 @@
             "imageUrl":"http://pic4.nipic.com/20090825/2143781_194202065121_2.jpg"
         },
         {
-            "sys_id":"11224870",
             "id":"longztc",
             "externalId":"test",
             "name":"Long",
