@@ -29,9 +29,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp" >
+            android:layout_height="48dp"
+            android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_phone_tmp"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -45,10 +47,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/edittext_login"
                 android:hint="你的手机号码"
                 android:inputType="phone"
-                android:paddingLeft="90dp"
+                android:layout_toRightOf="@+id/tv_phone_tmp"
                 android:singleLine="true"
                 android:textColorHint="#DDDDDD"
                 android:textSize="16sp" />
@@ -56,10 +57,10 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp" >
+            android:layout_height="48dp">
 
             <TextView
-                android:id="@+id/tv_password"
+                android:id="@+id/tv_password_tmp"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -73,14 +74,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/edittext_login"
                 android:hint="填写密码"
-                android:paddingLeft="90dp"
+                android:layout_toRightOf="@+id/tv_password_tmp"
                 android:password="true"
                 android:singleLine="true"
                 android:textColorHint="#DDDDDD"
                 android:textSize="16sp" />
-
         </RelativeLayout>
 
         <Button

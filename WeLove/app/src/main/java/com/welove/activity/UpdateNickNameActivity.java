@@ -68,20 +68,29 @@ public class UpdateNickNameActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+
+                String name = et_nick.getText().toString().trim();
+                if(name == null || name.isEmpty()) {
+                    finish();
+                    return;
+                }
+
                 Intent intent = new Intent(UpdateInfoService.ServiceName);
                 intent.putExtra(UpdateInfoService.UpdateUserDetail, true);
                 intent.putExtra("id", userId);
 
                 if(userId.equals(AppConstant.meInfo.id)){
-                    user.name = et_nick.getText().toString().trim();
+                    user.nickName = user.name = name;
                     intent.putExtra(UpdateInfoService.UpdateProfile, true);
+                    intent.putExtra(UpdateInfoService.UpdateContactList, true);
                 } else{
-                    user.nickName = et_nick.getText().toString().trim();
+                    user.nickName = name;
                     intent.putExtra(UpdateInfoService.UpdateContactList, true);
                     intent.putExtra(UpdateInfoService.UpdateConversationList, true);
                 }
 
                 AppConstant.userManager.updateUserInfo(userId);
+                AppConstant.conversationManager.userInfoUpdated(userId);
 
                 sendBroadcast(intent);
 

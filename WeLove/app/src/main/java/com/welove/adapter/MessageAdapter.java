@@ -141,13 +141,17 @@ public class MessageAdapter extends BaseAdapter {
         setMessageViewData(view, message);
 
         if (message.direction == Message.Direction.SEND) {
-            if (message.status != Message.MessageStatus.INPROGRESS) {
-                ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_sending);
+            ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_sending);
+            if (message.status == Message.MessageStatus.INPROGRESS) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
                 progressBar.setVisibility(View.GONE);
             }
 
-            if (message.status != Message.MessageStatus.FAIL) {
-                ImageView statusView = (ImageView) view.findViewById(R.id.msg_status);
+            ImageView statusView = (ImageView) view.findViewById(R.id.msg_status);
+            if (message.status == Message.MessageStatus.FAIL) {
+                statusView.setVisibility(View.VISIBLE);
+            } else {
                 statusView.setVisibility(View.GONE);
             }
         }

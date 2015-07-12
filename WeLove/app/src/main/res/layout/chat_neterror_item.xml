@@ -24,16 +24,4 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/iv_neterror"
         />
-    
-   <!--  <TextView 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="查看详情"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/ic_preference_single_normal"
-        android:textColor="#000"
-        /> -->
-    
-
 </RelativeLayout>

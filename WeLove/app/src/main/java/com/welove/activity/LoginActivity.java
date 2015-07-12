@@ -91,7 +91,7 @@ public class LoginActivity extends Activity {
         if(phone.equals("13818085246"))
             return "longztc";
 
-        if(phone.equals("13818085247"))
+        if(phone.equals("13564919875"))
             return "dede";
 
         if(phone.equals("13512169026"))

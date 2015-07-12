@@ -48,18 +48,6 @@
                 android:src="@drawable/ic_sex_male" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@id/iv_avatar"
-            android:text="ID:"
-            android:textColor="#AAAAAA"
-            android:textSize="14sp" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -125,32 +113,4 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_marginTop="20dp"
-        android:id="@+id/re_setting"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/btn_list_item_bg"
-        android:clickable="true"
-        android:paddingLeft="12dp" >
-
-        <ImageView
-            android:id="@+id/iv_setting"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
-            android:src="@drawable/setting" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/iv_setting"
-            android:text="设置"
-            android:textColor="#353535"
-            android:textSize="16sp" />
-    </RelativeLayout>
 </LinearLayout>

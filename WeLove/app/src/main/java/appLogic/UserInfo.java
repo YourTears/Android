@@ -5,7 +5,7 @@ package appLogic;
  */
 public class UserInfo {
     public String id;
-    public String externalId;
+    public String chatId;
     public String name;
     public String name_pinyin;
     public String nickName;

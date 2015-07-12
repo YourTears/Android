@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 
 import appLogic.AppConstant;
+import chat.leanchatlib.controller.ChatManager;
 import common.Util;
 
 import com.welove.app.R;
@@ -36,6 +37,7 @@ public class SplashActivity extends Activity {
 		super.onStart();
 
 		initialize();
+		ChatManager.getInstance().init(this);
 
 		AppConstant.id = LoginTable.getInstance(this).getLoginId();
 
@@ -67,6 +69,6 @@ public class SplashActivity extends Activity {
 		Util.createFolder(AppConstant.imageFolder);
 		Util.createFolder(AppConstant.cacheFolder + "/images");
 
-		DbOpenHelper.getInstance(this).deleteDatabase(this);
+		//DbOpenHelper.getInstance(this).deleteDatabase(this);
 	}
 }

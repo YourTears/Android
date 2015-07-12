@@ -1,7 +1,9 @@
 package com.welove.view;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,8 +27,7 @@ public class FragmentConversation extends Fragment {
 
     private ListView listView;
 
-    public RelativeLayout errorItem;
-    public TextView errorText;
+    private RelativeLayout serverStatusView = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,25 +42,24 @@ public class FragmentConversation extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        errorItem = (RelativeLayout) getView().findViewById(R.id.rl_error_item);
-        errorText = (TextView) errorItem.findViewById(R.id.tv_connect_errormsg);
+        serverStatusView = (RelativeLayout) getView().findViewById(R.id.rl_error_item);
 
         listView = (ListView) getView().findViewById(R.id.conversation_list);
         listView.setAdapter(AppConstant.conversationManager.adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
-                String friendId = (String)view.getTag();
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                String friendId = (String) view.getTag();
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra("id", friendId);
                 getActivity().startActivity(intent);
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                final String friendId = (String)view.getTag();
+                final String friendId = (String) view.getTag();
                 UserInfo friend = AppConstant.userManager.getUser(friendId);
 
                 new AlertDialog.Builder(getActivity())
@@ -71,7 +71,7 @@ public class FragmentConversation extends Fragment {
                                     AppConstant.conversationManager.deleteConversation(friendId);
                                     AppConstant.conversationManager.refreshView();
 
-                                    if(MainActivity.instance != null){
+                                    if (MainActivity.instance != null) {
                                         MainActivity.instance.updateUnreadMessageLabel();
                                     }
                                 }
@@ -82,9 +82,47 @@ public class FragmentConversation extends Fragment {
                 return true;
             }
         });
+
+        refreshServerStatus();
     }
 
     public void refreshListView(){
         AppConstant.conversationManager.refreshView();
+    }
+
+    public void refreshServerStatus(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int retryCount = 3;
+
+                while(retryCount > 0){
+                    if(AppConstant.conversationProxy.isConnected())
+                        break;
+
+                    retryCount --;
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if(MainActivity.instance != null) {
+                    MainActivity.instance.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (AppConstant.conversationProxy.isConnected()) {
+                                serverStatusView.setVisibility(View.GONE);
+                            } else {
+                                serverStatusView.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 }

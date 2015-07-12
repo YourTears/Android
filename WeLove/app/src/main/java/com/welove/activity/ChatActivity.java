@@ -58,6 +58,7 @@ import com.welove.adapter.ExpressionPagerAdapter;
 import com.welove.view.ExpandGridView;
 
 import chat.ConversationProxy;
+import chat.SendMessageCallback;
 import common.PasteEditText;
 
 import appLogic.AppConstant;
@@ -619,32 +620,24 @@ public class ChatActivity extends Activity implements OnClickListener {
 
             Message message = new Message(UUID.randomUUID(), friend.id, Message.Direction.SEND,
                     content, time, Message.MessageType.TEXT);
-
-            messageManager.addOrReplaceMessage(message);
+            message.externalId = message.id.toString();
+            message.status = Message.MessageStatus.INPROGRESS;
 
             conversationListView.setSelection(conversationListView.getCount() - 1);
             messageEditText.setText("");
 
-            sendMessageInBackground(message);
+            AppConstant.conversationProxy.sendMessage(friend.chatId, message, new SendMessageCallback() {
+                @Override
+                public void done(Message msg) {
+                    messageManager.updateMessage(msg);
+                }
+            });
+            messageManager.addOrReplaceMessage(message);
+
             setResult(RESULT_OK);
         }
     }
 
-    private void sendMessageInBackground(Message message) {
-        message.status = Message.MessageStatus.SUCCEED;
-
-        messageManager.addOrReplaceMessage(message);
-        AppConstant.conversationProxy.sendMessage(friend.externalId, message);
-    }
-
-    /**
-     * 发送语音
-     *
-     * @param filePath
-     * @param fileName
-     * @param length
-     * @param isResend
-     */
     private void sendVoice(String filePath, String fileName, String length,
                            boolean isResend) {
         if (!(new File(filePath).exists())) {

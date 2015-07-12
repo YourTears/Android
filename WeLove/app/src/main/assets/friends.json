@@ -3,7 +3,7 @@
     [
         {
             "id":"feifei",
-            "externalId":"test1",
+            "chatId":"test1",
             "name":"Fei Fei",
             "gender":"0",
             "phone" : "13818085246",
@@ -12,16 +12,16 @@
         },
         {
             "id":"jianglu",
-            "externalId":"test2",
+            "chatId":"test2",
             "name":"Long",
-            "gender":"1",
+            "gender":"0",
             "phone" : "13818085246",
             "friendStatus" :"0",
             "imageUrl":"http://img2.imgtn.bdimg.com/it/u=3047741947,4037352593&fm=21&gp=0.jpg"
         },
         {
             "id":"maomao",
-            "externalId":"test3",
+            "chatId":"test3",
             "name":"Mao Mao",
             "gender":"0",
             "phone" : "13818085246",
@@ -30,16 +30,16 @@
         },
         {
             "id":"Yuanyuan",
-            "externalId":"test4",
+            "chatId":"test4",
             "name":"Yuan Yuan",
-            "gender":"1",
+            "gender":"0",
             "phone" : "13818085246",
             "friendStatus" :"3",
             "imageUrl":"http://cdn.neonan.com/uploads/964fab5a-71ad-4259-8c7d-c00e2bca51e5.jpg"
         },
         {
             "id":"Shuanshuan",
-            "externalId":"test5",
+            "chatId":"test5",
             "name":"ShuanShuan",
             "gender":"0",
             "phone" : "13818085246",
@@ -48,16 +48,16 @@
         },
         {
             "id":"jiasong",
-            "externalId":"test6",
+            "chatId":"test6",
             "name":"Song Jia",
-            "gender":"1",
+            "gender":"0",
             "phone" : "13818085246",
             "friendStatus" :"1",
             "imageUrl":"http://img0.imgtn.bdimg.com/it/u=3512869393,3666053781&fm=21&gp=0.jpg"
         },
         {
             "id":"Boxue",
-            "externalId":"test7",
+            "chatId":"test7",
             "name":"Bo xue",
             "gender":"0",
             "phone" : "13818085246",
@@ -66,16 +66,16 @@
         },
         {
             "id":"Bingbing123",
-            "externalId":"test8",
+            "chatId":"test8",
             "name":"Bing",
-            "gender":"1",
+            "gender":"0",
             "phone" : "13818085246",
             "friendStatus" :"0",
             "imageUrl":"http://img4.duitang.com/uploads/item/201203/03/20120303234549_MaCk5.jpeg"
         },
         {
             "id":"songqian",
-            "externalId":"test9",
+            "chatId":"test9",
             "name":"Qian",
             "gender":"0",
             "phone" : "13818085246",
@@ -84,7 +84,7 @@
         },
         {
             "id":"Kunling",
-            "externalId":"test10",
+            "chatId":"test10",
             "name":"Kun L",
             "gender":"0",
             "phone" : "13818085246",
@@ -93,7 +93,7 @@
         },
         {
             "id":"Lengleng",
-            "externalId":"test11",
+            "chatId":"test11",
             "name":"Leng",
             "gender":"1",
             "phone" : "13818085246",
@@ -102,7 +102,7 @@
         },
         {
             "id":"Shishi",
-            "externalId":"test12",
+            "chatId":"test12",
             "name":"Shi_Shi",
             "gender":"0",
             "phone" : "13818085246",
@@ -111,7 +111,7 @@
         },
         {
             "id":"lan",
-            "externalId":"test13",
+            "chatId":"test13",
             "name":"A Lan",
             "gender":"0",
             "phone" : "13818085246",
@@ -120,12 +120,30 @@
         },
         {
             "id":"longztc",
-            "externalId":"test",
+            "chatId":"test",
             "name":"Long",
             "gender":"1",
             "phone" : "13818085246",
             "friendStatus" : "0",
             "imageUrl":"http://www.dongomusic.com/upload/2011/05/10/22403870.jpeg"
+        },
+        {
+            "id":"mingyang",
+            "chatId":"mingyang",
+            "name":"Mingyang",
+            "gender":"1",
+            "phone" : "13512169026",
+            "friendStatus" : "0",
+            "imageUrl":"http://img5q.duitang.com/uploads/item/201409/22/20140922224842_VmyiJ.jpeg"
+        },
+        {
+            "id":"dede",
+            "chatId":"dede",
+            "name":"David",
+            "gender":"1",
+            "phone" : "13564919875",
+            "friendStatus" : "0",
+            "imageUrl":"http://file-www.sioe.cn/201109/14/222211817.jpg"
         }
     ]
 }

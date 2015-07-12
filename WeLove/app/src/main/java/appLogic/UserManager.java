@@ -50,7 +50,7 @@ public class UserManager {
         userTable = UserTable.getInstance(context);
 
         for(UserInfo user : userTable.getFriends()){
-            if(user.id == null || user.id.isEmpty() || user.externalId == null || user.externalId.isEmpty())
+            if(user == null || user.id == null || user.id.isEmpty() || user.chatId == null || user.chatId.isEmpty())
                 continue;
 
             if(user.nickName == null || user.nickName.isEmpty()){
@@ -63,7 +63,7 @@ public class UserManager {
                     friends.add(user);
                     friendMapping.put(user.id, user);
 
-                    externalMapping.put(user.externalId, user);
+                    externalMapping.put(user.chatId, user);
                 } else {
                     pendingFriends.add(user);
                     pendingFriendMapping.put(user.id, user);
@@ -137,7 +137,7 @@ public class UserManager {
                 friends.add(user);
                 friendMapping.put(userId, user);
 
-                externalMapping.put(user.externalId, user);
+                externalMapping.put(user.chatId, user);
 
                 Collections.sort(friends, new UserManager.PinyinComparator());
 
@@ -193,6 +193,10 @@ public class UserManager {
 
                 for (int idx = 0; idx < array.length(); idx++) {
                     UserInfo user = getFriendInfo(array.getJSONObject(idx));
+
+                    if(user == null)
+                        continue;
+
                     if(user.nickName == null || user.nickName.isEmpty()){
                         user.nickName = user.name;
                     }
@@ -204,7 +208,7 @@ public class UserManager {
                                 friends.add(user);
                                 friendMapping.put(user.id, user);
 
-                                externalMapping.put(user.externalId, user);
+                                externalMapping.put(user.chatId, user);
                             } else {
                                 pendingFriends.add(user);
                                 pendingFriendMapping.put(user.id, user);
@@ -220,6 +224,8 @@ public class UserManager {
         } catch (JSONException e) {
             return false;
         } finally {
+
+            Collections.sort(friends, new UserManager.PinyinComparator());
             adapter.notifyDataSetChanged();
         }
 
@@ -231,7 +237,7 @@ public class UserManager {
 
         try {
             user.id = json.getString("id");
-            user.externalId = json.getString("externalId");
+            user.chatId = json.getString("chatId");
             user.gender = UserInfo.parseGender(json.getInt("gender"));
             user.name = json.getString("name");
             user.imageUrl = json.getString("imageUrl");

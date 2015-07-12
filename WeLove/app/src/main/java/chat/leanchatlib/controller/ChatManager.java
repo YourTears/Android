@@ -181,17 +181,17 @@ public class ChatManager extends AVIMClientEventHandler {
     this.sendCallback = sendCallback;
   }
 
-  public void sendMessage(final String userId, final AVIMTypedMessage message){
+  public void sendMessage(final String userId, final AVIMTypedMessage message, final MessageAgent.SendCallback callback){
 
     if(messageAgents.containsKey(userId)){
       MessageAgent agent = messageAgents.get(userId);
-      agent.sendMessage(message);
+      agent.sendMessage(message, callback);
     } else{
       chatManager.fetchConversationWithUserId(userId, new AVIMConversationCreatedCallback() {
         @Override
         public void done(AVIMConversation conversation, AVException e) {
           MessageAgent agent = new MessageAgent(conversation);
-          agent.sendMessage(message);
+          agent.sendMessage(message, callback);
 
           messageAgents.put(userId, agent);
         }

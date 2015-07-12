@@ -23,7 +23,6 @@ import chat.leanchatlib.utils.Utils;
 public class MessageAgent {
   private AVIMConversation conversation;
   private ChatManager chatManager;
-  private SendCallback sendCallback;
 
   public MessageAgent(AVIMConversation conversation) {
     this.conversation = conversation;
@@ -56,7 +55,7 @@ public class MessageAgent {
     });
   }
 
-  public void sendMessage(AVIMTypedMessage msg){
+  public void sendMessage(AVIMTypedMessage msg, final SendCallback sendCallback){
     sendMsg(msg, null, sendCallback);
   }
 
@@ -73,7 +72,7 @@ public class MessageAgent {
     });
   }
 
-  public String sendText(String content) {
+  public String sendText(String content, final SendCallback sendCallback) {
     AVIMTextMessage textMsg = new AVIMTextMessage();
     textMsg.setText(content);
     sendMsg(textMsg, null, sendCallback);
@@ -81,7 +80,7 @@ public class MessageAgent {
       return textMsg.getMessageId();
   }
 
-  public void sendImage(String imagePath) {
+  public void sendImage(String imagePath, final SendCallback sendCallback) {
     final String newPath = PathUtils.getChatFilePath(Utils.uuid());
     PhotoUtils.compressImage(imagePath, newPath);
     try {
@@ -92,7 +91,7 @@ public class MessageAgent {
     }
   }
 
-  public void sendLocation(double latitude, double longitude, String address) {
+  public void sendLocation(double latitude, double longitude, String address, final SendCallback sendCallback) {
     AVIMLocationMessage locationMsg = new AVIMLocationMessage();
     AVGeoPoint geoPoint = new AVGeoPoint(latitude, longitude);
     locationMsg.setLocation(geoPoint);
@@ -100,7 +99,7 @@ public class MessageAgent {
     sendMsg(locationMsg, null, sendCallback);
   }
 
-  public void sendAudio(String audioPath) {
+  public void sendAudio(String audioPath, final SendCallback sendCallback) {
     try {
       AVIMAudioMessage audioMsg = new AVIMAudioMessage(audioPath);
       sendMsg(audioMsg, audioPath, sendCallback);

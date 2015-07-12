@@ -1,7 +1,6 @@
 package com.welove.activity;
 import com.welove.app.R;
 import com.welove.broadcast.UpdateInfoService;
-import com.welove.database.DbOpenHelper;
 import com.welove.database.MessageTable;
 import com.welove.view.FragmentConversation;
 import com.welove.view.FragmentFind;
@@ -24,17 +23,13 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import appLogic.AppConstant;
 import appLogic.ConversationManager;
-import appLogic.LoginInfo;
 import appLogic.UserInfo;
 import appLogic.UserManager;
 import common.ImageLoaderManager;
@@ -81,7 +76,6 @@ public class MainActivity extends BroadcastActivity {
 
         initMeInfo();
 
-        ConversationProxy.connectChatServer();
         AppConstant.conversationProxy = new ConversationProxy();
 
         if (savedInstanceState != null
@@ -110,20 +104,6 @@ public class MainActivity extends BroadcastActivity {
                 && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
         }
-
-        Intent updateInfoIntent = new Intent(MainActivity.this, UpdateInfoService.class);
-        bindService(updateInfoIntent, new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                updateInfoService = ((UpdateInfoService.UpdateInfoBinder) service).getService();
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                updateInfoService = null;
-
-            }
-        }, Context.BIND_AUTO_CREATE);
 
         initBroadcastService();
 
@@ -173,7 +153,7 @@ public class MainActivity extends BroadcastActivity {
         if(AppConstant.userManager.friends.size() == 0)
             AppConstant.userManager.refresh(Util.getAssertInputStream(this.getResources().getAssets(), "friends.json"));
 
-        AppConstant.meInfo = AppConstant.userManager.getUser(LoginInfo.getInstance().id);
+        AppConstant.meInfo = AppConstant.userManager.getUser(AppConstant.id);
 
         if(AppConstant.meInfo.gender == UserInfo.Gender.Female){
             AppConstant.it = "他";
@@ -268,15 +248,16 @@ public class MainActivity extends BroadcastActivity {
         } else {
             AppConstant.messageTable.insertMessage(message);
 
-            AppConstant.conversationManager.addOrReplaceConversation(message);
+            if(message.direction == Message.Direction.RECEIVE) {
+                AppConstant.conversationManager.addOrReplaceConversation(message);
 
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    AppConstant.conversationManager.refreshView();
-                }
-            });
-
-            updateUnreadMessageLabel();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        AppConstant.conversationManager.refreshView();
+                        updateUnreadMessageLabel();
+                    }
+                });
+            }
         }
     }
 
@@ -363,15 +344,6 @@ public class MainActivity extends BroadcastActivity {
             updateUnreadMessageLabel();
             updateNewFriendsLabel();
         }
-
-        IntentFilter updateInfoFilter = new IntentFilter(UpdateInfoService.ServiceName);
-        registerReceiver(new BroadcastReceiver() {
-            public void onReceive(Context context, Intent intent) {
-//                int counter = intent.get
-//                String text = String.valueOf(counter);
-//                counterText.setText(text);
-            }
-        }, updateInfoFilter);
     }
 
     @Override

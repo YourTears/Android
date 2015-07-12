@@ -25,11 +25,6 @@ public class BroadcastActivity extends Activity {
         if(broadcastIntent != null && serviceConnection != null) {
             bindService(broadcastIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         if (broadServiceName != null) {
             IntentFilter intentFilter = new IntentFilter(broadServiceName);

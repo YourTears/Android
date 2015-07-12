@@ -59,6 +59,14 @@ public class MessageManager {
         adapter.notifyDataSetChanged();
     }
 
+    public void updateMessage(Message message){
+        if(map.containsKey(message.id)){
+            adapter.notifyDataSetChanged();
+        }
+
+        AppConstant.messageTable.insertMessage(message);
+    }
+
     public Message getLastNewMessage(){
         if(!newMessage)
             return null;

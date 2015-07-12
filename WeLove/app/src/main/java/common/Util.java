@@ -126,6 +126,10 @@ public class Util {
     }
 
     public static boolean saveBitmapToFile(Bitmap bitmap, String filePath) {
+        if(bitmap == null || filePath == null){
+            return false;
+        }
+
         createFile(filePath);
 
         OutputStream stream = null;
@@ -142,6 +146,10 @@ public class Util {
     }
 
     public static Bitmap compressBitmap(Bitmap image) {
+        if(image == null){
+            return null;
+        }
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         int options = 100;
         image.compress(Bitmap.CompressFormat.JPEG, 100, stream);

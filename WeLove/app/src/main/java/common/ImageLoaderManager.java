@@ -91,6 +91,9 @@ public class ImageLoaderManager {
                 @Override
                 public void run() {
                     Bitmap bitmap = Util.downloadImage(imageUrl);
+                    if(bitmap == null)
+                        return;
+
                     Bitmap compressedBitmap = Util.compressBitmap(bitmap);
                     Message msg = new Message();
                     msg.obj = compressedBitmap;

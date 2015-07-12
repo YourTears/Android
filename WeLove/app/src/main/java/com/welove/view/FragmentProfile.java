@@ -40,23 +40,11 @@ public class FragmentProfile extends Fragment {
             }
 
         });
-        RelativeLayout re_setting = (RelativeLayout) getView().findViewById(
-                R.id.re_setting);
-        re_setting.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //startActivity(new Intent(getActivity(), SettingActivity.class));
-            }
-
-        });
 
         imageView = (ImageView) re_myinfo.findViewById(R.id.iv_avatar);
         nameTextView = (TextView) re_myinfo.findViewById(R.id.tv_name);
-        TextView idTextView = (TextView) re_myinfo.findViewById(R.id.tv_id);
 
         nameTextView.setText(AppConstant.meInfo.name);
-        idTextView.setText("ID:" + AppConstant.meInfo.id);
 
         AppConstant.imageLoaderManager.loadImage(imageView, AppConstant.meInfo.id, AppConstant.meInfo.imageUrl, ImageLoaderManager.CacheMode.Memory);
     }

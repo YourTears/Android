@@ -109,6 +109,18 @@ public class ConversationManager {
         }
     }
 
+    public void userInfoUpdated(String userId){
+        if(needRefresh)
+            return;
+
+        for(Conversation conversation : conversations){
+            if(conversation.friendId.equals(userId)){
+                needRefresh = true;
+                return;
+            }
+        }
+    }
+
     public int getUnreadCount(){
         return totalUnreadCount;
     }
@@ -132,6 +144,8 @@ public class ConversationManager {
 
         if(unread != 0){
             conversation.unreadCount = 0;
+            conversationTable.replaceConversation(conversation);
+
             addUnreadCount(-unread);
             needRefresh = true;
         }
