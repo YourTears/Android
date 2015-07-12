@@ -60,8 +60,6 @@ public class MessageAdapter extends BaseAdapter {
     private Context context;
 
     private List<Message> messages;
-    private long lastShowTime;
-    private long messageCountToLastShowTime;
 
     public MessageAdapter(Context context, String id, List<Message> messages) {
         this.context = context;
@@ -70,9 +68,6 @@ public class MessageAdapter extends BaseAdapter {
 
         friend = AppConstant.userManager.getUser(id);
         this.messages = messages;
-
-        lastShowTime = 0;
-        messageCountToLastShowTime = 0;
     }
 
     /**
@@ -87,6 +82,9 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
+        if(position < 0 || position >= messages.size())
+            return null;
+
         return messages.get(position);
     }
 
@@ -101,7 +99,7 @@ public class MessageAdapter extends BaseAdapter {
         return 14;
     }
 
-    private View setMessageViewData(View view, Message message) {
+    private View setMessageViewData(int position, View view, Message message) {
         ImageView headerView = (ImageView)view.findViewById(R.id.iv_userhead);
 
         String ownerId = AppConstant.meInfo.id;
@@ -116,13 +114,11 @@ public class MessageAdapter extends BaseAdapter {
 
         TextView timeView = (TextView) view.findViewById(R.id.tv_timestamp);
 
-        if(message.time - lastShowTime > 120000 || messageCountToLastShowTime > 20) {
+        if(position == 0 || messageTimeGap(position) > 1000 * 60 * 3) {
+            timeView.setVisibility(View.VISIBLE);
             timeView.setText(DateUtils.getDateTimeString(message.time));
-            lastShowTime = message.time;
-            messageCountToLastShowTime = 1;
         } else {
             timeView.setVisibility(View.GONE);
-            messageCountToLastShowTime ++;
         }
 
         TextView userNameView =(TextView) view.findViewById(R.id.tv_userid);
@@ -138,7 +134,7 @@ public class MessageAdapter extends BaseAdapter {
        view = message.direction == Message.Direction.SEND ?
             inflater.inflate(R.layout.row_sent_message, null) : inflater.inflate(R.layout.row_received_message, null);
 
-        setMessageViewData(view, message);
+        setMessageViewData(position, view, message);
 
         if (message.direction == Message.Direction.SEND) {
             ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_sending);
@@ -316,7 +312,13 @@ public class MessageAdapter extends BaseAdapter {
         }
     }
 
-    private interface SendMessageCallBack{
-        public void onComplete(int code);
+    private long messageTimeGap(int position){
+        Message message1 = (Message) getItem(position);
+        Message message2 = (Message) getItem(position - 1);
+
+        if(message1 == null || message2 == null)
+            return 0;
+
+        return message1.time - message2.time;
     }
 }
