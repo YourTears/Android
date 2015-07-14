@@ -54,7 +54,7 @@ public class AsyncHttpURLConnection {
   }
 
   public AsyncHttpURLConnection(String method, String url, String message,
-      AsyncHttpEvents events) {
+                                AsyncHttpEvents events) {
     this.method = method;
     this.url = url;
     this.message = message;
@@ -73,7 +73,7 @@ public class AsyncHttpURLConnection {
   private void sendHttpMessage() {
     try {
       HttpURLConnection connection =
-        (HttpURLConnection) new URL(url).openConnection();
+              (HttpURLConnection) new URL(url).openConnection();
       byte[] postData = new byte[0];
       if (message != null) {
         postData = message.getBytes("UTF-8");
@@ -90,7 +90,9 @@ public class AsyncHttpURLConnection {
         connection.setFixedLengthStreamingMode(postData.length);
       }
       connection.setRequestProperty(
-          "content-type", "text/plain; charset=utf-8");
+              "content-type", "text/plain; charset=utf-8");
+      //connection.setRequestProperty("Content-type", "application/x-java-serialized-object");
+      connection.setRequestProperty("Connection", "close");
 
       // Send POST request.
       if (doOutput && postData.length > 0) {
@@ -103,18 +105,20 @@ public class AsyncHttpURLConnection {
       int responseCode = connection.getResponseCode();
       if (responseCode != 200) {
         events.onHttpError("Non-200 response to " + method + " to URL: "
-            + url + " : " + connection.getHeaderField(null));
+                + url + " : " + connection.getHeaderField(null));
+        connection.disconnect();
         return;
       }
       InputStream responseStream = connection.getInputStream();
       String response = drainStream(responseStream);
       responseStream.close();
+      connection.disconnect();
       events.onHttpComplete(response);
     } catch (SocketTimeoutException e) {
       events.onHttpError("HTTP " + method + " to " + url + " timeout");
     } catch (IOException e) {
       events.onHttpError("HTTP " + method + " to " + url + " error: "
-          + e.getMessage());
+              + e.getMessage());
     }
   }
 

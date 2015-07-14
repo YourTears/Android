@@ -41,6 +41,7 @@ import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -53,6 +54,7 @@ import org.webrtc.SessionDescription;
 import org.webrtc.StatsReport;
 import org.webrtc.VideoRenderer;
 import org.webrtc.VideoRendererGui;
+import org.webrtc.VideoRendererGui.RenderOrder;
 import org.webrtc.VideoRendererGui.ScalingType;
 
 /**
@@ -119,6 +121,7 @@ public class CallActivity extends Activity
   private AppRTCAudioManager audioManager = null;
   private VideoRenderer.Callbacks localRender;
   private VideoRenderer.Callbacks remoteRender;
+  private RenderOrder renderOrder;
   private ScalingType scalingType;
   private Toast logToast;
   private boolean commandLineRun;
@@ -175,10 +178,32 @@ public class CallActivity extends Activity
         LOCAL_WIDTH_CONNECTING, LOCAL_HEIGHT_CONNECTING, scalingType, true);
 
     // Show/hide call control fragment on view click.
+    /*
     videoView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         toggleCallControlFragmentVisibility();
+      }
+    });
+    */
+
+    videoView.setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+          double width = (double) view.getWidth();
+          double height = (double) view.getHeight();
+          double x = motionEvent.getX();
+          double y = motionEvent.getY();
+
+          if (x >= width / 100 * LOCAL_X_CONNECTED && y >= height / 100 * LOCAL_Y_CONNECTED
+                  && x <= width / 100 * (LOCAL_X_CONNECTED + LOCAL_WIDTH_CONNECTED) && y <= height / 100 * (LOCAL_Y_CONNECTED + LOCAL_HEIGHT_CONNECTED)) {
+            switchLocalRemoteRender();
+          } else {
+            toggleCallControlFragmentVisibility();
+          }
+        }
+        return false;
       }
     });
 
@@ -302,19 +327,62 @@ public class CallActivity extends Activity
     ft.commit();
   }
 
+  private void switchLocalRemoteRender() {
+    if (!iceConnected) {
+      return;
+    }
+    if (renderOrder == RenderOrder.REMOTE_TO_LOCAL) {
+      renderOrder = RenderOrder.LOCAL_TO_REMOTE;
+      VideoRendererGui.update(remoteRender,
+              LOCAL_X_CONNECTED, LOCAL_Y_CONNECTED,
+              LOCAL_WIDTH_CONNECTED, LOCAL_HEIGHT_CONNECTED,
+              ScalingType.SCALE_ASPECT_FIT);
+      VideoRendererGui.update(localRender,
+              REMOTE_X, REMOTE_Y,
+              REMOTE_WIDTH, REMOTE_HEIGHT, scalingType);
+    }
+    else {
+      renderOrder = RenderOrder.REMOTE_TO_LOCAL;
+      VideoRendererGui.update(remoteRender,
+              REMOTE_X, REMOTE_Y,
+              REMOTE_WIDTH, REMOTE_HEIGHT, scalingType);
+      VideoRendererGui.update(localRender,
+              LOCAL_X_CONNECTED, LOCAL_Y_CONNECTED,
+              LOCAL_WIDTH_CONNECTED, LOCAL_HEIGHT_CONNECTED,
+              ScalingType.SCALE_ASPECT_FIT);
+    }
+    VideoRendererGui.setRenderOrder(renderOrder);
+  }
+
   private void updateVideoView() {
-    VideoRendererGui.update(remoteRender,
-        REMOTE_X, REMOTE_Y,
-        REMOTE_WIDTH, REMOTE_HEIGHT, scalingType);
-    if (iceConnected) {
+    if (renderOrder == RenderOrder.REMOTE_TO_LOCAL) {
+      VideoRendererGui.update(remoteRender,
+              REMOTE_X, REMOTE_Y,
+              REMOTE_WIDTH, REMOTE_HEIGHT, scalingType);
+      if (iceConnected) {
+        VideoRendererGui.update(localRender,
+                LOCAL_X_CONNECTED, LOCAL_Y_CONNECTED,
+                LOCAL_WIDTH_CONNECTED, LOCAL_HEIGHT_CONNECTED,
+                ScalingType.SCALE_ASPECT_FIT);
+      } else {
+        VideoRendererGui.update(localRender,
+                LOCAL_X_CONNECTING, LOCAL_Y_CONNECTING,
+                LOCAL_WIDTH_CONNECTING, LOCAL_HEIGHT_CONNECTING, scalingType);
+      }
+    }else {
       VideoRendererGui.update(localRender,
-          LOCAL_X_CONNECTED, LOCAL_Y_CONNECTED,
-          LOCAL_WIDTH_CONNECTED, LOCAL_HEIGHT_CONNECTED,
-          ScalingType.SCALE_ASPECT_FIT);
-    } else {
-      VideoRendererGui.update(localRender,
-          LOCAL_X_CONNECTING, LOCAL_Y_CONNECTING,
-          LOCAL_WIDTH_CONNECTING, LOCAL_HEIGHT_CONNECTING, scalingType);
+              REMOTE_X, REMOTE_Y,
+              REMOTE_WIDTH, REMOTE_HEIGHT, scalingType);
+      if (iceConnected) {
+        VideoRendererGui.update(remoteRender,
+                LOCAL_X_CONNECTED, LOCAL_Y_CONNECTED,
+                LOCAL_WIDTH_CONNECTED, LOCAL_HEIGHT_CONNECTED,
+                ScalingType.SCALE_ASPECT_FIT);
+      } else {
+        VideoRendererGui.update(remoteRender,
+                LOCAL_X_CONNECTING, LOCAL_Y_CONNECTING,
+                LOCAL_WIDTH_CONNECTING, LOCAL_HEIGHT_CONNECTING, scalingType);
+      }
     }
   }
 
