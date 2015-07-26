@@ -7,6 +7,7 @@ import com.welove.view.FragmentFind;
 import com.welove.view.FragmentFriends;
 import com.welove.view.FragmentProfile;
 
+import appLogic.AppNotification;
 import appLogic.Message;
 import chat.ConversationProxy;
 import chat.MessageEvent;
@@ -14,6 +15,7 @@ import chat.MessageEvent;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -38,6 +40,12 @@ import de.greenrobot.event.EventBus;
 
 @SuppressLint("DefaultLocale")
 public class MainActivity extends BroadcastActivity {
+    public enum FragmentType{
+        Love,
+        Conversation,
+        Friends
+    }
+
     // 未读消息textview
     private TextView unreadLabel;
     // 未读通讯录textview
@@ -104,6 +112,8 @@ public class MainActivity extends BroadcastActivity {
                 && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
         }
+
+        AppNotification.initialize((NotificationManager) getSystemService(NOTIFICATION_SERVICE), this);
 
         initBroadcastService();
 
@@ -243,13 +253,18 @@ public class MainActivity extends BroadcastActivity {
         if (message == null)
             return;
 
+        UserInfo user = AppConstant.userManager.getUser(message.friendId);
+        if (user == null)
+            return;
+
         if (ChatActivity.instance != null && ChatActivity.instance.friend.id == message.friendId) {
             ChatActivity.instance.addChatMessage(message);
         } else {
             AppConstant.messageTable.insertMessage(message);
+            if (message.direction == Message.Direction.RECEIVE) {
 
-            if(message.direction == Message.Direction.RECEIVE) {
                 AppConstant.conversationManager.addOrReplaceConversation(message);
+                AppNotification.getInstance().sendNotification(user.nickName, message.body, FragmentType.Conversation);
 
                 runOnUiThread(new Runnable() {
                     public void run() {

@@ -1,12 +1,14 @@
 package com.welove.activity;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 
 import appLogic.AppConstant;
+import appLogic.AppNotification;
 import chat.leanchatlib.controller.ChatManager;
 import common.Util;
 
@@ -30,6 +32,9 @@ public class SplashActivity extends Activity {
 		AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
 		animation.setDuration(1500);
 		view.startAnimation(animation);
+
+        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
 	}
 
 	@Override

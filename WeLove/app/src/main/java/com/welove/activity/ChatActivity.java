@@ -280,9 +280,11 @@ public class ChatActivity extends Activity implements OnClickListener {
         messageLayout.setBackgroundResource(R.drawable.input_bar_bg_active);
 
         textModeLayout.setVisibility(View.GONE);
+        expressionLayout.setVisibility(View.GONE);
+        moreButtonsLayout.setVisibility(View.GONE);
 
         normalExpressionView.setVisibility(View.VISIBLE);
-        checkedExpressionView.setVisibility(View.INVISIBLE);
+        checkedExpressionView.setVisibility(View.GONE);
 
         if (TextUtils.isEmpty(messageEditText.getText())) {
             moreButton.setVisibility(View.VISIBLE);
@@ -291,18 +293,15 @@ public class ChatActivity extends Activity implements OnClickListener {
             moreButton.setVisibility(View.GONE);
             sendMessageButton.setVisibility(View.VISIBLE);
         }
-
-        moreButtonsLayout.setVisibility(View.GONE);
-        expressionLayout.setVisibility(View.GONE);
     }
 
     private void expressionMode() {
         hideKeyboard();
         keyboardMode();
 
-        messageLayout.setBackgroundResource(R.drawable.input_bar_bg_active);
-
         moreButtonsLayout.setVisibility(View.GONE);
+
+        messageLayout.setBackgroundResource(R.drawable.input_bar_bg_active);
 
         textModeLayout.setVisibility(View.VISIBLE);
 
@@ -325,45 +324,41 @@ public class ChatActivity extends Activity implements OnClickListener {
         keyboardMode();
 
         expressionLayout.setVisibility(View.GONE);
+        pressToSpeakButton.setVisibility(View.GONE);
+        keyboardModeButton.setVisibility(View.GONE);
+        checkedExpressionView.setVisibility(View.GONE);
 
         messageLayout.setBackgroundResource(R.drawable.input_bar_bg_normal);
-        pressToSpeakButton.setVisibility(View.GONE);
 
         voiceModeButton.setVisibility(View.VISIBLE);
-        keyboardModeButton.setVisibility(View.GONE);
-
         textModeLayout.setVisibility(View.VISIBLE);
-
         normalExpressionView.setVisibility(View.VISIBLE);
-        checkedExpressionView.setVisibility(View.INVISIBLE);
-
         moreButtonsLayout.setVisibility(View.VISIBLE);
     }
 
     private void keyboardMode() {
-        voiceModeButton.setVisibility(View.VISIBLE);
         keyboardModeButton.setVisibility(View.GONE);
-
-        messageLayout.setVisibility(View.VISIBLE);
         pressToSpeakButton.setVisibility(View.GONE);
+
+        voiceModeButton.setVisibility(View.VISIBLE);
+        messageLayout.setVisibility(View.VISIBLE);
     }
 
     private void speakMode() {
         hideKeyboard();
+
         messageLayout.setVisibility(View.GONE);
-
         textModeLayout.setVisibility(View.GONE);
-
         voiceModeButton.setVisibility(View.GONE);
-        keyboardModeButton.setVisibility(View.VISIBLE);
-
-        pressToSpeakButton.setVisibility(View.VISIBLE);
-
-        sendMessageButton.setVisibility(View.GONE);
-        moreButton.setVisibility(View.VISIBLE);
-
         moreButtonsLayout.setVisibility(View.GONE);
         expressionLayout.setVisibility(View.GONE);
+        sendMessageButton.setVisibility(View.GONE);
+
+        keyboardModeButton.setVisibility(View.VISIBLE);
+        pressToSpeakButton.setVisibility(View.VISIBLE);
+        moreButton.setVisibility(View.VISIBLE);
+
+
     }
 
     private void setUpView() {

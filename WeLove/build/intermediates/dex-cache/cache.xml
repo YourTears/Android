@@ -2,88 +2,11 @@
 <items version="2" >
 
     <item
-        jar="E:\Project2\WeLove\app\libs\avoscloud-push-v3.1.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="571a7476eaa1ad0284e64ceb0d48d5a100cce8e8">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\avoscloud-push-v3.1.4-e53245565c16a4225a9bd2d03839567bfe4ee0fc.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\android-support-v4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="bd6479f5dd592790607e0504e66e0f31c2b4d308">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\android-support-v4-c8ff5d85cf2118c7bd1b42fb1bc61b927738bfcd.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\universal-image-loader-1.9.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.3-45ccae5c0ef5a9adb236b09b1366ef4857e0efd2.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\autobanh.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="9b51fb848b29a3e41b8474ce2d4360f4d7d144c5">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\autobanh-f170c94ce9ecc34790630772d6e5aeb885386b46.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\avoscloud-sdk-v3.1.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="9ff080ea0930132c1073a97e8c0d728ef1e1a9ea">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\avoscloud-sdk-v3.1.4-44bca7c6027f3061cb5d07ed1b74fdce2d6615aa.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\eventbus-2.4.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\eventbus-2.4.0-0a0556cd5e510942f033ab53c4603fa9a31300c5.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\android-async-http-1.4.6.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a845a88238be0b5be9d238652c1bc0605ef91f52">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\android-async-http-1.4.6-9d24339b1b53c0742d5c5fd817e793b57975a7b4.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\libjingle_peerconnection.jar"
+        jar="C:\Users\tiazh\Project\Android\WeLove\app\libs\libjingle_peerconnection.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="b822b5134104f31122cfd5aec4a0fa0e5d38e748">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\libjingle_peerconnection-8b604d8771b07a44bfbfcf3ec89ceed5911428d1.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\locSDK_3.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="590d32bdf5bb37ee372a21696b8f7853b224e31f">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\locSDK_3.3-9efa5ba33739b6d10cfbbd26f777b9efde773586.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\fastjson-1.1.34.android.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="bef1d1224be099c387794bce1bdf81b38f37c6ce">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\fastjson-1.1.34.android-b982c62c934984d23c5d9ecb6331f364344c6fec.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\Java-WebSocket-1.2.0-leancloud.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="221fb6750fcf164a85a98bbbafe0879e18868562">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\Java-WebSocket-1.2.0-leancloud-2aa9e992c2df2dba41a90498ed3acc7a5634e2c8.jar" />
-    </item>
-    <item
-        jar="E:\Project2\WeLove\app\libs\avoscloud-statistics-v3.1.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="244b10b1f8aa91ccdef4e1101b0c64d6fc6a0628">
-        <dex dex="E:\Project2\WeLove\app\build\intermediates\pre-dexed\debug\avoscloud-statistics-v3.1.4-f4fcea2195f04db3b465fa1bc7476b2792093717.jar" />
+        <dex dex="C:\Users\tiazh\Project\Android\WeLove\app\build\intermediates\pre-dexed\debug\libjingle_peerconnection-9f0283b31ce6077f7900a87d839d33a584805493.jar" />
     </item>
 
 </items>
