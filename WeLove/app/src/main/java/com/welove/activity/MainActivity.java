@@ -13,6 +13,7 @@ import chat.ConversationProxy;
 import chat.MessageEvent;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.NotificationManager;
@@ -21,7 +22,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -29,6 +29,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
 
 import appLogic.AppConstant;
 import appLogic.ConversationManager;
@@ -231,6 +233,10 @@ public class MainActivity extends BroadcastActivity {
 
         }
 
+        showFragment(index);
+    }
+
+    private void showFragment(int index){
         if (currentTabIndex != index) {
             FragmentTransaction trx = getFragmentManager().beginTransaction();
             trx.hide(fragments[currentTabIndex]);
@@ -240,7 +246,6 @@ public class MainActivity extends BroadcastActivity {
             trx.show(fragments[index]).commit();
         }
         imagebuttons[currentTabIndex].setSelected(false);
-        // 把当前tab设为选中状态
         imagebuttons[index].setSelected(true);
         textviews[currentTabIndex].setTextColor(0xFF999999);
         textviews[index].setTextColor(0xFF45C01A);
@@ -257,14 +262,20 @@ public class MainActivity extends BroadcastActivity {
         if (user == null)
             return;
 
+        boolean flag = false;
         if (ChatActivity.instance != null && ChatActivity.instance.friend.id == message.friendId) {
+            if (isAppOnForeground())
+                flag = true;
+        }
+
+        if(flag){
             ChatActivity.instance.addChatMessage(message);
         } else {
             AppConstant.messageTable.insertMessage(message);
             if (message.direction == Message.Direction.RECEIVE) {
 
                 AppConstant.conversationManager.addOrReplaceConversation(message);
-                AppNotification.getInstance().sendNotification(user.nickName, message.body, FragmentType.Conversation);
+                AppNotification.getInstance().addNotification(user.nickName, message.body, FragmentType.Conversation);
 
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -353,6 +364,7 @@ public class MainActivity extends BroadcastActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         if (!isConflict || !isCurrentAccountRemoved) {
             // initView();
 
@@ -378,6 +390,21 @@ public class MainActivity extends BroadcastActivity {
                 && !isAccountRemovedDialogShow) {
             showAccountRemovedDialog();
         }
+
+        int index = 0;
+        FragmentType fragment = (FragmentType) intent.getSerializableExtra("fragment");
+
+        if(fragment != null){
+            if (fragment == FragmentType.Love) {
+                index = 0;
+            } else if (fragment == FragmentType.Conversation) {
+                index = 1;
+            } else if (fragment == FragmentType.Friends) {
+                index = 2;
+            }
+        }
+
+        showFragment(index);
     }
 
     @Override
@@ -410,5 +437,24 @@ public class MainActivity extends BroadcastActivity {
         } else {
             unreadLabel.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private boolean isAppOnForeground() {
+        ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = getApplicationContext().getPackageName();
+
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null)
+            return false;
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            // The name of the process that this object is associated with.
+            if (appProcess.processName.equals(packageName)
+                    && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

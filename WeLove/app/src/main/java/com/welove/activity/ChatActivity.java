@@ -819,7 +819,7 @@ public class ChatActivity extends Activity implements OnClickListener {
 
     public void back(View view) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("fragment", "conversation");
+        intent.putExtra("fragment", MainActivity.FragmentType.Conversation);
         startActivity(intent);
     }
 

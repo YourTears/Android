@@ -32,9 +32,9 @@ public class AppNotification {
         return instance;
     }
 
-    public void sendNotification(String title, String content, MainActivity.FragmentType fragmentType){
+    public void addNotification(String title, String content, MainActivity.FragmentType fragmentType){
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("fragment", fragmentType.toString());
+        intent.putExtra("fragment", fragmentType);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
